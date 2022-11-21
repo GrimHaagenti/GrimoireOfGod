@@ -6,13 +6,14 @@ public class Entity : MonoBehaviour
 {
     [SerializeField] protected EntityStat stats;
 
-    //protected spellpool
+    protected List<ElementalBlock> ElementInventory;
 
     
     // Start is called before the first frame update
         private void Awake()
         {
             stats.currentHP = stats.MaxHP;
+        ElementInventory = new List<ElementalBlock>();
         }
 
     // Update is called once per frame

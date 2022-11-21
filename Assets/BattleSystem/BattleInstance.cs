@@ -18,8 +18,8 @@ public class BattleInstance
         this.enemy = enemy.GetComponent<Entity>();
         this.battleManager = battleManager;
 
-        UiManager._UI_MANAGER.SetBattle(this.player, this.enemy);
-        UiManager._UI_MANAGER.OnAtkButtonPressed.AddListener(PlayerAttack);
+        BattleUI_Manager._UI_MANAGER.SetBattle(this.player, this.enemy);
+        BattleUI_Manager._UI_MANAGER.OnAtkButtonPressed.AddListener(PlayerAttack);
 
 
     }

@@ -5,14 +5,21 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
 
-public class UiManager : MonoBehaviour
+public class BattleUI_Manager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI playerHP;
     [SerializeField] TextMeshProUGUI enemyHP;
 
     [SerializeField] Button AtkButton;
+    [SerializeField] List<SubMenuItem> MainCombatPanels;
 
-    static public UiManager _UI_MANAGER;
+    SubMenuItem currentSubMenu;
+
+    private Stack<SubMenuItem> subMenuStack;
+    static public BattleUI_Manager _UI_MANAGER;
+
+
+
 
     //Events
     //public delegate void ClickAction();
@@ -23,6 +30,7 @@ public class UiManager : MonoBehaviour
 
     private void Awake()
     {
+        subMenuStack = new Stack<SubMenuItem>();
        if (_UI_MANAGER != null && _UI_MANAGER != this)
         {
             Destroy(_UI_MANAGER);
@@ -32,7 +40,36 @@ public class UiManager : MonoBehaviour
             _UI_MANAGER = this;
         }
         OnAtkButtonPressed = new UnityEvent();
+
+        SubMenuItem.PanelChangeEvent += ChangeSubItemPanels;
+        }
+    private void Start()
+    {
+        currentSubMenu = MainCombatPanels[0];
+        currentSubMenu.gameObject.SetActive(true);
+        subMenuStack.Push(currentSubMenu);
+
     }
+
+    void ChangeSubItemPanels(SubMenuItem PanelToGo)
+    {
+
+
+        MainCombatPanels.ForEach((it) => {
+            if (it == PanelToGo)
+            {
+                it.gameObject.SetActive(true);
+            }
+            else
+            {
+                it.gameObject.SetActive(false);
+            }
+        });
+
+        subMenuStack.Push(PanelToGo);
+
+    }
+
 
     private void Update()
     {
