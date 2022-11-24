@@ -11,7 +11,7 @@ public enum Attributes {SLASH,  FIRE, WATER, WIND }
 public static class RuneEffects
 {
 
-    public static void Projectile(List<Entity> targets)
+    public static void Projectile(List<Entity> targets,List<ElementalBlock>elementalBlocks, Entity user)
     {
         foreach (Entity ent in targets)
         {
@@ -19,7 +19,7 @@ public static class RuneEffects
         }
 
     }
-    public static void Slash(List<Entity> targets) 
+    public static void Slash(List<Entity> targets, List<ElementalBlock> elementalBlocks, Entity user) 
     {
         foreach (Entity ent in targets)
         {

@@ -7,6 +7,7 @@ public class Entity : MonoBehaviour
     [SerializeField] protected EntityStat stats;
 
     protected List<ElementalBlock> ElementInventory;
+    [SerializeField] protected List<Rune> RelicInventory;
 
     
     // Start is called before the first frame update
@@ -31,4 +32,5 @@ public class Entity : MonoBehaviour
 
     public EntityStat GetEntityStats { get { return stats; } }
     public List<ElementalBlock> EntityElements { get { return ElementInventory; } }
+    public List<Rune> EntityRelics { get { return RelicInventory; } }
 }

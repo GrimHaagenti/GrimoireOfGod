@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public class UI_RuneManager : SinglePanelManager
 {
-    
+
+
+
 
     public delegate void RuneClicked(Sprite sprite);
 

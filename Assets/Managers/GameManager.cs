@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public ElementFactory _ELEMENT_FACTORY = null;
+    public RelicManager _RELIC_MANAGER;
     public static GameManager _GAME_MANAGER = null;
     
     [SerializeField] List<Sprite> ElementsSprites;

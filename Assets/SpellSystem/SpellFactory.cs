@@ -4,25 +4,16 @@ using UnityEngine;
 
 public class SpellFactory
 {
-   SpellFactory _SPELL_FACTORY;
 
     Spell currentSpell;
 
     ElementFactory elementFactory;
 
-    SpellFactory()
+    public SpellFactory()
     {
         elementFactory = new ElementFactory();
     }
 
-    Spell CreateSpell(List<ElementalBlock> elements, Rune runeEffect)
-    {
-        ElementFactory elementFusionFactory = new ElementFactory();
-        currentSpell = new Spell();
-
-
-
-        return currentSpell;
-    }
+    
     
 }

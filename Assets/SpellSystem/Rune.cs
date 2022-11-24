@@ -12,15 +12,15 @@ public class Rune : ScriptableObject
     [SerializeField] private Effect effect = Effect.PROJECTILE;
 
 
-    public virtual void Use(List<Entity> targets)
+    public virtual void Use(List<Entity> targets, List<ElementalBlock> elementalBlocks, Entity user)
     {
         switch (effect)
         {
             case Effect.PROJECTILE:
-                RuneEffects.Projectile(targets);
+                RuneEffects.Projectile(targets, elementalBlocks, user);
                 break;
             case Effect.BLADE:
-                RuneEffects.Slash(targets);
+                RuneEffects.Slash(targets, elementalBlocks, user);
                 break;
             case Effect.BARRIER:
                 break;
