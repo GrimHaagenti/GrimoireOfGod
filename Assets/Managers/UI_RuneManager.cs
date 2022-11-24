@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_RuneManager : MonoBehaviour
+public class UI_RuneManager : SinglePanelManager
 {
-    [SerializeField] List<Button> runesButtons;
-
-    [SerializeField] Button selectedRuneButton;
+    
 
     public delegate void RuneClicked(Sprite sprite);
 
@@ -16,18 +14,20 @@ public class UI_RuneManager : MonoBehaviour
     private void Awake()
     {
         OnRuneClicked = SetActiveRune;
-        runesButtons.ForEach((it) =>
+        optionButtons.ForEach((it) =>
         {
             Sprite spr = it.gameObject.GetComponentInChildren<Image>().sprite; 
 
             it.onClick.AddListener(()=> OnRuneClicked(spr));
 
         });
-    }
 
+        AdvanceMenuButton?.onClick.AddListener(() => parentMenu.GoToNextSubMenu()); 
+    }
+   
     public void SetActiveRune(Sprite runeSprite)
     {
-        selectedRuneButton.GetComponentInChildren<Image>().sprite = runeSprite; 
+        AdvanceMenuButton.GetComponentInChildren<Image>().sprite = runeSprite; 
     
     }
 

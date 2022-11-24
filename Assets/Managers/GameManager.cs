@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     
     [SerializeField] List<Sprite> ElementsSprites;
 
+    [SerializeField] public PlayerScript player;
+
     private void Awake()
     {
         if(_GAME_MANAGER !=null && _GAME_MANAGER != this)

@@ -45,7 +45,8 @@ public class BattleUI_Manager : MonoBehaviour
         }
     private void Start()
     {
-        currentSubMenu = MainCombatPanels[0];
+        MainCombatPanels.ForEach((it) => { it.gameObject.SetActive(false); });
+           currentSubMenu = MainCombatPanels[0];
         currentSubMenu.gameObject.SetActive(true);
         subMenuStack.Push(currentSubMenu);
 
@@ -59,6 +60,7 @@ public class BattleUI_Manager : MonoBehaviour
             if (it == PanelToGo)
             {
                 it.gameObject.SetActive(true);
+                it.OnActivation();
             }
             else
             {

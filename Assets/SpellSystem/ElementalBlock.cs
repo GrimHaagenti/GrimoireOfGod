@@ -5,11 +5,12 @@ using UnityEngine;
 public enum Elements { FIRE, WATER, EARTH, WIND, METAL, PLANT, ELECTRICITY, ICE, ROCK}
 public class ElementalBlock
 {
-    public static ElementalBlock CreateElement(Elements element, Sprite sprite)
+    public static ElementalBlock CreateElement(Elements element, Sprite sprite, int level)
     {
         ElementalBlock elem = new ElementalBlock();
         elem.BlockElement = element;
         elem.blockSprite = sprite;
+        elem.Level = level;
         return elem;
     }
     private ElementalBlock() { }

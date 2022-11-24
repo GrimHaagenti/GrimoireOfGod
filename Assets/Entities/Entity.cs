@@ -30,4 +30,5 @@ public class Entity : MonoBehaviour
     }
 
     public EntityStat GetEntityStats { get { return stats; } }
+    public List<ElementalBlock> EntityElements { get { return ElementInventory; } }
 }

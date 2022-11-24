@@ -12,7 +12,7 @@ public class ElementFactory
 
     public ElementalBlock CreateElement(Elements element)
     {
-        return ElementalBlock.CreateElement(element, sprites[(int)element]);
+        return ElementalBlock.CreateElement(element, sprites[(int)element],  1);
         
 
     }
