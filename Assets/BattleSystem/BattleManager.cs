@@ -37,7 +37,7 @@ public class BattleManager : MonoBehaviour
        currentBattle = new BattleInstance(player,enemy, this);
     }
 
-    public void SetRune(Rune rune)
+    public void SetRune(Relic rune)
     {
         currentBattle.SetRune(rune);
     }

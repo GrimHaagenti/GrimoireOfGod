@@ -7,13 +7,13 @@ public class Entity : MonoBehaviour
     [SerializeField] protected EntityStat stats;
 
     protected List<ElementalBlock> ElementInventory;
-    [SerializeField] protected List<Rune> RelicInventory;
+    [SerializeField] protected List<Relic> RelicInventory;
+    [SerializeField] public Attributes[] Weaknesses;
 
     
     // Start is called before the first frame update
         private void Awake()
         {
-            stats.currentHP = stats.MaxHP;
         ElementInventory = new List<ElementalBlock>();
         }
 
@@ -25,12 +25,12 @@ public class Entity : MonoBehaviour
 
     public int GetHit(int damage)
     {
-        stats.currentHP -= damage;
+        stats.MaxHP -= damage;
 
-        return stats.currentHP;
+        return stats.MaxHP;
     }
 
     public EntityStat GetEntityStats { get { return stats; } }
     public List<ElementalBlock> EntityElements { get { return ElementInventory; } }
-    public List<Rune> EntityRelics { get { return RelicInventory; } }
+    public List<Relic> EntityRelics { get { return RelicInventory; } }
 }

@@ -8,7 +8,7 @@ public class Spell : ScriptableObject
 
     int potency;
 
-    Rune runeEffect;
+    Relic runeEffect;
 
 
 

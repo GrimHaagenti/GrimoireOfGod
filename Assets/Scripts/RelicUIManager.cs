@@ -18,11 +18,11 @@ public class RelicUIManager : MonoBehaviour
 
 
     List<GameObject> RelicBlockUIList = new List<GameObject>();
-    List<Rune> playerRunes;
-    Rune activeRune;
+    List<Relic> playerRunes;
+    Relic activeRune;
 
 
-    public void SetSubmenu(List<Rune> runes)
+    public void SetSubmenu(List<Relic> runes)
     {
         playerRunes = runes;
         //CHANGE TO MAX RELIC VARIABLE
@@ -45,7 +45,7 @@ public class RelicUIManager : MonoBehaviour
             );
     }
 
-    public void SetActiveRune(Rune rune)
+    public void SetActiveRune(Relic rune)
     {
         AdvanceMenuButton.GetComponentInChildren<Image>().sprite = rune.RuneIcon;
         activeRune = rune;

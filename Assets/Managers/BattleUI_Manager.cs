@@ -75,8 +75,8 @@ public class BattleUI_Manager : MonoBehaviour
 
     private void Update()
     {
-        playerHP.text = player.GetEntityStats.currentHP + "/" + player.GetEntityStats.MaxHP;
-        enemyHP.text = enemy.GetEntityStats.currentHP + "/" + enemy.GetEntityStats.MaxHP;
+        playerHP.text = player.GetEntityStats.MaxHP + "/" + player.GetEntityStats.MaxHP;
+        enemyHP.text = enemy.GetEntityStats.MaxHP + "/" + enemy.GetEntityStats.MaxHP;
 
 
 

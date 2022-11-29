@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(GameSceneManager))]
+[RequireComponent(typeof(InputManager))]
 public class GameManager : MonoBehaviour
 {
     public ElementFactory _ELEMENT_FACTORY = null;
@@ -25,7 +28,19 @@ public class GameManager : MonoBehaviour
             _ELEMENT_FACTORY = new ElementFactory();
             _ELEMENT_FACTORY.sprites = ElementsSprites;
         }
-    }
 
+
+        DontDestroyOnLoad(this);
+    }
+    
+    private void Start()
+    {
+        FindPlayerInScene();
+    }
+    public void FindPlayerInScene()
+    {
+        player = GameObject.Find("Player")?.GetComponent<PlayerScript>();
+
+    }
 
 }

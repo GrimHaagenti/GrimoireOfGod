@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RelicManager
 {
-    List<Rune> RelicList = new List<Rune>();
+    List<Relic> RelicList = new List<Relic>();
  
     public RelicManager()
     {

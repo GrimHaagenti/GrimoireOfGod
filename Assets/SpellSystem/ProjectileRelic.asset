@@ -9,9 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c207252656e6604794864bca5ff86de, type: 3}
+  m_Script: {fileID: 0}
   m_Name: ProjectileRelic
   m_EditorClassIdentifier: 
-  runeIcon: {fileID: 21300000, guid: 37d6e472c461ab346ae695bd3bc47f1d, type: 3}
-  name: Projectile
-  effect: 0
