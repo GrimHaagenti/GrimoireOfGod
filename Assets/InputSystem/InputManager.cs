@@ -3,35 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputManager : MonoBehaviour
+[System.Serializable]
+public class InputManager 
 {
     private PlayerInputs playerInputs;
-    public static InputManager _INPUT_MANAGER;
 
-    public Vector2 moveInput = Vector2.zero;
+    [SerializeField] public Vector2 moveInput = Vector2.zero;
 
-    public bool ActionButtonPressed = false;
-    public float TimeSinceActionButtonPressed = 0.1f;
+    [SerializeField] public bool ActionButtonPressed = false;
+    [SerializeField] public float TimeSinceActionButtonPressed = 0.1f;
 
-    private void Awake()
+
+    public void Init()
     {
-        if (_INPUT_MANAGER != null && _INPUT_MANAGER != this)
-        {
-            Destroy(_INPUT_MANAGER);
-        }
-        else
-        {
+        playerInputs = new PlayerInputs();
+        playerInputs.Exploration.Enable();
 
-            playerInputs = new PlayerInputs();
-            playerInputs.Exploration.Enable();
+        playerInputs.Exploration.Move.performed += MoveInput;
+        playerInputs.Exploration.Action.performed += ActionInput;
 
-            playerInputs.Exploration.Move.performed += MoveInput;
-            playerInputs.Exploration.Action.performed += ActionInput;
-            _INPUT_MANAGER = this;
-
-        }
     }
-    private void Update()
+    public void Update()
     {
         TimeSinceActionButtonPressed += Time.deltaTime;
 

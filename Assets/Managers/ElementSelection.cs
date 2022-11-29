@@ -15,7 +15,7 @@ public class ElementSelection : SinglePanelManager
 
     private void Start()
     {
-        playerElements = GameManager._GAME_MANAGER.player.EntityElements;
+        //playerElements = GameManager._GAME_MANAGER.player.EntityElements;
 
 
         playerElements.ForEach(

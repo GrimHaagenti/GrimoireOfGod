@@ -15,7 +15,7 @@ public class PlayerMoveAction : Action
 
     private void PlayerMove(StateController controller)
     {
-        Vector2 input = InputManager._INPUT_MANAGER.moveInput;
+        Vector2 input = GameManager._GAME_MANAGER._INPUT_MANAGER.moveInput;
       
         if (!controller.worldStats.ActionInterrumptMovement)
         {

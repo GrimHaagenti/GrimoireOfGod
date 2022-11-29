@@ -8,17 +8,33 @@ public class CameraScript : MonoBehaviour
     [SerializeField] float cameraAngle = 45;
     [SerializeField] float cameraRotation = 0;
     [SerializeField] float distanceToPlayer;
+    
+    public bool running = false;
 
+    private void Awake()
+    {
+        GameManager._GAME_MANAGER._SCENE_MANAGER.OnSceneLoaded += SetupCamera;
+    }
+
+    private void SetupCamera()
+    {
+        if (GameManager._GAME_MANAGER.currentLevelInfo.CameraObject == null) { player = GameManager._GAME_MANAGER.PlayerPrefab; }
+        else { player = GameManager._GAME_MANAGER.currentLevelInfo.CameraObject; }
+        running = true;
+    }
     private void LateUpdate()
     {
-        Vector3 position = Vector3.zero;
+        if (running)
+        {
+            
+            Vector3 position = Vector3.zero;
 
-        gameObject.transform.rotation = Quaternion.Euler(cameraAngle, cameraRotation, 0);
+            gameObject.transform.rotation = Quaternion.Euler(cameraAngle, cameraRotation, 0);
 
 
-        position = player.transform.position + (-transform.forward * distanceToPlayer);
+            position = player.transform.position + (-transform.forward * distanceToPlayer);
 
-        gameObject.transform.position = position;
-
+            gameObject.transform.position = position;
+        }
     }
 }

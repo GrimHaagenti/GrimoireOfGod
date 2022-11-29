@@ -7,8 +7,7 @@ public class BattleInstance
 {
 
 
-    PlayerScript player;
-    Entity enemy;
+    
     BattleManager battleManager;
     
      RelicUIManager relicUIManager;
@@ -20,11 +19,16 @@ public class BattleInstance
     public BattleStates currentState = BattleStates.START_COMBAT;
 
 
-    public BattleInstance(GameObject player, GameObject enemy, BattleManager battleManager)
+    public BattleInstance( BattleManager battleManager)
     {
-        this.player = player.GetComponent<PlayerScript>();
-        this.enemy = enemy.GetComponent<Entity>();
         this.battleManager = battleManager;
+        
+        GameObject.Instantiate(battleManager.enemy.EnemyPrefab, BattleScenarioManager._SCENERIO.enemyPosition.transform.position, Quaternion.identity, BattleScenarioManager._SCENERIO.enemyPosition.transform);
+
+        GameManager._GAME_MANAGER.PlayerPrefab.transform.SetParent(BattleScenarioManager._SCENERIO.enemyPosition.transform);
+        GameManager._GAME_MANAGER.PlayerPrefab.transform.position = Vector3.zero;
+
+        GameManager._GAME_MANAGER.PlayerPrefab.SetActive(true);
 
         relicUIManager = battleManager.relicUIManager;
         elementUIManager = battleManager.elementUIManager;
@@ -46,22 +50,22 @@ public class BattleInstance
     }
     public void StartCombat()
     {
-        if(player == null) { return; }
-        if(enemy == null) { return; }
+        if(battleManager.player == null) { return; }
+        if(battleManager.enemy == null) { return; }
 
-        battleManager.playerHP.text = player.GetEntityStats.MaxHP.ToString();
-        battleManager.enemyHP.text = enemy.GetEntityStats.MaxHP.ToString();
+        //battleManager.playerHP.text = battleManager.player.GetEntityStats.MaxHP.ToString();
+        //battleManager.enemyHP.text = battleManager.enemy.GetEntityStats.MaxHP.ToString();
 
-        relicUIManager?.SetSubmenu(player.EntityRelics);
-        elementUIManager?.SetSubmenu(player.EntityElements);
+        relicUIManager?.SetSubmenu(battleManager.player.EntityRelics);
+        elementUIManager?.SetSubmenu(battleManager.player.EntityElements);
 
         currentState = BattleStates.BEGIN_ROUND;
     }
 
     public void BeginRound()
     {
-        relicUIManager.gameObject.SetActive(true);
-        elementUIManager.gameObject.SetActive(false);
+        //relicUIManager.gameObject.SetActive(true);
+        //elementUIManager.gameObject.SetActive(false);
         currentState = BattleStates.PLAYER_ACTION;
     }
 
@@ -71,16 +75,16 @@ public class BattleInstance
     }
     public void PlayerResolution()
     {
-        relicUIManager.gameObject.SetActive(false);
-        elementUIManager.gameObject.SetActive(false);
+        //relicUIManager.gameObject.SetActive(false);
+        //elementUIManager.gameObject.SetActive(false);
 
         Debug.Log(selectedRune);
         Debug.Log(selectedBlocks.Count);
-        selectedRune.Use(new List<Entity>() { enemy }, selectedBlocks, player);
+        selectedRune.Use(new List<Entity>() { battleManager.enemy }, selectedBlocks, battleManager.player);
 
 
-        battleManager.playerHP.text = player.GetEntityStats.MaxHP.ToString();
-        battleManager.enemyHP.text = enemy.GetEntityStats.MaxHP.ToString();
+        battleManager.playerHP.text = battleManager.player.GetEntityStats.MaxHP.ToString();
+        battleManager.enemyHP.text = battleManager.enemy.GetEntityStats.MaxHP.ToString();
 
 
 
@@ -94,7 +98,7 @@ public class BattleInstance
 
     public void Win()
     {
-        if (enemy.GetEntityStats.MaxHP > 0)
+        if (battleManager.enemy.GetEntityStats.MaxHP > 0)
         {
             currentState = BattleStates.ENEMY_ACTION;
 
@@ -115,12 +119,12 @@ public class BattleInstance
 
     public void EnemyResolution()
     {
-        
-        enemy.EntityRelics[Random.Range(0, enemy.EntityRelics.Count - 1)].Use(new List<Entity>() { player }, selectedBlocks, enemy);
+
+        battleManager.enemy.EntityRelics[Random.Range(0, battleManager.enemy.EntityRelics.Count - 1)].Use(new List<Entity>() { battleManager.player }, selectedBlocks, battleManager.enemy);
 
 
-        battleManager.playerHP.text = player.GetEntityStats.MaxHP.ToString();
-        battleManager.enemyHP.text = enemy.GetEntityStats.MaxHP.ToString();
+        battleManager.playerHP.text = battleManager.player.GetEntityStats.MaxHP.ToString();
+        battleManager.enemyHP.text = battleManager.enemy.GetEntityStats.MaxHP.ToString();
 
 
 
@@ -129,7 +133,7 @@ public class BattleInstance
     }
     public void Lose()
     {
-        if (player.GetEntityStats.MaxHP > 0)
+        if (battleManager.player.GetEntityStats.MaxHP > 0)
         {
             currentState = BattleStates.END_ROUND;
 

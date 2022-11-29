@@ -19,16 +19,14 @@ public class PlayerSpellswordActAction : Action
         RaycastHit hit;
         
         Vector3 StartPosition = controller.gameObject.transform.position;
-        Debug.DrawLine(StartPosition, EndPosition);
 
         int layerMask = (1 << 6) | (1 << 7);
 
-        if (InputManager._INPUT_MANAGER.ActionButtonPressed)
+        if (GameManager._GAME_MANAGER._INPUT_MANAGER.ActionButtonPressed)
         { 
             EndPosition = StartPosition + controller.gameObject.transform.forward * controller.worldStats.SlashDistace;
 
             controller.worldStats.ActionInterrumptMovement = true;
-            Physics.Linecast(StartPosition, EndPosition, out hit, layerMask);
         }
 
         if (controller.worldStats.ActionInterrumptMovement)
@@ -46,6 +44,9 @@ public class PlayerSpellswordActAction : Action
 
 
         }
+        Debug.DrawLine(StartPosition, EndPosition, Color.red);
+
+        Physics.Linecast(StartPosition, EndPosition, out hit, layerMask);
 
     }
 

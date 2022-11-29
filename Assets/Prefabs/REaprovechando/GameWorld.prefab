@@ -45,6 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: 02c611c7fc9981a4e84d00cb495d0a09, type: 2}
+  RelicInventory: []
+  Weaknesses: []
+  enemyLayer: 0
 --- !u!1 &4879680616707852751
 GameObject:
   m_ObjectHideFlags: 0
@@ -54,7 +57,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4879680616707852749}
-  - component: {fileID: 4879680616707852750}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -77,19 +79,6 @@ Transform:
   m_Father: {fileID: 4879680617017241585}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4879680616707852750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4879680616707852751}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99826279265871b4c973866a975949ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stats: {fileID: 11400000, guid: d2bb7fb4e36d784418640da6b64ce37b, type: 2}
 --- !u!1 &4879680617017241586
 GameObject:
   m_ObjectHideFlags: 0

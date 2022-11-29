@@ -16,8 +16,8 @@ MonoBehaviour:
   Acceleration: 30
   Decceleration: 50
   ActionInterrumptMovement: 0
-  turnSmoothSpeed: 612.17236
+  turnSmoothSpeed: 0
   turnSmoothTime: 0.15
-  SlashDistace: 8
+  SlashDistace: 2
   SlashTime: 0.5
-  SlashSpeed: 16
+  SlashSpeed: 4

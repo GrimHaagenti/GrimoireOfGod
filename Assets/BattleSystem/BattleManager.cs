@@ -2,16 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum BattleStates { START_COMBAT, BEGIN_ROUND, PLAYER_ACTION, PLAYER_RESOLUTION,
     WIN, ENEMY_ACTION, ENEMY_RESOLUTION, LOSE, END_ROUND,END_COMBAT};
-public class BattleManager : MonoBehaviour
+[System.Serializable]
+public class BattleManager
 {
 
-    [SerializeField] GameObject player;
-    [SerializeField] GameObject enemy;
+    [SerializeField] public PlayerScript player;
+    [SerializeField] public EnemyScript enemy;
 
-     [SerializeField] public  TextMeshProUGUI playerHP;
+    [SerializeField] public  TextMeshProUGUI playerHP;
     [SerializeField] public TextMeshProUGUI enemyHP;
 
     public SpellFactory _SPELL_FACTORY = new SpellFactory();
@@ -23,18 +25,24 @@ public class BattleManager : MonoBehaviour
     public delegate void ChangeStateEvent(BattleStates newStates);
     public static event ChangeStateEvent ChangeCombatState;
 
-   
+
+    public void PrepareBattle()
+    {
+         
+
+
+        currentBattle = new BattleInstance(this);
+
+        ChangeCombatState += ChangeState;
+
+
+    }
 
     public void ChangeState(BattleStates newState)
     {
 
         //*DO SOME CHECKS FIRST*    
         currentBattle.currentState = newState;
-    }
-    public void StartBattle()
-    {
-        ChangeCombatState += ChangeState;
-       currentBattle = new BattleInstance(player,enemy, this);
     }
 
     public void SetRune(Relic rune)
@@ -47,16 +55,11 @@ public class BattleManager : MonoBehaviour
         currentBattle.SetElements(elements);
     }
 
-    void Start()
-    {
-        StartBattle();
-        currentBattle.currentState = BattleStates.START_COMBAT;
-
-    }
+   
 
     void Update()
     {
-
+        if (currentBattle == null) { return; }
         
         switch (currentBattle.currentState)
         {

@@ -10,7 +10,10 @@ public class EntityStat : ScriptableObject
     public int Def = 0;
     public int Spd = 0;
 
+    public List<ElementalBlock> ElementInventory;
+    [SerializeField] public List<Relic> RelicInventory;
+    [SerializeField] public Attributes[] Weaknesses;
 
-    
+
 }
 
