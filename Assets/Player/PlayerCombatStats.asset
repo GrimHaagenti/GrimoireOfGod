@@ -16,3 +16,10 @@ MonoBehaviour:
   Atk: 0
   Def: 0
   Spd: 0
+  ElementInventory:
+  - {fileID: 11400000, guid: d609e4b0b8b52104a924a24b2cf5c8b8, type: 2}
+  - {fileID: 11400000, guid: dbeae302d87276a46a4327d67aa35efb, type: 2}
+  RelicInventory:
+  - {fileID: 11400000, guid: 6cdf952f0cfd02d41a59200a6cd2f2f0, type: 2}
+  - {fileID: 11400000, guid: 99d7f02ee0327e540b7821d4264f39e2, type: 2}
+  Weaknesses: []

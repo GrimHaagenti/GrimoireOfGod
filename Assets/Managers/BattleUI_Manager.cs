@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 public class BattleUI_Manager : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI playerHP;
+    /*[SerializeField] TextMeshProUGUI playerHP;
     [SerializeField] TextMeshProUGUI enemyHP;
 
     [SerializeField] Button AtkButton;
@@ -16,7 +16,11 @@ public class BattleUI_Manager : MonoBehaviour
     SubMenuItem currentSubMenu;
 
     private Stack<SubMenuItem> subMenuStack;
-    static public BattleUI_Manager _UI_MANAGER;
+    */
+    //NEW 
+    [SerializeField] public RelicUIManager relicUIManager;
+    [SerializeField] public ElementUIManager elementUIManager;
+
 
 
 
@@ -28,77 +32,84 @@ public class BattleUI_Manager : MonoBehaviour
     private PlayerScript player;
     private Entity enemy;
 
+    public void SetSubMenus(List<Relic> relics, List<ElementalBlock> elements)
+    {
+        
+
+        relicUIManager.SetSubmenu(relics);
+        elementUIManager.SetSubmenu(elements);
+    }
+
+
+    public void OnTurnBegin()
+    {
+        relicUIManager.gameObject.SetActive(true);
+        elementUIManager.gameObject.SetActive(false);
+    }
     private void Awake()
     {
-        subMenuStack = new Stack<SubMenuItem>();
-       if (_UI_MANAGER != null && _UI_MANAGER != this)
-        {
-            Destroy(_UI_MANAGER);
-        }
-        else
-        {
-            _UI_MANAGER = this;
-        }
-        OnAtkButtonPressed = new UnityEvent();
 
-        SubMenuItem.PanelChangeEvent += ChangeSubItemPanels;
-        }
+        //OnAtkButtonPressed = new UnityEvent();
+
+        //SubMenuItem.PanelChangeEvent += ChangeSubItemPanels;
+        //}
+    }
     private void Start()
     {
-        MainCombatPanels.ForEach((it) => { it.gameObject.SetActive(false); });
-           currentSubMenu = MainCombatPanels[0];
-        currentSubMenu.gameObject.SetActive(true);
-        subMenuStack.Push(currentSubMenu);
+        //MainCombatPanels.ForEach((it) => { it.gameObject.SetActive(false); });
+        //   currentSubMenu = MainCombatPanels[0];
+        //currentSubMenu.gameObject.SetActive(true);
+        //subMenuStack.Push(currentSubMenu);
 
     }
 
-    void ChangeSubItemPanels(SubMenuItem PanelToGo)
-    {
+    //void ChangeSubItemPanels(SubMenuItem PanelToGo)
+    //{
 
 
-        MainCombatPanels.ForEach((it) => {
-            if (it == PanelToGo)
-            {
-                it.gameObject.SetActive(true);
-                it.OnActivation();
-            }
-            else
-            {
-                it.gameObject.SetActive(false);
-            }
-        });
+    //    MainCombatPanels.ForEach((it) => {
+    //        if (it == PanelToGo)
+    //        {
+    //            it.gameObject.SetActive(true);
+    //            it.OnActivation();
+    //        }
+    //        else
+    //        {
+    //            it.gameObject.SetActive(false);
+    //        }
+    //    });
 
-        subMenuStack.Push(PanelToGo);
+    //    subMenuStack.Push(PanelToGo);
 
-    }
-
-
-    private void Update()
-    {
-        playerHP.text = player.GetEntityStats.MaxHP + "/" + player.GetEntityStats.MaxHP;
-        enemyHP.text = enemy.GetEntityStats.MaxHP + "/" + enemy.GetEntityStats.MaxHP;
+    //}
 
 
+    //private void Update()
+    //{
+    //    playerHP.text = player.GetEntityStats.MaxHP + "/" + player.GetEntityStats.MaxHP;
+    //    enemyHP.text = enemy.GetEntityStats.MaxHP + "/" + enemy.GetEntityStats.MaxHP;
 
-    }
-    public void OnButtonPress()
-    {
+
+
+    //}
+    //public void OnButtonPress()
+    //{
         
-        OnAtkButtonPressed.Invoke();
+    //    OnAtkButtonPressed.Invoke();
         
 
-    }
-    private void OnGUI()
-    {
+    //}
+    //private void OnGUI()
+    //{
 
-    }
+    //}
     
-    public void SetBattle(PlayerScript player, Entity enemy)
-    {
-        this.player = player;
-        this.enemy = enemy;
+    //public void SetBattle(PlayerScript player, Entity enemy)
+    //{
+    //    this.player = player;
+    //    this.enemy = enemy;
 
-    }
+    //}
     
 
 

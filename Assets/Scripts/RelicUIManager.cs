@@ -43,6 +43,12 @@ public class RelicUIManager : MonoBehaviour
                 RelicBlockUIList.Add(button);
             }
             );
+
+        AdvanceMenuButton.onClick.AddListener(() => {
+            battleManager.SetRune(activeRune); NextPanel.SetActive(true);
+            gameObject.SetActive(false);
+        });
+
     }
 
     public void SetActiveRune(Relic rune)
@@ -54,10 +60,7 @@ public class RelicUIManager : MonoBehaviour
     void Start()
     {
        
-        AdvanceMenuButton.onClick.AddListener(() => {
-            battleManager.SetRune(activeRune); NextPanel.SetActive(true);
-            gameObject.SetActive(false);
-        }) ;
+       
     }
 
     // Update is called once per frame

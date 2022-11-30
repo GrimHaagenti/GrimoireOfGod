@@ -39,7 +39,7 @@ public class GameSceneManager
 
         if (IsLauncherScene)
         {
-            LoadScene(LaunchScene, LoadSceneMode.Single);
+            LoadScene(LaunchScene, LoadSceneMode.Single, true);
         }
     }
 
@@ -55,10 +55,17 @@ public class GameSceneManager
             asyncLoad = null;
         }
     }
-    public void LoadScene(Scenes scene, LoadSceneMode mode)
+    public void LoadScene(Scenes scene, LoadSceneMode mode, bool bypassDeactivate=false)
     {
 
        currentSceneIndex = scene;
+        if (!bypassDeactivate)
+        {
+            foreach (GameObject obj in currentScene.GetRootGameObjects())
+            {
+                obj.SetActive(false);
+            }
+        }
        asyncLoad =  SceneManager.LoadSceneAsync((int)scene, mode);
     }
 

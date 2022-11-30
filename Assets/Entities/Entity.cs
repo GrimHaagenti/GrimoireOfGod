@@ -9,7 +9,6 @@ public class Entity : MonoBehaviour
     
     protected void Awake()
     {
-    stats.ElementInventory = new List<ElementalBlock>();
     }
 
 

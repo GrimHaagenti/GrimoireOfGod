@@ -18,9 +18,13 @@ public class BattleManager
 
     public SpellFactory _SPELL_FACTORY = new SpellFactory();
 
-    BattleInstance currentBattle;
-    [SerializeField] public RelicUIManager relicUIManager;
+    static BattleInstance currentBattle;
+
+
+    /*[SerializeField] public RelicUIManager relicUIManager;
     [SerializeField] public ElementUIManager elementUIManager;
+    */
+    public BattleUI_Manager Battle_UI;
 
     public delegate void ChangeStateEvent(BattleStates newStates);
     public static event ChangeStateEvent ChangeCombatState;
@@ -28,14 +32,22 @@ public class BattleManager
 
     public void PrepareBattle()
     {
-         
 
+        foreach (GameObject obj in GameManager._GAME_MANAGER._SCENE_MANAGER.currentScene.GetRootGameObjects())
+        {
+            if (obj.TryGetComponent<BattleUI_Manager>(out BattleUI_Manager man))
+            {
+                Battle_UI = man;
 
+            }
+        }
         currentBattle = new BattleInstance(this);
 
         ChangeCombatState += ChangeState;
 
+        Battle_UI.SetSubMenus(player.EntityRelics, player.GetEntityStats.ElementInventory);
 
+        GameManager._GAME_MANAGER.currentLevelInfo.gameObject.SetActive(true);
     }
 
     public void ChangeState(BattleStates newState)
@@ -57,7 +69,7 @@ public class BattleManager
 
    
 
-    void Update()
+    public void Update()
     {
         if (currentBattle == null) { return; }
         
@@ -68,6 +80,7 @@ public class BattleManager
                 currentBattle.StartCombat();
                 break;
             case BattleStates.BEGIN_ROUND:
+                Battle_UI.OnTurnBegin();
                 currentBattle.BeginRound();
                 break;
             case BattleStates.PLAYER_ACTION:

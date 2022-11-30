@@ -3,20 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum Elements { FIRE, WATER, EARTH, WIND, METAL, PLANT, ELECTRICITY, ICE, ROCK}
-public class ElementalBlock
+public enum ElementLevel { ONE, TWO, THREE}
+[CreateAssetMenu(menuName ="Elemental Shape")]
+public class ElementalBlock: ScriptableObject
 {
-    public static ElementalBlock CreateElement(Elements element, Sprite sprite, int level)
-    {
-        ElementalBlock elem = new ElementalBlock();
-        elem.BlockElement = element;
-        elem.blockSprite = sprite;
-        elem.Level = level;
-        return elem;
-    }
-    private ElementalBlock() { }
-    [SerializeField] public Elements BlockElement { get; private set; }
+    [SerializeField] public Elements BlockElement;
+    [SerializeField] public ElementLevel level;
+    [SerializeField] public Sprite blockSprite;
+    [SerializeField] public int Quantity;
 
-    [SerializeField] public int Level { get; private set; }
-    [SerializeField] public Sprite blockSprite { get; private set; }
-    
 }

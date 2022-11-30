@@ -14,6 +14,8 @@ public class CameraScript : MonoBehaviour
     private void Awake()
     {
         GameManager._GAME_MANAGER._SCENE_MANAGER.OnSceneLoaded += SetupCamera;
+
+        DontDestroyOnLoad(this);
     }
 
     private void SetupCamera()

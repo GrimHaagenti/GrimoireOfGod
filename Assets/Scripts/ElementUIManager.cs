@@ -32,7 +32,11 @@ public class ElementUIManager : MonoBehaviour
             {
 
                 GameObject button = Instantiate(ElementalBlockUI, listParent.transform);
-                button.GetComponentInChildren<Image>().sprite = it.blockSprite;
+                ElementalBlockButtonAccesor access = button.GetComponent<ElementalBlockButtonAccesor>();
+                access.Icon.sprite = it.blockSprite;
+                access.Name.text = it.BlockElement.ToString();
+                access.Number.text = "x" + it.Quantity;
+
                 button.GetComponentInChildren<Button>().onClick.AddListener(() => 
                 { SetActiveRune(it);
                 });

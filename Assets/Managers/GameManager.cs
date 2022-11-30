@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameSceneManager _SCENE_MANAGER;
     [SerializeField] public InputManager _INPUT_MANAGER;
     [SerializeField] public BattleManager _BATTLE_MANAGER;
+    [SerializeField] public Camera Camera;
 
     [SerializeField] public GameObject Player;
     [HideInInspector] public PlayerScript playerScript;
@@ -72,6 +73,7 @@ public class GameManager : MonoBehaviour
     {
         _SCENE_MANAGER.Update();
         _INPUT_MANAGER.Update();
+        _BATTLE_MANAGER.Update();
     }
 
     public void LoadScene(Scenes scn, LoadSceneMode mode)
@@ -97,7 +99,10 @@ public class GameManager : MonoBehaviour
             playerScript.InitializePosition(pos);
             if (!PlayerPrefab.activeSelf) { PlayerPrefab.SetActive(true); }
         }
-
+        if (_SCENE_MANAGER.currentScene == SceneManager.GetSceneByBuildIndex((int)Scenes.BATTLE))
+        {
+            _BATTLE_MANAGER.PrepareBattle();
+        }
         
     }
 }

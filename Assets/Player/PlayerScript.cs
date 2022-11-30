@@ -19,10 +19,6 @@ public class PlayerScript : Entity
     {
         enemyLayerMask = (1 << enemyLayer);
 
-        for (int i = 0; i < 10; i++)
-        {
-            stats.ElementInventory.Add(GameManager._GAME_MANAGER._ELEMENT_FACTORY.CreateElement(Elements.FIRE));
-        }
     }
 
     private void OnTriggerEnter(Collider other)
