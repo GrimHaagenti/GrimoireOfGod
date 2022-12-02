@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e560cd7d29e95964596837ffa2fd5154, type: 3}
-  m_Name: Player_WaterBlockController
+  m_Name: Battle_FireController
   m_EditorClassIdentifier: 
-  BlockElement: 1
-  blockSprite: {fileID: -1394872447, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
-  Quantities: 010000000000000000000000
+  BlockElement: 0
+  blockSprite: {fileID: 0}
+  Quantities: 000000000000000000000000

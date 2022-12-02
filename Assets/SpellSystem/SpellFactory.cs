@@ -5,15 +5,30 @@ using UnityEngine;
 public class SpellFactory
 {
 
-    Spell currentSpell;
-
-    ElementFactory elementFactory;
-
-    public SpellFactory()
+    private Elements ElementCombination(Elements element1, Elements element2)
     {
-        elementFactory = new ElementFactory();
+        switch (element1)
+        {
+
+        }
+        return element1; 
     }
 
+    public ElementalBlock ElementFusion(List<ElementalBlock> elements)
+    {
+        ElementalBlock baseElem = elements[0];
+
+        if (elements.Count == 1) { return baseElem; }
+
+        ElementalBlock newElem = new ElementalBlock();
+
+        for (int i = 0; i < elements.Count; i++)
+        {
+             //elements[i].BlockElement 
+        }
+
+        return baseElem;
+    }
     
     
 }

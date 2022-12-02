@@ -31,24 +31,39 @@ public class ElementUIManager : MonoBehaviour
             (it) =>
             {
 
-                GameObject button = Instantiate(ElementalBlockUI, listParent.transform);
-                ElementalBlockButtonAccesor access = button.GetComponent<ElementalBlockButtonAccesor>();
-                access.Icon.sprite = it.blockSprite;
-                access.Name.text = it.BlockElement.ToString();
-                access.Number.text = "x" + it.Quantity;
+                if(it.Quantities.Length > 3)
+                {
+                    Debug.LogError("Too many level slots");
+                    return;
+                }
+                for (int i = 0; i < it.Quantities.Length; i++)
+                {
+                    if (it.Quantities[i] > 0)
+                    {
+                        GameObject button = Instantiate(ElementalBlockUI, listParent.transform);
+                        ElementalBlockButtonAccesor access = button.GetComponent<ElementalBlockButtonAccesor>();
+                        access.Icon.sprite = it.blockSprite;
+                        access.Name.text = it.BlockElement.ToString();
+                        access.Number.text = "x" + it.Quantities[i];
 
-                button.GetComponentInChildren<Button>().onClick.AddListener(() => 
-                { SetActiveRune(it);
-                });
+                        button.GetComponentInChildren<Button>().onClick.AddListener(() =>
+                        {
+                            SetActiveElement(it,i);
+                        });
 
-                elementalBlockUIList.Add(button);
+                        elementalBlockUIList.Add(button);
+                    }
+                }
             }
             );
     }
 
-    public void SetActiveRune(ElementalBlock element)
+    public void SetActiveElement(ElementalBlock element, int LevelIndex)
     {
-        activeElements.Add(element);
+        if (battleManager.selectedRune.relicsElement[(int)element.BlockElement].Quantities[LevelIndex] < 3)
+        {
+            battleManager.selectedRune.relicsElement[(int)element.BlockElement].Quantities[LevelIndex]++;
+        }
     }
 
     void Start()

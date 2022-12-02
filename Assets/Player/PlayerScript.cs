@@ -12,7 +12,6 @@ public class PlayerScript : Entity
 
     private void Awake()
     {
-        base.Awake();
         DontDestroyOnLoad(this);
     }
     private void Start()

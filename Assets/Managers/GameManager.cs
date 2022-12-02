@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
         _SCENE_MANAGER.OnSceneLoaded += OnSceneFinishLoaded;
         PlayerPrefab =  GameObject.Instantiate(Player);
         playerScript = PlayerPrefab.GetComponent<PlayerScript>();
+        playerScript.InitEntity();
         DontDestroyOnLoad(this);
     }
         
@@ -79,6 +80,7 @@ public class GameManager : MonoBehaviour
     public void LoadScene(Scenes scn, LoadSceneMode mode)
     {
         _SCENE_MANAGER.LoadScene(scn, mode);
+        _INPUT_MANAGER.ChangeInputType(scn);
     }
     public void LoadBattleScene()
     {
@@ -89,9 +91,10 @@ public class GameManager : MonoBehaviour
     {
         foreach (GameObject obj in _SCENE_MANAGER.currentScene.GetRootGameObjects())
         {
-            if (obj.TryGetComponent<Levelnfo>(out Levelnfo info ))
+            if (obj.TryGetComponent<Levelnfo>(out Levelnfo info ) && obj.activeSelf)
             {
                 currentLevelInfo = info;
+                break;
             }
         }
 

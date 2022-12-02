@@ -52,6 +52,7 @@ public class GameSceneManager
         {
             currentScene = SceneManager.GetSceneByBuildIndex((int)currentSceneIndex);
             OnSceneLoaded.Invoke();
+
             asyncLoad = null;
         }
     }

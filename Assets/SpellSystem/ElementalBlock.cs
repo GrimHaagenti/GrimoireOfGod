@@ -8,8 +8,7 @@ public enum ElementLevel { ONE, TWO, THREE}
 public class ElementalBlock: ScriptableObject
 {
     [SerializeField] public Elements BlockElement;
-    [SerializeField] public ElementLevel level;
     [SerializeField] public Sprite blockSprite;
-    [SerializeField] public int Quantity;
+    [SerializeField] public int[] Quantities = new int[3];
 
 }

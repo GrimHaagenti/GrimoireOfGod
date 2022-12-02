@@ -6,17 +6,30 @@ public class Entity : MonoBehaviour
 {
     [SerializeField] protected EntityStat stats;
 
+    public int CurrentHP { get; private set; }
+    public int CurrentATK { get; private set; }
+    public int CurrentDEF { get; private set; }
+    public int CurrentSPD { get; private set; }
     
-    protected void Awake()
+    public void InitEntity()
     {
+        CurrentHP = stats.MaxHP;
+        CurrentATK = stats.Atk;
+        CurrentDEF = stats.Def;
+        CurrentSPD = stats.Spd;
     }
 
-
+    public int Heal(int healAmount)
+    {
+        CurrentHP += healAmount;
+        CurrentHP = Mathf.Min(CurrentHP, stats.MaxHP);
+        return CurrentHP;
+    }
     public int GetHit(int damage)
     {
-        stats.MaxHP -= damage;
+        CurrentHP -= damage;
 
-        return stats.MaxHP;
+        return CurrentHP;
     }
 
     public EntityStat GetEntityStats { get { return stats; } }

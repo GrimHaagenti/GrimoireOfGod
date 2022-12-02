@@ -13,8 +13,7 @@ public class BattleInstance
 
     GameObject enemyObj;
 
-    public List<ElementalBlock> selectedBlocks { get; private set; }
-    public Relic selectedRune { get; private set; }
+    
 
     public BattleStates currentState = BattleStates.START_COMBAT;
 
@@ -22,10 +21,14 @@ public class BattleInstance
     public BattleInstance( BattleManager battleManager)
     {
         this.battleManager = battleManager;
-        
+
+        battleManager.enemy.InitEntity();
+
         enemyObj = GameObject.Instantiate(battleManager.enemy.EnemyPrefab, GameManager._GAME_MANAGER.currentLevelInfo.enemyPosition.transform.position, Quaternion.identity, GameManager._GAME_MANAGER.currentLevelInfo.enemyPosition.transform);
 
         enemyObj.transform.LookAt(GameManager._GAME_MANAGER.currentLevelInfo.CameraObject.transform);
+
+        enemyObj.SetActive(true);
 
         GameManager._GAME_MANAGER.PlayerPrefab.SetActive(true);
         GameManager._GAME_MANAGER.PlayerPrefab.transform.LookAt(GameManager._GAME_MANAGER.currentLevelInfo.CameraObject.transform);
@@ -36,23 +39,23 @@ public class BattleInstance
 
         currentState = BattleStates.START_COMBAT;
     }
-    
+
     public void SetRune(Relic rune)
     {
-        selectedRune = rune;
+        battleManager.SetRune(rune);
     }
-    
+
     public void SetElements(List<ElementalBlock> elements)
     {
-        selectedBlocks = elements;
+        battleManager.SetElements(elements);
     }
     public void StartCombat()
     {
         if(battleManager.player == null) { return; }
         if(battleManager.enemy == null) { return; }
 
-        //battleManager.playerHP.text = battleManager.player.GetEntityStats.MaxHP.ToString();
-        //battleManager.enemyHP.text = battleManager.enemy.GetEntityStats.MaxHP.ToString();
+        GameManager._GAME_MANAGER.currentLevelInfo.PlayerHealth.text = battleManager.player.CurrentHP + "/" + battleManager.player.GetEntityStats.MaxHP;
+        GameManager._GAME_MANAGER.currentLevelInfo.EnemyHealth.text = battleManager.enemy.CurrentHP + "/" + battleManager.enemy.GetEntityStats.MaxHP;
 
        
 
@@ -75,14 +78,12 @@ public class BattleInstance
         //relicUIManager.gameObject.SetActive(false);
         //elementUIManager.gameObject.SetActive(false);
 
-        Debug.Log(selectedRune);
-        Debug.Log(selectedBlocks.Count);
-        selectedRune.Use(new List<Entity>() { battleManager.enemy }, selectedBlocks, battleManager.player);
+        
+        battleManager.selectedRune.Use(new List<Entity>() { battleManager.enemy }, battleManager.player);
 
 
-        //battleManager.playerHP.text = battleManager.player.GetEntityStats.MaxHP.ToString();
-        //battleManager.enemyHP.text = battleManager.enemy.GetEntityStats.MaxHP.ToString();
-
+        GameManager._GAME_MANAGER.currentLevelInfo.PlayerHealth.text = battleManager.player.CurrentHP + "/" + battleManager.player.GetEntityStats.MaxHP;
+        GameManager._GAME_MANAGER.currentLevelInfo.EnemyHealth.text = battleManager.enemy.CurrentHP + "/" + battleManager.enemy.GetEntityStats.MaxHP;
 
 
         currentState = BattleStates.WIN;
@@ -117,12 +118,11 @@ public class BattleInstance
     public void EnemyResolution()
     {
 
-        battleManager.enemy.EntityRelics[Random.Range(0, battleManager.enemy.EntityRelics.Count - 1)].Use(new List<Entity>() { battleManager.player }, selectedBlocks, battleManager.enemy);
+        battleManager.enemy.EntityRelics[Random.Range(0, battleManager.enemy.EntityRelics.Count - 1)].Use(new List<Entity>() { battleManager.player }, battleManager.enemy);
 
 
-        battleManager.playerHP.text = battleManager.player.GetEntityStats.MaxHP.ToString();
-        battleManager.enemyHP.text = battleManager.enemy.GetEntityStats.MaxHP.ToString();
-
+        GameManager._GAME_MANAGER.currentLevelInfo.PlayerHealth.text = battleManager.player.CurrentHP + "/" + battleManager.player.GetEntityStats.MaxHP;
+        GameManager._GAME_MANAGER.currentLevelInfo.EnemyHealth.text = battleManager.enemy.CurrentHP + "/" + battleManager.enemy.GetEntityStats.MaxHP;
 
 
         currentState = BattleStates.LOSE;

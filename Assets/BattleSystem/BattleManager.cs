@@ -20,6 +20,8 @@ public class BattleManager
 
     static BattleInstance currentBattle;
 
+    public List<ElementalBlock> selectedBlocks { get; private set; }
+    public Relic selectedRune { get; private set; }
 
     /*[SerializeField] public RelicUIManager relicUIManager;
     [SerializeField] public ElementUIManager elementUIManager;
@@ -57,14 +59,15 @@ public class BattleManager
         currentBattle.currentState = newState;
     }
 
+   
+
     public void SetRune(Relic rune)
     {
-        currentBattle.SetRune(rune);
+        selectedRune = rune;
     }
-
     public void SetElements(List<ElementalBlock> elements)
     {
-        currentBattle.SetElements(elements);
+        selectedBlocks = elements;
     }
 
    

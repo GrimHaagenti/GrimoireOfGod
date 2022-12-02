@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: Player_FireBlockController
   m_EditorClassIdentifier: 
   BlockElement: 0
-  level: 0
   blockSprite: {fileID: 2041969937, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
-  Quantity: 3
+  Quantities: 020000000000000000000000

@@ -13,7 +13,6 @@ public class InputManager
     [SerializeField] public bool ActionButtonPressed = false;
     [SerializeField] public float TimeSinceActionButtonPressed = 0.1f;
 
-
     public void Init()
     {
         playerInputs = new PlayerInputs();
@@ -23,6 +22,24 @@ public class InputManager
         playerInputs.Exploration.Action.performed += ActionInput;
 
     }
+
+    public void ChangeInputType(Scenes type)
+    {
+        if (type == Scenes.BATTLE)
+        {
+            playerInputs.Exploration.Move.performed -= MoveInput;
+            playerInputs.Exploration.Action.performed -= ActionInput;
+            moveInput = Vector2.zero;
+
+        }
+
+        if(type == Scenes.WORLD)
+        {
+            playerInputs.Exploration.Move.performed += MoveInput;
+            playerInputs.Exploration.Action.performed += ActionInput;
+        }
+    }
+
     public void Update()
     {
         TimeSinceActionButtonPressed += Time.deltaTime;
