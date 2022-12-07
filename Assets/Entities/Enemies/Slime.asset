@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2197bb9bdff74c0498112f014282094f, type: 3}
   m_Name: Slime
   m_EditorClassIdentifier: 
-  MaxHP: 10
-  Atk: 0
-  Def: 0
-  Spd: 0
+  MaxHP: 200
+  Atk: 10
+  Def: 10
+  Spd: 10
+  ElementInventory: []
+  RelicInventory:
+  - {fileID: 11400000, guid: 6cdf952f0cfd02d41a59200a6cd2f2f0, type: 2}
+  Weaknesses:
+  - {fileID: 11400000, guid: c34234be30d8cce4595e91c82aeb9fed, type: 2}

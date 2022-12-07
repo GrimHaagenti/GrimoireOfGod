@@ -21,9 +21,8 @@ public class ElementSelection : SinglePanelManager
         playerElements.ForEach(
             (it) =>
             {
-                
                 GameObject button = Instantiate(elementalBlockUI, listParent.transform);
-                button.GetComponentInChildren<Image>().sprite = it.blockSprite;
+                button.GetComponentInChildren<Image>().sprite = GameManager._GAME_MANAGER._ELEMENT_FACTORY.ElementsSprites[(int)it.BlockElement];
                 button.GetComponentInChildren<TextMeshProUGUI>().text = it.BlockElement.ToString();
             }
             );

@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb3812569f0dea54c94dd5357fcd6c9d, type: 3}
   m_Name: SlashRelic
   m_EditorClassIdentifier: 
-  runeIcon: {fileID: -1639738842, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
-  name: Masamune
+  runeIcon: {fileID: -1912446453, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
+  relicName: Raikiri
+  Potency: 2
+  relicType: 0
+  DefaultAttribute: 9
+  IsCharacterSpecific: 1
   effects:
   - {fileID: 11400000, guid: 11fa0b1f6bf493e4c9b08f3dc215c2e0, type: 2}
+  relicsElement: []

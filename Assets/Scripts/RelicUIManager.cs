@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RelicUIManager : MonoBehaviour
+public class RelicUIManager : Panel
 {
-    [SerializeField] BattleManager battleManager;
+    BattleManager battleManager;
 
     [SerializeField] protected GameObject NextPanel;
     [SerializeField] protected List<Button> optionButtons;
@@ -22,10 +22,12 @@ public class RelicUIManager : MonoBehaviour
     Relic activeRune;
 
 
-    public void SetSubmenu(List<Relic> runes)
+    public void SetSubmenu(List<Relic> runes, BattleManager bM)
     {
         playerRunes = runes;
         //CHANGE TO MAX RELIC VARIABLE
+
+        battleManager = bM;
         if(playerRunes.Count> 3)
         {
             Debug.Log("Tooo many Relics");
@@ -67,5 +69,45 @@ public class RelicUIManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public override void GoForward()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void GoBackwards()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void OnExitPanel()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void OnEnterPanel()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void OnAcceptButton()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void OnHoldElementButton()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void OnNavigationVertical(int dir)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void OnNavigationHorizontal(int dir)
+    {
+        throw new System.NotImplementedException();
     }
 }

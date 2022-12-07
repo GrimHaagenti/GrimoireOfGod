@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class TempPlayerValues : ScriptableObject
 {
-   
+    public Vector3 LastPlayerPosition = Vector3.zero;
 }

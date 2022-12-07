@@ -10,13 +10,13 @@ public enum BattleStates { START_COMBAT, BEGIN_ROUND, PLAYER_ACTION, PLAYER_RESO
 public class BattleManager
 {
 
-    [SerializeField] public PlayerScript player;
-    [SerializeField] public EnemyScript enemy;
+    public PlayerScript player;
+    public EnemyScript enemy;
+    private GameObject enemyObj;
 
     [SerializeField] public  TextMeshProUGUI playerHP;
     [SerializeField] public TextMeshProUGUI enemyHP;
 
-    public SpellFactory _SPELL_FACTORY = new SpellFactory();
 
     static BattleInstance currentBattle;
 
@@ -26,15 +26,23 @@ public class BattleManager
     /*[SerializeField] public RelicUIManager relicUIManager;
     [SerializeField] public ElementUIManager elementUIManager;
     */
-    public BattleUI_Manager Battle_UI;
+    public UIManager Battle_UI;
 
     public delegate void ChangeStateEvent(BattleStates newStates);
     public static event ChangeStateEvent ChangeCombatState;
 
-
+    public void SetBattleEntities(PlayerScript player, GameObject enemy)
+    {
+        this.player = player;
+        enemyObj = enemy;
+        this.enemy = enemyObj.GetComponent<EnemyScript>();
+    }
     public void PrepareBattle()
     {
-
+        selectedBlocks = new List<ElementalBlock>();
+        selectedRune = null;
+        Battle_UI = GameManager._GAME_MANAGER._UI_MANAGER;
+        /*
         foreach (GameObject obj in GameManager._GAME_MANAGER._SCENE_MANAGER.currentScene.GetRootGameObjects())
         {
             if (obj.TryGetComponent<BattleUI_Manager>(out BattleUI_Manager man))
@@ -43,11 +51,12 @@ public class BattleManager
 
             }
         }
+        */
         currentBattle = new BattleInstance(this);
 
         ChangeCombatState += ChangeState;
 
-        Battle_UI.SetSubMenus(player.EntityRelics, player.GetEntityStats.ElementInventory);
+        //Battle_UI.SetSubMenus(player.EntityRelics, player.GetEntityStats.ElementInventory, this);
 
         GameManager._GAME_MANAGER.currentLevelInfo.gameObject.SetActive(true);
     }
@@ -108,7 +117,10 @@ public class BattleManager
                 currentBattle.EndRound();
                 break;
             case BattleStates.END_COMBAT:
-                currentBattle.EndCombat();
+                currentBattle = null;
+                GameObject.Destroy(enemyObj);
+                player.gameObject.SetActive(false);
+                GameManager._GAME_MANAGER.UnloadBattleScene();
                 break;
         }
     }

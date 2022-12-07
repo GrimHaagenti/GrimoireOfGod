@@ -4,11 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+public enum RelicType { FUSION, INDIVIDUAL, BATTERY, NONE}
 [CreateAssetMenu(fileName ="Relic", menuName ="New Relic")]
 public class Relic : ScriptableObject
 {
     [SerializeField] protected Sprite runeIcon;
-    [SerializeField] protected string name;
+    [SerializeField] protected string relicName;
+    [SerializeField] [Range(1, 9)] 
+    protected int Potency;
+    [SerializeField] private RelicType relicType = RelicType.NONE;
+    [SerializeField] protected Elements DefaultAttribute;
+    [SerializeField] private bool IsCharacterSpecific;
     [SerializeField] private RelicAction[] effects;
 
     [SerializeField] public List<ElementalBlock> relicsElement = new List<ElementalBlock>();
@@ -16,25 +22,47 @@ public class Relic : ScriptableObject
 
     public TurnResolution Use(List<Entity> targets, Entity user)
     {
+
         TurnResolution resolution = new TurnResolution();
-        int previousAttackResolution = 0;
+        
         for (int i  = 0; i < effects.Length; i++)
         {
-            previousAttackResolution = effects[i].Use(targets, relicsElement, user, resolution);
-        }
+            switch (relicType)
+            {
+                case RelicType.BATTERY:
+                case RelicType.FUSION:
+                    ElementalBlock elem = FuseElements(relicsElement);
+                    resolution = effects[i].Use(targets, elem, user, Potency, resolution);
 
+                    break;
+                case RelicType.INDIVIDUAL:
+                    for (int x = 0; x < relicsElement.Count; x++)
+                    {
+                        resolution = effects[i].Use(targets, relicsElement[x], user, Potency, resolution);
+                        
+
+                    }
+                    break;
+
+                default:
+                case RelicType.NONE:
+                    break;
+            }
+
+        }
+        relicsElement.Clear();
         return resolution;
     }
-    public bool AddToRelicElements(Elements element, int Level)
+    private ElementalBlock FuseElements(List<ElementalBlock> elem)
     {
-        if (Level-1 > (int)ElementLevel.THREE) { return false; }
+        return  GameManager._GAME_MANAGER._ELEMENT_FACTORY.ElementFusion(elem);
+    }
+        public bool AddToRelicElements(ElementalBlock element)
+    {
         if (relicsElement.Count > 3) { return false; }
 
-        ElementalBlock newElem = new ElementalBlock();
-        newElem.BlockElement = element;
-        newElem.Quantities[Level - 1]++;
 
-        relicsElement.Add(newElem);
+        relicsElement.Add(element);
 
         return true;
 

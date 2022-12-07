@@ -7,8 +7,8 @@ public class PlayerScript : Entity
     [SerializeField] int enemyLayer;
     int enemyLayerMask;
 
-    public delegate void BattleStarted();
-    public static  BattleStarted OnBattleStarted;
+    Vector3 latePos = Vector3.zero;
+
 
     private void Awake()
     {
@@ -20,15 +20,26 @@ public class PlayerScript : Entity
 
     }
 
+
+    private void Update()
+    {
+        if(latePos != gameObject.transform.position)
+        {
+            Debug.Log("player: " +GameManager._GAME_MANAGER._SCENE_MANAGER.currentScene.name);
+            Debug.Log("player: " + gameObject.transform.position);
+
+        }
+
+        latePos = gameObject.transform.position;
+    }
     private void OnTriggerEnter(Collider other)
     {
 
         if(other.gameObject.layer == enemyLayer)
         {
               
-            GameManager._GAME_MANAGER.LoadBattleScene();
-            GameManager._GAME_MANAGER._BATTLE_MANAGER.player = this;
-            GameManager._GAME_MANAGER._BATTLE_MANAGER.enemy= other.gameObject.GetComponent<EnemyScript>();
+            GameManager._GAME_MANAGER.LoadBattleScene(other.gameObject);
+            GameManager._GAME_MANAGER._BATTLE_MANAGER.SetBattleEntities(this, other.gameObject);
             this.gameObject.SetActive(false);
 
         }

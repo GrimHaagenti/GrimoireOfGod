@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,10 +12,14 @@ public class BattleInstance
 
     GameObject enemyObj;
 
-    
+    int MaxWeaknessCounter = 2;
+    float damageMultiplier = 0.5f;
+    float baseDamageMultiplier = 1f;
 
     public BattleStates currentState = BattleStates.START_COMBAT;
 
+    Barrier PlayerBarrier = null;
+    Barrier EnemyBarrier = null;
 
     public BattleInstance( BattleManager battleManager)
     {
@@ -54,8 +57,8 @@ public class BattleInstance
         if(battleManager.player == null) { return; }
         if(battleManager.enemy == null) { return; }
 
-        GameManager._GAME_MANAGER.currentLevelInfo.PlayerHealth.text = battleManager.player.CurrentHP + "/" + battleManager.player.GetEntityStats.MaxHP;
-        GameManager._GAME_MANAGER.currentLevelInfo.EnemyHealth.text = battleManager.enemy.CurrentHP + "/" + battleManager.enemy.GetEntityStats.MaxHP;
+        //GameManager._GAME_MANAGER.currentLevelInfo.PlayerHealth.text = battleManager.player.CurrentHP + "/" + battleManager.player.GetEntityStats.MaxHP;
+        //GameManager._GAME_MANAGER.currentLevelInfo.EnemyHealth.text = battleManager.enemy.CurrentHP + "/" + battleManager.enemy.GetEntityStats.MaxHP;
 
        
 
@@ -79,8 +82,27 @@ public class BattleInstance
         //elementUIManager.gameObject.SetActive(false);
 
         
-        battleManager.selectedRune.Use(new List<Entity>() { battleManager.enemy }, battleManager.player);
+        TurnResolution res = battleManager.selectedRune.Use(new List<Entity>() { battleManager.enemy }, battleManager.player);
 
+        if (res.UserBarrier != null)
+        {
+            PlayerBarrier = res.UserBarrier;
+        }
+
+        for (int i = 0; i < res.ApplyToUser.Count; i++)
+        {
+            battleManager.player.Heal(res.ApplyToUser[i]);
+        }
+        for (int i = 0; i < res.ApplyToTargets.Count; i++)
+        {
+            int damageAfterBarrier = res.ApplyToTargets[i];
+            if(EnemyBarrier!= null)
+            {
+                damageAfterBarrier = EnemyBarrier.HitBarrier(damageAfterBarrier, res.ElementsUsed[i]);
+            }
+            int damageAfterWeakness = CheckWeaknesses(damageAfterBarrier, battleManager.enemy.GetEntityStats, res.ElementsUsed[i]);
+            battleManager.enemy.GetHit(damageAfterWeakness);
+        }
 
         GameManager._GAME_MANAGER.currentLevelInfo.PlayerHealth.text = battleManager.player.CurrentHP + "/" + battleManager.player.GetEntityStats.MaxHP;
         GameManager._GAME_MANAGER.currentLevelInfo.EnemyHealth.text = battleManager.enemy.CurrentHP + "/" + battleManager.enemy.GetEntityStats.MaxHP;
@@ -93,10 +115,33 @@ public class BattleInstance
 
     }
 
+    private int CheckWeaknesses(int dmg, EntityStat enemyStats, Elements elem)
+    {
+        int WeaknessCounter = 0;
 
+        for (int i = 0; i < enemyStats.Weaknesses.Length; i++)
+        {
+
+            if (enemyStats.Weaknesses[i].attribute == elem)
+            {
+                WeaknessCounter++;
+            }
+
+        }
+
+        WeaknessCounter = Mathf.Min(WeaknessCounter, MaxWeaknessCounter);
+
+        float multiplier = baseDamageMultiplier + (WeaknessCounter * damageMultiplier);
+        multiplier = Mathf.Max(multiplier, 1);
+        int newDamage = Mathf.CeilToInt(dmg * multiplier);
+
+        return newDamage;
+
+
+    }
     public void Win()
     {
-        if (battleManager.enemy.GetEntityStats.MaxHP > 0)
+        if (battleManager.enemy.CurrentHP > 0)
         {
             currentState = BattleStates.ENEMY_ACTION;
 
@@ -117,9 +162,34 @@ public class BattleInstance
 
     public void EnemyResolution()
     {
+        TurnResolution res = new TurnResolution();
+        if (battleManager.enemy.EntityRelics.Count > 0)
+        {
+            Relic enemyAtk = battleManager.enemy.EntityRelics[Random.Range(0, battleManager.enemy.EntityRelics.Count - 1)];
+            enemyAtk.AddToRelicElements(GameManager._GAME_MANAGER._ELEMENT_FACTORY.GameElement[0]);
+            res = enemyAtk.Use(new List<Entity>() { battleManager.player }, battleManager.enemy);
+        }
 
-        battleManager.enemy.EntityRelics[Random.Range(0, battleManager.enemy.EntityRelics.Count - 1)].Use(new List<Entity>() { battleManager.player }, battleManager.enemy);
 
+        if (res.UserBarrier != null)
+        {
+            PlayerBarrier = res.UserBarrier;
+        }
+
+        for (int i = 0; i < res.ApplyToUser.Count; i++)
+        {
+            battleManager.enemy.Heal(res.ApplyToUser[i]);
+        }
+        for (int i = 0; i < res.ApplyToTargets.Count; i++)
+        {
+            int damageAfterBarrier = res.ApplyToTargets[i];
+            if (PlayerBarrier != null)
+            {
+                damageAfterBarrier = PlayerBarrier.HitBarrier(damageAfterBarrier, res.ElementsUsed[i]);
+            }
+            int damageAfterWeakness = CheckWeaknesses(damageAfterBarrier, battleManager.player.GetEntityStats, res.ElementsUsed[i]);
+            battleManager.player.GetHit(damageAfterWeakness);
+        }
 
         GameManager._GAME_MANAGER.currentLevelInfo.PlayerHealth.text = battleManager.player.CurrentHP + "/" + battleManager.player.GetEntityStats.MaxHP;
         GameManager._GAME_MANAGER.currentLevelInfo.EnemyHealth.text = battleManager.enemy.CurrentHP + "/" + battleManager.enemy.GetEntityStats.MaxHP;
@@ -130,7 +200,7 @@ public class BattleInstance
     }
     public void Lose()
     {
-        if (battleManager.player.GetEntityStats.MaxHP > 0)
+        if (battleManager.player.CurrentHP > 0)
         {
             currentState = BattleStates.END_ROUND;
 

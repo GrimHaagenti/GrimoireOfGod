@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ElementUIManager : MonoBehaviour
 {
-    [SerializeField] BattleManager battleManager;
+    BattleManager battleManager;
 
     [SerializeField] protected GameObject NextPanel;
     [SerializeField] protected List<Button> optionButtons;
@@ -22,56 +22,50 @@ public class ElementUIManager : MonoBehaviour
     List<ElementalBlock> activeElements = new List<ElementalBlock>();
 
 
-    public void SetSubmenu(List<ElementalBlock> elementalBlocks)
+    public void SetSubmenu(List<ElementalBlock> elementalBlocks, BattleManager bM)
     {
         playerElements = elementalBlocks;
         //CHANGE TO MAX RELIC VARIABLE
 
+        battleManager = bM;
+
         playerElements?.ForEach(
             (it) =>
             {
+                GameObject button = Instantiate(ElementalBlockUI, listParent.transform);
+                ElementalBlockButtonAccesor access = button.GetComponent<ElementalBlockButtonAccesor>();
+                access.Icon.sprite = GameManager._GAME_MANAGER._ELEMENT_FACTORY.ElementsSprites[(int)it.BlockElement];
+                access.Name.text = it.BlockElement.ToString();
 
-                if(it.Quantities.Length > 3)
+                button.GetComponentInChildren<Button>().onClick.AddListener(() =>
                 {
-                    Debug.LogError("Too many level slots");
-                    return;
-                }
-                for (int i = 0; i < it.Quantities.Length; i++)
-                {
-                    if (it.Quantities[i] > 0)
-                    {
-                        GameObject button = Instantiate(ElementalBlockUI, listParent.transform);
-                        ElementalBlockButtonAccesor access = button.GetComponent<ElementalBlockButtonAccesor>();
-                        access.Icon.sprite = it.blockSprite;
-                        access.Name.text = it.BlockElement.ToString();
-                        access.Number.text = "x" + it.Quantities[i];
+                    SetActiveElement(it);
+                });
 
-                        button.GetComponentInChildren<Button>().onClick.AddListener(() =>
-                        {
-                            SetActiveElement(it,i);
-                        });
-
-                        elementalBlockUIList.Add(button);
-                    }
-                }
+                elementalBlockUIList.Add(button);
+                   
+                
             }
             );
     }
 
-    public void SetActiveElement(ElementalBlock element, int LevelIndex)
+    public void SetActiveElement(ElementalBlock element)
     {
-        if (battleManager.selectedRune.relicsElement[(int)element.BlockElement].Quantities[LevelIndex] < 3)
+        if (GameManager._GAME_MANAGER._BATTLE_MANAGER.selectedRune.relicsElement.Count < 3) 
         {
-            battleManager.selectedRune.relicsElement[(int)element.BlockElement].Quantities[LevelIndex]++;
+            GameManager._GAME_MANAGER._BATTLE_MANAGER.selectedRune.relicsElement.Add(element);
         }
     }
 
     void Start()
     {
         AdvanceMenuButton.onClick.AddListener(() => {
-            battleManager.SetElements(activeElements);
-            battleManager.ChangeState(BattleStates.PLAYER_RESOLUTION);
-            gameObject.SetActive(false);
+            if (GameManager._GAME_MANAGER._BATTLE_MANAGER.selectedRune.relicsElement.Count > 0)
+            {
+                battleManager.SetElements(GameManager._GAME_MANAGER._BATTLE_MANAGER.selectedRune.relicsElement);
+                battleManager.ChangeState(BattleStates.PLAYER_RESOLUTION);
+                gameObject.SetActive(false);
+            }
         });
     }
 }

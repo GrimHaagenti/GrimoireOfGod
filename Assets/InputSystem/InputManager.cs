@@ -8,10 +8,26 @@ public class InputManager
 {
     private PlayerInputs playerInputs;
 
+    /// <summary>
+    /// Exploration Inputs
+    /// </summary>
     [SerializeField] public Vector2 moveInput = Vector2.zero;
-
     [SerializeField] public bool ActionButtonPressed = false;
     [SerializeField] public float TimeSinceActionButtonPressed = 0.1f;
+
+    /// <summary>
+    /// MenuNavigation
+    /// </summary>
+    public bool AcceptButtonPressed = false;
+    public float TimeSinceAcceptButtonPressed = 0.1f;
+
+    public bool GoBackButtonPressed = false;
+    public float TimeSinceGoBackButtonPressed = 0.1f;
+
+    public Vector2 NavigateInput = Vector2.zero;
+
+    public bool HoldElementButtonPressed = false;
+    public float TimeSinceHoldElementButtonPressed = 0.1f;
 
     public void Init()
     {
@@ -20,6 +36,64 @@ public class InputManager
 
         playerInputs.Exploration.Move.performed += MoveInput;
         playerInputs.Exploration.Action.performed += ActionInput;
+        playerInputs.Exploration.PauseButton.performed += PauseInput;
+
+
+        playerInputs.MenuNavigation.Accept.performed += AcceptButtonInput;
+        playerInputs.MenuNavigation.GoBack.performed += GoBackButtonInput;
+        playerInputs.MenuNavigation.Navigate.performed += NavigateAxis;
+        playerInputs.MenuNavigation.HoldElement.performed += HoldElementButtonInput;
+
+    }
+    public void Update()
+    {
+        TimeSinceActionButtonPressed += Time.deltaTime;
+        TimeSinceAcceptButtonPressed += Time.deltaTime;
+        TimeSinceGoBackButtonPressed += Time.deltaTime;
+        TimeSinceHoldElementButtonPressed += Time.deltaTime;
+
+        if (TimeSinceActionButtonPressed > 0.1f)
+        {
+            ActionButtonPressed = false;
+        }
+        if (TimeSinceAcceptButtonPressed > 0.1f)
+        {
+            AcceptButtonPressed = false;
+        }
+        if (TimeSinceGoBackButtonPressed > 0.1f)
+        {
+            GoBackButtonPressed = false;
+        }
+        if (TimeSinceHoldElementButtonPressed > 0.1f)
+        {
+            HoldElementButtonPressed = false;
+        }
+
+
+        InputSystem.Update();
+    }
+
+    private void HoldElementButtonInput(InputAction.CallbackContext context)
+    {
+        TimeSinceHoldElementButtonPressed = 0f;
+        HoldElementButtonPressed = true;
+    }
+    private void NavigateAxis(InputAction.CallbackContext context)
+    {
+        NavigateInput = context.ReadValue<Vector2>();
+    }
+    private void GoBackButtonInput(InputAction.CallbackContext context)
+    {
+        TimeSinceActionButtonPressed = 0f;
+        GoBackButtonPressed = true;
+    }
+    private void AcceptButtonInput(InputAction.CallbackContext context)
+    {
+        TimeSinceAcceptButtonPressed = 0f; 
+        AcceptButtonPressed = true;
+    }
+    private void PauseInput(InputAction.CallbackContext context)
+    {
 
     }
 
@@ -27,31 +101,19 @@ public class InputManager
     {
         if (type == Scenes.BATTLE)
         {
-            playerInputs.Exploration.Move.performed -= MoveInput;
-            playerInputs.Exploration.Action.performed -= ActionInput;
             moveInput = Vector2.zero;
-
+            playerInputs.Exploration.Disable();
+            playerInputs.MenuNavigation.Enable();
         }
 
         if(type == Scenes.WORLD)
         {
-            playerInputs.Exploration.Move.performed += MoveInput;
-            playerInputs.Exploration.Action.performed += ActionInput;
+            playerInputs.MenuNavigation.Disable();
+            playerInputs.Exploration.Enable();
         }
     }
 
-    public void Update()
-    {
-        TimeSinceActionButtonPressed += Time.deltaTime;
-
-        if (TimeSinceActionButtonPressed > 0.1f)
-        {
-            ActionButtonPressed = false;
-        }
-        
-     
-        InputSystem.Update();
-    }
+    
 
     private void MoveInput(InputAction.CallbackContext context)
     {

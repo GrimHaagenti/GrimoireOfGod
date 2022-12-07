@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb3812569f0dea54c94dd5357fcd6c9d, type: 3}
   m_Name: HealRelic
   m_EditorClassIdentifier: 
-  runeIcon: {fileID: -126612691, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
-  name: Potion
+  runeIcon: {fileID: -430796479, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
+  relicName: Heal
+  Potency: 1
+  relicType: 2
+  DefaultAttribute: 10
+  IsCharacterSpecific: 0
   effects:
   - {fileID: 11400000, guid: 96fd619838279f34fbe0c14810984638, type: 2}
+  relicsElement: []

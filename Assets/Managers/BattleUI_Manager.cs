@@ -20,7 +20,7 @@ public class BattleUI_Manager : MonoBehaviour
     //NEW 
     [SerializeField] public RelicUIManager relicUIManager;
     [SerializeField] public ElementUIManager elementUIManager;
-
+    [SerializeField] public MainActionsUIManager mainActionsUIManager;
 
 
 
@@ -32,18 +32,19 @@ public class BattleUI_Manager : MonoBehaviour
     private PlayerScript player;
     private Entity enemy;
 
-    public void SetSubMenus(List<Relic> relics, List<ElementalBlock> elements)
+    public void SetSubMenus(List<Relic> relics, List<ElementalBlock> elements, BattleManager bm)
     {
-        
 
-        relicUIManager.SetSubmenu(relics);
-        elementUIManager.SetSubmenu(elements);
+        mainActionsUIManager.SetSubmenu();
+        relicUIManager.SetSubmenu(relics, bm);
+        elementUIManager.SetSubmenu(elements, bm);
     }
 
 
     public void OnTurnBegin()
     {
-        relicUIManager.gameObject.SetActive(true);
+        mainActionsUIManager.gameObject.SetActive(true);
+        relicUIManager.gameObject.SetActive(false);
         elementUIManager.gameObject.SetActive(false);
     }
     private void Awake()

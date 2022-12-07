@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc13913e5f40bdc44a92662354cbb3f0, type: 3}
   m_Name: A_Wind
   m_EditorClassIdentifier: 
-  attribute: 0
+  attribute: 3

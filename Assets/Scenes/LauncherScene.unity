@@ -165,20 +165,31 @@ MonoBehaviour:
     playerHP: {fileID: 0}
     enemyHP: {fileID: 0}
     Battle_UI: {fileID: 0}
-  Camera: {fileID: 1791480922}
+  _ELEMENT_FACTORY:
+    ElementsSprites:
+    - {fileID: 4828917, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
+    - {fileID: 488516735, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
+    - {fileID: -1188472575, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
+    - {fileID: -1520637891, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
+    - {fileID: -1705575759, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
+    - {fileID: 816519180, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
+    - {fileID: -223440196, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
+    - {fileID: 1418617353, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
+    - {fileID: 1797132079, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
+    GameElement:
+    - {fileID: 11400000, guid: c8d6f7ed29134cd41bbaf08aa70eebfd, type: 2}
+    - {fileID: 11400000, guid: c4d4eb5dd367b2744b11d5d378592c35, type: 2}
+    - {fileID: 11400000, guid: 50b6709f27ae07847af4928c74af47f0, type: 2}
+    - {fileID: 11400000, guid: 5423d11536de9944f9e2df057b4fe882, type: 2}
+    - {fileID: 11400000, guid: 4de9bf3c530aeae45b1904030f1f2e3b, type: 2}
+    - {fileID: 11400000, guid: 7cb61568b76228d4191f4806cc399950, type: 2}
+    - {fileID: 11400000, guid: 7130993d175b2ed4eb5559b363738bca, type: 2}
+    - {fileID: 11400000, guid: 4365aaa076e508c4e80f19fc71ef3419, type: 2}
+    - {fileID: 11400000, guid: 21dca4415d76cba46b6602dd2b94ee5f, type: 2}
+  m_camera: {fileID: 1791480920}
   Player: {fileID: 2126782499559034382, guid: f5c41083f3adc3a4ea645bff4761938e, type: 3}
   playerScript: {fileID: 0}
   currentLevelInfo: {fileID: 0}
-  ElementsSprites:
-  - {fileID: 2041969937, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
-  - {fileID: -1394872447, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
-  - {fileID: 1213920667, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
-  - {fileID: 246692468, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
-  - {fileID: 1592810241, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
-  - {fileID: -1576389657, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
-  - {fileID: 1331639375, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
-  - {fileID: -172189143, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
-  - {fileID: 233762111, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
 --- !u!4 &1349092126
 Transform:
   m_ObjectHideFlags: 0

@@ -6,21 +6,25 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public ElementFactory _ELEMENT_FACTORY = null;
-    public RelicManager _RELIC_MANAGER;
     public static GameManager _GAME_MANAGER = null;
     [SerializeField] public GameSceneManager _SCENE_MANAGER;
     [SerializeField] public InputManager _INPUT_MANAGER;
     [SerializeField] public BattleManager _BATTLE_MANAGER;
-    [SerializeField] public Camera Camera;
+    [SerializeField] public DB_Manager _DB_MANAGER;
+    [SerializeField] public ElementFactory _ELEMENT_FACTORY;
+    [SerializeField] public SpellFactory _SPELL_FACTORY;
+    [SerializeField] public UIManager _UI_MANAGER;
+
+    [SerializeField] public CameraScript m_camera;
 
     [SerializeField] public GameObject Player;
     [HideInInspector] public PlayerScript playerScript;
 
+    private TempPlayerValues tempPlayerValues;
+
     public Levelnfo currentLevelInfo;
     public GameObject PlayerPrefab { get; private set; }
 
-    [SerializeField] List<Sprite> ElementsSprites;
 
     //[SerializeField] public PlayerScript player;
 
@@ -35,7 +39,6 @@ public class GameManager : MonoBehaviour
         if (_ELEMENT_FACTORY == null)
         {
             _ELEMENT_FACTORY = new ElementFactory();
-            _ELEMENT_FACTORY.sprites = ElementsSprites;
         }
 
         if (_SCENE_MANAGER == null)
@@ -52,14 +55,27 @@ public class GameManager : MonoBehaviour
         {
             _BATTLE_MANAGER = new BattleManager();
         }
+        if (_DB_MANAGER == null)
+        {
+            _DB_MANAGER = new DB_Manager();
+        }
 
+        if (_UI_MANAGER == null)
+        {
+            _UI_MANAGER = new UIManager();
+        }
 
         InitializeManagers();
 
         _SCENE_MANAGER.OnSceneLoaded += OnSceneFinishLoaded;
+        _SCENE_MANAGER.OnBattleUnloaded += OnBattleSceneFinishedUnloading;
+
+
         PlayerPrefab =  GameObject.Instantiate(Player);
         playerScript = PlayerPrefab.GetComponent<PlayerScript>();
         playerScript.InitEntity();
+
+        tempPlayerValues = ScriptableObject.CreateInstance<TempPlayerValues>();
         DontDestroyOnLoad(this);
     }
         
@@ -68,6 +84,8 @@ public class GameManager : MonoBehaviour
     {
         _SCENE_MANAGER.Init();
         _INPUT_MANAGER.Init();
+        _DB_MANAGER.Init();
+        _UI_MANAGER.Init();
     }
 
     private void Update()
@@ -75,6 +93,10 @@ public class GameManager : MonoBehaviour
         _SCENE_MANAGER.Update();
         _INPUT_MANAGER.Update();
         _BATTLE_MANAGER.Update();
+        _UI_MANAGER.Update();
+
+
+       
     }
 
     public void LoadScene(Scenes scn, LoadSceneMode mode)
@@ -82,19 +104,52 @@ public class GameManager : MonoBehaviour
         _SCENE_MANAGER.LoadScene(scn, mode);
         _INPUT_MANAGER.ChangeInputType(scn);
     }
-    public void LoadBattleScene()
+
+    public void LoadBattleScene(GameObject enemy)
     {
+
+        enemy.SetActive(false);
+         tempPlayerValues.LastPlayerPosition =  playerScript.gameObject.transform.position;
         LoadScene(Scenes.BATTLE, LoadSceneMode.Additive);
     }
+    public void UnloadBattleScene()
+    {
 
-    private void OnSceneFinishLoaded()
+        _SCENE_MANAGER.UnloadBattleScene();
+        _INPUT_MANAGER.ChangeInputType(Scenes.WORLD);
+
+            
+    }
+
+    private void OnBattleSceneFinishedUnloading()
     {
         foreach (GameObject obj in _SCENE_MANAGER.currentScene.GetRootGameObjects())
         {
-            if (obj.TryGetComponent<Levelnfo>(out Levelnfo info ) && obj.activeSelf)
+            if (obj.TryGetComponent<Levelnfo>(out Levelnfo info) && obj.activeSelf)
             {
                 currentLevelInfo = info;
                 break;
+            }
+        }
+        playerScript.InitializePosition(tempPlayerValues.LastPlayerPosition);
+        if (!PlayerPrefab.activeSelf) { PlayerPrefab.SetActive(true); }
+
+    }
+    private void OnSceneFinishLoaded()
+    {
+        //TEMP
+        PanelIndexer ind = new PanelIndexer() ;
+        //TEMP
+        foreach (GameObject obj in _SCENE_MANAGER.currentScene.GetRootGameObjects())
+        {
+            if (!obj.activeSelf) { return; }
+            if (obj.TryGetComponent<Levelnfo>(out Levelnfo info ))
+            {
+                currentLevelInfo = info;
+            }
+            if(obj.TryGetComponent<PanelIndexer>(out PanelIndexer inde))
+            {
+                ind = inde;
             }
         }
 
@@ -104,8 +159,22 @@ public class GameManager : MonoBehaviour
         }
         if (_SCENE_MANAGER.currentScene == SceneManager.GetSceneByBuildIndex((int)Scenes.BATTLE))
         {
+            if (ind != null) { _UI_MANAGER.SetIndexer(ind); }
+
             _BATTLE_MANAGER.PrepareBattle();
         }
         
     }
+
+    public int CalculateBattleDamage(int RelicPower, int UserATK, int ElementPotency, int TargetDEF)
+    {
+        float atkPower = RelicPower * UserATK * (ElementPotency + (ElementPotency * 9));
+        float defPower = TargetDEF * (TargetDEF / 3);
+
+        int DamageDone = Mathf.CeilToInt(atkPower / defPower);
+
+        return DamageDone;
+    }
+
+
 }
