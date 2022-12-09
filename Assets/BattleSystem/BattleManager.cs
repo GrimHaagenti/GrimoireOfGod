@@ -23,9 +23,6 @@ public class BattleManager
     public List<ElementalBlock> selectedBlocks { get; private set; }
     public Relic selectedRune { get; private set; }
 
-    /*[SerializeField] public RelicUIManager relicUIManager;
-    [SerializeField] public ElementUIManager elementUIManager;
-    */
     public UIManager Battle_UI;
 
     public delegate void ChangeStateEvent(BattleStates newStates);

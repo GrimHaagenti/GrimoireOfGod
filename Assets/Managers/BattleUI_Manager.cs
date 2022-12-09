@@ -36,8 +36,8 @@ public class BattleUI_Manager : MonoBehaviour
     {
 
         mainActionsUIManager.SetSubmenu();
-        relicUIManager.SetSubmenu(relics, bm);
-        elementUIManager.SetSubmenu(elements, bm);
+        relicUIManager.SetSubmenu();
+        elementUIManager.SetSubmenu();
     }
 
 

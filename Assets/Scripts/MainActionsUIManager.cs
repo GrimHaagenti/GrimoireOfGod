@@ -12,57 +12,36 @@ public class MainActionsUIManager : Panel
     [SerializeField] List<Button> Buttons;
     [SerializeField] List<Panel> ForwardPanels;
 
-
-    [SerializeField] protected Button BaseAtk;
-    [SerializeField] protected Button Relics;
-    [SerializeField] protected Button Book;
-
     int currentButton;
 
     [SerializeField] protected GameObject RelicsPanel;
 
-
-
-
-    public void SetSubmenu()
-    {
-
-
-        Relics.onClick.AddListener(() =>
-        {
-            RelicsPanel.SetActive(true);
-            gameObject.SetActive(false);
-        });
-
-    }
-
     public override void GoForward()
     {
-        OnMovePanelForward.Invoke(ForwardPanel);
-    }
+        base.GoForward();
 
-    public override void GoBackwards()
+    }
+    public override void GoBackButtonPressed()
     {
         currentButton = (int)ButtonOrder.GRIMOIRE;
         ForwardPanel = ForwardPanels[currentButton];
+        Debug.Log("bbb");
         GoForward();
-
     }
+  
 
     public override void OnExitPanel()
     {
+        base.OnExitPanel();
     }
 
-    public override void OnEnterPanel()
-    {
-        GameManager._GAME_MANAGER._UI_MANAGER.OnAcceptPressed += OnAcceptButton;
-    }
 
     public override void OnAcceptButton()
     {
         currentButton = (int)ButtonOrder.RELICS;
         ForwardPanel = ForwardPanels[currentButton];
-        GoForward();
+        Debug.Log("AAAA");
+        base.OnAcceptButton();
 
     }
 
@@ -71,14 +50,8 @@ public class MainActionsUIManager : Panel
         currentButton = (int)ButtonOrder.BASEATK;
         ForwardPanel = ForwardPanels[currentButton];
         GoForward();
-
+        
     }
 
-    public override void OnNavigationVertical(int dir)
-    {
-    }
-
-    public override void OnNavigationHorizontal(int dir)
-    {
-    }
+ 
 }

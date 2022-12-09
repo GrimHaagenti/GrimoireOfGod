@@ -8,7 +8,7 @@ public class RelicUIManager : Panel
     BattleManager battleManager;
 
     [SerializeField] protected GameObject NextPanel;
-    [SerializeField] protected List<Button> optionButtons;
+    //[SerializeField] protected List<Button> optionButtons;
 
     [SerializeField] protected Button AdvanceMenuButton;
 
@@ -18,17 +18,22 @@ public class RelicUIManager : Panel
 
 
     List<GameObject> RelicBlockUIList = new List<GameObject>();
+    List<Button> RelicButtonUIList = new List<Button>();
+
+    int buttonNavIndex = 0;
+
     List<Relic> playerRunes;
     Relic activeRune;
+    int MaxRelicNumber = 3;
 
-
-    public void SetSubmenu(List<Relic> runes, BattleManager bM)
+    public override void SetSubmenu()
     {
-        playerRunes = runes;
+        battleManager = GameManager._GAME_MANAGER._BATTLE_MANAGER;
+        playerRunes = battleManager.player.EntityRelics;
+
         //CHANGE TO MAX RELIC VARIABLE
 
-        battleManager = bM;
-        if(playerRunes.Count> 3)
+        if(playerRunes.Count> MaxRelicNumber)
         {
             Debug.Log("Tooo many Relics");
             return;
@@ -38,18 +43,20 @@ public class RelicUIManager : Panel
             (it) =>
             {
 
-                GameObject button = Instantiate(RelicBlockUI, listParent.transform);
-                button.GetComponentInChildren<Image>().sprite = it.RuneIcon;
-                button.GetComponentInChildren<Button>().onClick.AddListener(() => SetActiveRune(it));
+                GameObject buttonObject = Instantiate(RelicBlockUI, listParent.transform);
+                buttonObject.GetComponentInChildren<Image>().sprite = it.RuneIcon;
+                Button button = buttonObject.GetComponentInChildren<Button>();
 
-                RelicBlockUIList.Add(button);
+               // button.onClick.AddListener(() => SetActiveRune(it));
+
+                RelicButtonUIList.Add(button);
+                RelicBlockUIList.Add(buttonObject);
             }
             );
 
-        AdvanceMenuButton.onClick.AddListener(() => {
-            battleManager.SetRune(activeRune); NextPanel.SetActive(true);
-            gameObject.SetActive(false);
-        });
+        RelicButtonUIList.Add(AdvanceMenuButton);
+
+        RelicButtonUIList[buttonNavIndex].Select();
 
     }
 
@@ -59,55 +66,47 @@ public class RelicUIManager : Panel
         activeRune = rune;
     }
 
-    void Start()
-    {
-       
-       
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public override void GoForward()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void GoBackwards()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void OnExitPanel()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void OnEnterPanel()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public override void OnAcceptButton()
     {
-        throw new System.NotImplementedException();
-    }
+        if(buttonNavIndex <= RelicButtonUIList.Count - 2)
+        {
+            SetActiveRune( playerRunes[buttonNavIndex]);
+        }
+        else if (buttonNavIndex == RelicButtonUIList.Count - 1) {
+            if (activeRune != null)
+            {
+                battleManager.SetRune(activeRune);
+                base.OnAcceptButton();
+            }
+        }
 
+    }
+    public override void OnEnterPanel()
+    {
+        RelicButtonUIList[buttonNavIndex].Select();
+
+        base.OnEnterPanel();
+    }
+    public override void OnExitPanel()
+    {
+        //ERASE PROPERLY THE RELIC
+        base.OnExitPanel();
+    }
     public override void OnHoldElementButton()
     {
-        throw new System.NotImplementedException();
     }
 
     public override void OnNavigationVertical(int dir)
     {
-        throw new System.NotImplementedException();
     }
 
     public override void OnNavigationHorizontal(int dir)
     {
-        throw new System.NotImplementedException();
+        buttonNavIndex += dir;
+        buttonNavIndex = Mathf.Clamp(buttonNavIndex,0, RelicButtonUIList.Count - 1);
+
+        RelicButtonUIList[buttonNavIndex].Select();
+
     }
+
 }
