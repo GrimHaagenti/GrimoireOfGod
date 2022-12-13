@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _SCENE_MANAGER:
-    LaunchScene: 1
+    LaunchScene: 2
     IsLauncherScene: 1
   _INPUT_MANAGER:
     moveInput: {x: 0, y: 0}
@@ -164,6 +164,8 @@ MonoBehaviour:
     HoldElementButtonPressed: 0
     PauseButtonPressed: 0
     TimeSincePauseButtonPressed: 0.1
+    MenuPauseButtonPressed: 0
+    MenuTimeSincePauseButtonPressed: 0.1
   _BATTLE_MANAGER:
     player: {fileID: 0}
     enemy: {fileID: 0}
@@ -207,7 +209,6 @@ MonoBehaviour:
     messageObj: {fileID: 0}
   m_camera: {fileID: 1791480920}
   Player: {fileID: 2126782499559034382, guid: f5c41083f3adc3a4ea645bff4761938e, type: 3}
-  Canvas: {fileID: 0}
   playerScript: {fileID: 0}
   currentLevelInfo: {fileID: 0}
 --- !u!4 &1349092126

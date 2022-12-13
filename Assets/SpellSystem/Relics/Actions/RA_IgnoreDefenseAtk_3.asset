@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e7cc5d4abee2114c8d4351559a51997, type: 3}
   m_Name: RA_IgnoreDefenseAtk_3
   m_EditorClassIdentifier: 
+  Description: Slashes enemy ignoring a % of enemy DEF.
   IgnoreDefensePercentage: 0a0000000f00000014000000

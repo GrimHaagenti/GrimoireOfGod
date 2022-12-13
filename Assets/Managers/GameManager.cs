@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour
 
 
         PlayerPrefab =  GameObject.Instantiate(Player);
+        PlayerPrefab.SetActive(false);
         playerScript = PlayerPrefab.GetComponent<PlayerScript>();
         playerScript.InitEntity();
         tempPlayerValues = ScriptableObject.CreateInstance<TempPlayerValues>();
@@ -158,7 +159,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (currentLevelInfo != null) { Vector3 pos = currentLevelInfo.startPosition.transform.position;
+        if (currentLevelInfo != null) { Vector3 pos = currentLevelInfo.startPosition.transform.localPosition;
             playerScript.InitializePosition(pos);
             if (!PlayerPrefab.activeSelf) { PlayerPrefab.SetActive(true); }
         }

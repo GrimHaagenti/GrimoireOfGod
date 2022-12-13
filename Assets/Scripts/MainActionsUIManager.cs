@@ -38,6 +38,11 @@ public class MainActionsUIManager : Panel
 
     public override void OnAcceptButton()
     {
+        if (GameManager._GAME_MANAGER.playerScript._ElementInventory.Count <= 0)
+        {
+            GameManager._GAME_MANAGER.ShowMessage("NO ELEMENTS IN INVENTORY", 5f);
+            return;
+        }
         currentButton = (int)ButtonOrder.RELICS;
         ForwardPanel = ForwardPanels[currentButton];
         base.OnAcceptButton();

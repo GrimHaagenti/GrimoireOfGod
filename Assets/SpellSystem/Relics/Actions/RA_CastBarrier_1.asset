@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05799f8031b8c344a81ffb101b4d3ab6, type: 3}
   m_Name: RA_CastBarrier_1
   m_EditorClassIdentifier: 
-  barrierStats: {fileID: 0}
+  Description: Casts an elemental barrier around user.
+  barrierStats: {fileID: 11400000, guid: 0ab8590a4c4db4c47919d37c0f638260, type: 2}

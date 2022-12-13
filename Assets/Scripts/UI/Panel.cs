@@ -45,7 +45,6 @@ public class Panel : MonoBehaviour
     }
     public virtual void GoBackwards()
     {
-        Debug.Log("aaa");
         OnMovePanelBackwards.Invoke();
     }
     public virtual void OnExitPanel()
@@ -58,7 +57,6 @@ public class Panel : MonoBehaviour
     }
     public virtual void OnEnterPanel()
     {
-        SetSubmenu();
 
         GameManager._GAME_MANAGER._UI_MANAGER.OnAcceptPressed += OnAcceptButton;
         GameManager._GAME_MANAGER._UI_MANAGER.OnGoBackPressed += GoBackButtonPressed;

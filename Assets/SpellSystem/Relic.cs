@@ -8,14 +8,14 @@ public enum RelicType { FUSION, INDIVIDUAL, BATTERY, NONE}
 [CreateAssetMenu(fileName ="Relic", menuName ="New Relic")]
 public class Relic : ScriptableObject
 {
-    [SerializeField] protected Sprite runeIcon;
-    [SerializeField] protected string relicName;
+    [SerializeField] public Sprite runeIcon;
+    [SerializeField] public string relicName;
     [SerializeField] [Range(1, 9)] 
     protected int Potency;
     [SerializeField] private RelicType relicType = RelicType.NONE;
     [SerializeField] protected Elements DefaultAttribute;
     [SerializeField] private bool IsCharacterSpecific;
-    [SerializeField] private RelicAction[] effects;
+    [SerializeField] public RelicAction[] effects;
 
     [SerializeField] public List<ElementalBlock> relicsElement = new List<ElementalBlock>();
 

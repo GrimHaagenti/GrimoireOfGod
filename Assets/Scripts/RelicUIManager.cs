@@ -10,7 +10,6 @@ public class RelicUIManager : Panel
     [SerializeField] protected GameObject NextPanel;
     //[SerializeField] protected List<Button> optionButtons;
 
-    [SerializeField] protected Button AdvanceMenuButton;
 
 
     [SerializeField] GameObject RelicBlockUI;
@@ -46,42 +45,41 @@ public class RelicUIManager : Panel
                 {
 
                     GameObject buttonObject = Instantiate(RelicBlockUI, listParent.transform);
-                    buttonObject.GetComponentInChildren<Image>().sprite = it.RuneIcon;
-                    Button button = buttonObject.GetComponentInChildren<Button>();
+                    RelicButtonAccessor relicButtonAccessor = buttonObject.GetComponent<RelicButtonAccessor>();
+                    relicButtonAccessor.relicName.text = it.relicName;
+                    relicButtonAccessor.relicDescription.text = "";
+                    foreach (RelicAction act in it.effects) {
 
-                // button.onClick.AddListener(() => SetActiveRune(it));
+                        relicButtonAccessor.relicDescription.text += act.Description +" ";
+                    }
+                    relicButtonAccessor.relicIcon.sprite = it.runeIcon;
 
-                RelicButtonUIList.Add(button);
+                    Button button = buttonObject.GetComponent<Button>();
+
+                    RelicButtonUIList.Add(button);
                     RelicBlockUIList.Add(buttonObject);
                 }
                 );
+            RelicButtonUIList[buttonNavIndex].Select();
 
-            RelicButtonUIList.Add(AdvanceMenuButton);
         }
-        RelicButtonUIList[buttonNavIndex].Select();
 
     }
 
     public void SetActiveRune(Relic rune)
     {
-        AdvanceMenuButton.GetComponentInChildren<Image>().sprite = rune.RuneIcon;
         activeRune = rune;
     }
 
     public override void OnAcceptButton()
     {
-        if(buttonNavIndex <= RelicButtonUIList.Count - 2)
+        if(buttonNavIndex <= RelicButtonUIList.Count - 1)
         {
             Debug.Log("chose Relic");
             SetActiveRune( playerRunes[buttonNavIndex]);
-        }
-        else if (buttonNavIndex == RelicButtonUIList.Count - 1) {
-            if (activeRune != null)
-            {
-                Debug.Log("Relic Chosen");
-                battleManager.SetRune(activeRune);
-                base.OnAcceptButton();
-            }
+            battleManager.SetRune(activeRune);
+            base.OnAcceptButton();
+            
         }
 
     }
@@ -97,7 +95,6 @@ public class RelicUIManager : Panel
         //ERASE PROPERLY THE RELIC
         buttonNavIndex = 0;
         activeRune = null;
-        AdvanceMenuButton.GetComponentInChildren<Image>().sprite = DefaultSprite;
         base.OnExitPanel();
     }
     public override void OnHoldElementButton()
@@ -106,14 +103,15 @@ public class RelicUIManager : Panel
 
     public override void OnNavigationVertical(int dir)
     {
+        buttonNavIndex -= dir;
+        buttonNavIndex = Mathf.Clamp(buttonNavIndex, 0, RelicButtonUIList.Count - 1);
+
+        RelicButtonUIList[buttonNavIndex].Select();
     }
 
     public override void OnNavigationHorizontal(int dir)
     {
-        buttonNavIndex += dir;
-        buttonNavIndex = Mathf.Clamp(buttonNavIndex,0, RelicButtonUIList.Count - 1);
-
-        RelicButtonUIList[buttonNavIndex].Select();
+        
 
     }
 

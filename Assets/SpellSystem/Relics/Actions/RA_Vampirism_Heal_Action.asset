@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15e1989bc88f8ad44b2184d0feade6f1, type: 3}
   m_Name: RA_Vampirism_Heal_Action
   m_EditorClassIdentifier: 
+  Description: Heals you a % of damage dealt to enemy.
   VampirismPercentage: 0a000000140000001e000000

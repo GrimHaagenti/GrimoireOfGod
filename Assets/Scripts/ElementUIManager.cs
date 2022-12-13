@@ -32,6 +32,7 @@ public class ElementUIManager : Panel
     List<string> selectedBlocksAnimationsIndex = new List<string>();
     public override void SetSubmenu()
     {
+
         newRectTransform = listParent.GetComponent<RectTransform>();
         battleManager = GameManager._GAME_MANAGER._BATTLE_MANAGER;
         playerElements = battleManager.player._ElementInventory;
@@ -127,6 +128,7 @@ public class ElementUIManager : Panel
         base.OnEnterPanel();
         buttonNavIndex = 0;
         ElementButtonUIList[buttonNavIndex].Select();
+        activeElements.Clear();
     }
     public override void OnExitPanel()
     {
@@ -135,6 +137,14 @@ public class ElementUIManager : Panel
         {
             a.gameObject.SetActive(false);
         }
+        foreach(ElementalBlockButtonAccesor a in buttonAccesors)
+        {
+            a.MainPanel.gameObject.SetActive(true);
+        }
+        
+        selectedBlocksIndex.Clear();
+        selectedBlocksAnimationsIndex.Clear();
+
         base.OnExitPanel();
     }
 
@@ -142,6 +152,15 @@ public class ElementUIManager : Panel
     {
         battleManager.SetElements(activeElements);
         battleManager.ChangeState(BattleStates.PLAYER_RESOLUTION);
+        elementalBlockUIList.ForEach(a =>
+        {
+            Destroy(a);
+        });
+        selectedBlocksIndex.Clear();
+        elementalBlockUIList.Clear();
+        ElementButtonUIList.Clear();
+        buttonAccesors.Clear();
+        selectedBlocksAnimationsIndex.Clear();
         OnExitPanel();
     }
 

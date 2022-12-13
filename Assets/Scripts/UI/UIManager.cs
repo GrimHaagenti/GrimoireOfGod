@@ -40,11 +40,34 @@ public class UIManager
         PanelStack = new Stack<Panel>();
 
     }
+
+    public void ChangeRelicPrompt(Relic relic)
+    {
+
+        indexer.changeRelicUI.newRelic = relic;
+        EnterPanelTree(indexer.changeRelicUI);
+
+    }
     public void EnterPanelTree()
     {
+        PanelStack.Clear();
         currentPanel = indexer.PanelsInTree[0];
         foreach (Panel p in indexer.PanelsInTree)
         {
+            p.SetSubmenu();
+            p.gameObject.SetActive(false);
+        }
+        ChangePanel(currentPanel);
+        currentPanel.gameObject.SetActive(true);
+        currentPanel.OnEnterPanel();
+    }
+    public void EnterPanelTree(Panel entry)
+    {
+        PanelStack.Clear();
+        currentPanel = entry;
+        foreach (Panel p in indexer.PanelsInTree)
+        {
+            p.SetSubmenu();
             p.gameObject.SetActive(false);
         }
         ChangePanel(currentPanel);

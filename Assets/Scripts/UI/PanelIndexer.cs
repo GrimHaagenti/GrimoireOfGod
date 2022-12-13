@@ -8,4 +8,6 @@ public class PanelIndexer : MonoBehaviour
     [SerializeField] public Panel EntryPanel;
     [SerializeField] public Panel[] PanelsInTree;
     [SerializeField] public TextMeshProUGUI messageObj;
+    [SerializeField] public ChangeRelicUI changeRelicUI;
+
 }
