@@ -16,6 +16,8 @@ MonoBehaviour:
   Atk: 10
   Def: 10
   Spd: 10
+  ElementInvetoryLimit: 20
+  RelicMaxLimit: 3
   ElementInventory:
   - {fileID: 11400000, guid: c8d6f7ed29134cd41bbaf08aa70eebfd, type: 2}
   - {fileID: 11400000, guid: c8d6f7ed29134cd41bbaf08aa70eebfd, type: 2}

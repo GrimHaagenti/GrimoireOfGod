@@ -9,9 +9,17 @@ public class EntityStat : ScriptableObject
     public int Atk = 0;
     public int Def = 0;
     public int Spd = 0;
+    /// <summary>
+    /// Limit of the Element Inventory per Element
+    /// </summary>
+    public int ElementInvetoryLimit = 20;
+    /// <summary>
+    /// Limit of the Relics the Entity can carry
+    /// </summary>
+    public int RelicMaxLimit = 3;
 
-    [SerializeField] public List<ElementalBlock> ElementInventory;
-    [SerializeField] public List<Relic> RelicInventory;
+    [SerializeField] public ElementalBlock[] ElementInventory;
+    [SerializeField] public Relic[] RelicInventory;
     [SerializeField] public Attributes[] Weaknesses;
 
 

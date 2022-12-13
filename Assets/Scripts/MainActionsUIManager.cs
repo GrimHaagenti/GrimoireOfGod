@@ -40,7 +40,6 @@ public class MainActionsUIManager : Panel
     {
         currentButton = (int)ButtonOrder.RELICS;
         ForwardPanel = ForwardPanels[currentButton];
-        Debug.Log("AAAA");
         base.OnAcceptButton();
 
     }

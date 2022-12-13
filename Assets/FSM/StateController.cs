@@ -11,7 +11,7 @@ public class StateController : MonoBehaviour
     [SerializeField] bool Active;
     public CharacterController character { get; private set; }
     [SerializeField] public EntityWorldStats worldStats;
-    
+    [SerializeField] public Animator animator;
 
 
     private void Awake()
@@ -32,7 +32,14 @@ public class StateController : MonoBehaviour
         if (!Active) { return; }
         currentState.UpdateState(this);
     }
+    public void PlayAnimation(AnimationClip anim)
+    {
+        if(animator?.GetCurrentAnimatorClipInfo(0)[0].clip.name != anim.name)
+        {
+            animator.Play(anim.name);
 
+        }
+    }
 
 
     private void OnDrawGizmos()

@@ -29,9 +29,13 @@ public class InputManager
     static public float TimeSinceNavigatePressed = 0.1f;
 
 
-
     public bool HoldElementButtonPressed = false;
     static public float TimeSinceHoldElementButtonPressed = 0.1f;
+    
+    public bool PauseButtonPressed = false;
+    public float TimeSincePauseButtonPressed = 0.1f;
+    public bool MenuPauseButtonPressed = false;
+    public float MenuTimeSincePauseButtonPressed = 0.1f;
 
 
 
@@ -49,31 +53,43 @@ public class InputManager
         playerInputs.MenuNavigation.GoBack.performed += GoBackButtonInput;
         playerInputs.MenuNavigation.Navigate.performed += NavigateAxis;
         playerInputs.MenuNavigation.HoldElement.performed += HoldElementButtonInput;
+        playerInputs.MenuNavigation.PauseButton.performed += MenuPauseInput;
 
     }
     public void Update()
     {
 
-        if (TimeSinceActionButtonPressed > 0)
+        if (TimeSinceActionButtonPressed > 0.001)
         {
             ActionButtonPressed = false;
         }
-        if (TimeSinceAcceptButtonPressed > 0)
+        if (TimeSinceAcceptButtonPressed > 0.001)
         {
             AcceptButtonPressed = false;
         }
-        if (TimeSinceGoBackButtonPressed > 0)
+        if (TimeSinceGoBackButtonPressed > 0.001)
         {
             GoBackButtonPressed = false;
         }
-        if (TimeSinceHoldElementButtonPressed > 0)
+        if (TimeSinceHoldElementButtonPressed > 0.001)
         {
             HoldElementButtonPressed = false;
         }
 
-        if (TimeSinceNavigatePressed > 0)
+        if (TimeSinceNavigatePressed > 0.001)
         {
             NavigateInput = Vector2.zero;
+        }
+
+        if(TimeSincePauseButtonPressed > 0.001)
+        {
+            PauseButtonPressed = false;
+
+        }
+        if(MenuTimeSincePauseButtonPressed > 0.001)
+        {
+            MenuPauseButtonPressed = false;
+
         }
 
         TimeSinceActionButtonPressed += Time.deltaTime;
@@ -81,7 +97,9 @@ public class InputManager
         TimeSinceGoBackButtonPressed += Time.deltaTime;
         TimeSinceHoldElementButtonPressed += Time.deltaTime;
         TimeSinceNavigatePressed += Time.deltaTime;
-
+        TimeSincePauseButtonPressed += Time.deltaTime;
+        MenuTimeSincePauseButtonPressed += Time.deltaTime;
+        
         InputSystem.Update();
 
     }
@@ -110,7 +128,13 @@ public class InputManager
     }
     private void PauseInput(InputAction.CallbackContext context)
     {
-
+        TimeSincePauseButtonPressed = 0f;
+        PauseButtonPressed = true;
+    }
+    private void MenuPauseInput(InputAction.CallbackContext context)
+    {
+        MenuTimeSincePauseButtonPressed = 0f;
+        MenuPauseButtonPressed = true;
     }
 
     public void ChangeInputType(Scenes type)

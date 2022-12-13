@@ -6,8 +6,9 @@ using UnityEngine;
 public class PlayerMoveAction : Action
 {
     float accel = 0;
+    float turnToCameraAngles = 35f;
     Vector2 lastInput = Vector2.zero;
-
+    [SerializeField] AnimationClip IdleAnimation;
     public override void Act(StateController controller)
     {
         PlayerMove(controller);
@@ -31,8 +32,8 @@ public class PlayerMoveAction : Action
                 velocity.x = input.x * accel;
                 velocity.z = input.y * accel;
                 lastInput = input;
-                controller.gameObject.transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
+                controller.gameObject.transform.rotation = Quaternion.Euler(0, angle, 0f);
+                controller.PlayAnimation(StateAnimation);
             }
             else
             {
@@ -40,8 +41,9 @@ public class PlayerMoveAction : Action
                 accel = Mathf.Max(0, accel);
                 velocity.x = lastInput.x * accel;
                 velocity.z = lastInput.y * accel;
+                controller.PlayAnimation(IdleAnimation);
             }
- 
+
 
             controller.character.Move(velocity * Time.deltaTime);
 

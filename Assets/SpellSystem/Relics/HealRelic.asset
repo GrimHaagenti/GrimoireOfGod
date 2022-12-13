@@ -21,3 +21,4 @@ MonoBehaviour:
   effects:
   - {fileID: 11400000, guid: 96fd619838279f34fbe0c14810984638, type: 2}
   relicsElement: []
+  DefaultElement: {fileID: 11400000, guid: da7c57e0bcbd2dd47b8d6663554b99da, type: 2}

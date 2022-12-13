@@ -74,7 +74,6 @@ public class GameManager : MonoBehaviour
         PlayerPrefab =  GameObject.Instantiate(Player);
         playerScript = PlayerPrefab.GetComponent<PlayerScript>();
         playerScript.InitEntity();
-
         tempPlayerValues = ScriptableObject.CreateInstance<TempPlayerValues>();
         DontDestroyOnLoad(this);
     }
@@ -111,6 +110,12 @@ public class GameManager : MonoBehaviour
         enemy.SetActive(false);
          tempPlayerValues.LastPlayerPosition =  playerScript.gameObject.transform.position;
         LoadScene(Scenes.BATTLE, LoadSceneMode.Additive);
+
+    }
+
+    public void ShowMessage(string message, float duration)
+    {
+        _UI_MANAGER.ShowMessage(message, duration);
     }
     public void UnloadBattleScene()
     {
@@ -142,7 +147,7 @@ public class GameManager : MonoBehaviour
         //TEMP
         foreach (GameObject obj in _SCENE_MANAGER.currentScene.GetRootGameObjects())
         {
-            if (!obj.activeSelf) { return; }
+            if (!obj.activeSelf) { continue; }
             if (obj.TryGetComponent<Levelnfo>(out Levelnfo info ))
             {
                 currentLevelInfo = info;
@@ -157,13 +162,16 @@ public class GameManager : MonoBehaviour
             playerScript.InitializePosition(pos);
             if (!PlayerPrefab.activeSelf) { PlayerPrefab.SetActive(true); }
         }
+        if (ind != null) { _UI_MANAGER.SetIndexer(ind);
+        }
+     
+
         if (_SCENE_MANAGER.currentScene == SceneManager.GetSceneByBuildIndex((int)Scenes.BATTLE))
         {
-            if (ind != null) { _UI_MANAGER.SetIndexer(ind); }
+            
 
             _BATTLE_MANAGER.PrepareBattle();
         }
-        
     }
 
     public int CalculateBattleDamage(int RelicPower, int UserATK, int ElementPotency, int TargetDEF)

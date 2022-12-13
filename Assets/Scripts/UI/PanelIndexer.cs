@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PanelIndexer : MonoBehaviour
 {
     [SerializeField] public Panel EntryPanel;
     [SerializeField] public Panel[] PanelsInTree;
+    [SerializeField] public TextMeshProUGUI messageObj;
 }

@@ -247,7 +247,18 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""1a42b1fc-84ad-4fa5-b754-8b2e8736ad03"",
                     ""path"": ""<Keyboard>/enter"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""PauseButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dd68a399-3128-4329-bcbe-0ab8b63fcef7"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""PauseButton"",
@@ -264,6 +275,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""name"": ""Accept"",
                     ""type"": ""Button"",
                     ""id"": ""f1dcd715-975b-4f64-af44-0507ac70a180"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PauseButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""a7380095-7354-413b-a9f5-a83d55cd0e23"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -385,6 +405,28 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""HoldElement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""224ac7c2-7b6e-4733-b669-f9397bd456f9"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""PauseButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d0e24480-898d-455e-8547-833ff532a2c0"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""PauseButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -410,6 +452,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         // MenuNavigation
         m_MenuNavigation = asset.FindActionMap("MenuNavigation", throwIfNotFound: true);
         m_MenuNavigation_Accept = m_MenuNavigation.FindAction("Accept", throwIfNotFound: true);
+        m_MenuNavigation_PauseButton = m_MenuNavigation.FindAction("PauseButton", throwIfNotFound: true);
         m_MenuNavigation_GoBack = m_MenuNavigation.FindAction("GoBack", throwIfNotFound: true);
         m_MenuNavigation_Navigate = m_MenuNavigation.FindAction("Navigate", throwIfNotFound: true);
         m_MenuNavigation_HoldElement = m_MenuNavigation.FindAction("HoldElement", throwIfNotFound: true);
@@ -522,6 +565,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_MenuNavigation;
     private IMenuNavigationActions m_MenuNavigationActionsCallbackInterface;
     private readonly InputAction m_MenuNavigation_Accept;
+    private readonly InputAction m_MenuNavigation_PauseButton;
     private readonly InputAction m_MenuNavigation_GoBack;
     private readonly InputAction m_MenuNavigation_Navigate;
     private readonly InputAction m_MenuNavigation_HoldElement;
@@ -530,6 +574,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         private @PlayerInputs m_Wrapper;
         public MenuNavigationActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Accept => m_Wrapper.m_MenuNavigation_Accept;
+        public InputAction @PauseButton => m_Wrapper.m_MenuNavigation_PauseButton;
         public InputAction @GoBack => m_Wrapper.m_MenuNavigation_GoBack;
         public InputAction @Navigate => m_Wrapper.m_MenuNavigation_Navigate;
         public InputAction @HoldElement => m_Wrapper.m_MenuNavigation_HoldElement;
@@ -545,6 +590,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Accept.started -= m_Wrapper.m_MenuNavigationActionsCallbackInterface.OnAccept;
                 @Accept.performed -= m_Wrapper.m_MenuNavigationActionsCallbackInterface.OnAccept;
                 @Accept.canceled -= m_Wrapper.m_MenuNavigationActionsCallbackInterface.OnAccept;
+                @PauseButton.started -= m_Wrapper.m_MenuNavigationActionsCallbackInterface.OnPauseButton;
+                @PauseButton.performed -= m_Wrapper.m_MenuNavigationActionsCallbackInterface.OnPauseButton;
+                @PauseButton.canceled -= m_Wrapper.m_MenuNavigationActionsCallbackInterface.OnPauseButton;
                 @GoBack.started -= m_Wrapper.m_MenuNavigationActionsCallbackInterface.OnGoBack;
                 @GoBack.performed -= m_Wrapper.m_MenuNavigationActionsCallbackInterface.OnGoBack;
                 @GoBack.canceled -= m_Wrapper.m_MenuNavigationActionsCallbackInterface.OnGoBack;
@@ -561,6 +609,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Accept.started += instance.OnAccept;
                 @Accept.performed += instance.OnAccept;
                 @Accept.canceled += instance.OnAccept;
+                @PauseButton.started += instance.OnPauseButton;
+                @PauseButton.performed += instance.OnPauseButton;
+                @PauseButton.canceled += instance.OnPauseButton;
                 @GoBack.started += instance.OnGoBack;
                 @GoBack.performed += instance.OnGoBack;
                 @GoBack.canceled += instance.OnGoBack;
@@ -601,6 +652,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     public interface IMenuNavigationActions
     {
         void OnAccept(InputAction.CallbackContext context);
+        void OnPauseButton(InputAction.CallbackContext context);
         void OnGoBack(InputAction.CallbackContext context);
         void OnNavigate(InputAction.CallbackContext context);
         void OnHoldElement(InputAction.CallbackContext context);

@@ -4,5 +4,6 @@ using UnityEngine;
 
 public abstract class Action : ScriptableObject
 {
+    [SerializeField] protected AnimationClip StateAnimation;
     public abstract void Act(StateController controller);
 }

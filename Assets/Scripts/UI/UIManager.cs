@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-
+[System.Serializable]
 public class UIManager
 {
     //UI Indexer
@@ -9,8 +10,15 @@ public class UIManager
     Panel currentPanel;
     Stack<Panel> PanelStack;
 
-    PanelIndexer indexer;
+   public PanelIndexer indexer;
 
+    float MessageTimer = 0;
+    float MessageDuration = 0;
+    public bool isOnBattle = false;
+    public TextMeshProUGUI messageObj;
+
+
+    //Events
     public delegate void AcceptPressed();
     public AcceptPressed OnAcceptPressed;
 
@@ -19,6 +27,9 @@ public class UIManager
 
     public delegate void HoldElementPressed();
     public HoldElementPressed OnHoldElementPressed;
+    
+    public delegate void PausePressed();
+    public PausePressed OnPausePressed;
 
     public delegate void NavigateAxis(Vector2 input);
     public NavigateAxis OnNavigateAxis;
@@ -29,7 +40,7 @@ public class UIManager
         PanelStack = new Stack<Panel>();
 
     }
-    public void OnTurnBegin()
+    public void EnterPanelTree()
     {
         currentPanel = indexer.PanelsInTree[0];
         foreach (Panel p in indexer.PanelsInTree)
@@ -40,20 +51,26 @@ public class UIManager
         currentPanel.gameObject.SetActive(true);
         currentPanel.OnEnterPanel();
     }
+    public void ExitPanelTree()
+    {
+        currentPanel.OnExitPanel();
+        foreach (Panel p in indexer.PanelsInTree)
+        {
+            p.gameObject.SetActive(false);
+        }
+    }
 
-    //Set the UI Panel Indexer(Entry Point for the UI Manager)
-    //Once set the UI should function independently from the Panel it receives
-    //Even custom Panels 
+    /// <summary>
+    ///Set the UI Panel Indexer(Entry Point for the UI Manager)
+    ///Once set the UI should function independently from the Panel it receives
+    ///Even custom Panels  
+    /// </summary>
+    /// <param name="ind">The Indexer with the Entry point to the panel tree </param>
     public void SetIndexer(PanelIndexer ind)
     {
 
         indexer = ind;
-        foreach (Panel p in indexer.PanelsInTree)
-        {
-            p?.SetSubmenu();
-
-        }
-
+        messageObj = indexer.messageObj;
         currentPanel = indexer.EntryPanel;
         ChangePanel(currentPanel);
         currentPanel.OnEnterPanel();
@@ -120,7 +137,40 @@ public class UIManager
             {
                 OnNavigateAxis.Invoke(input.NavigateInput);
             }
+
+            if (input.PauseButtonPressed)
+            {
+                EnterPanelTree();
+                GameManager._GAME_MANAGER._INPUT_MANAGER.ChangeInputType(Scenes.BATTLE);
+            }
+
+            if (input.MenuPauseButtonPressed)
+            {
+                ExitPanelTree();
+                GameManager._GAME_MANAGER._INPUT_MANAGER.ChangeInputType(Scenes.WORLD);
+
+            }
+
         }
 
+
+
+
+        if (messageObj != null && messageObj.gameObject.activeSelf)
+        {
+            if (MessageTimer < MessageDuration)
+            {
+                MessageTimer += Time.deltaTime;
+            }
+            else { MessageDuration = 0; MessageTimer = 0; messageObj.gameObject.SetActive(false); }
+        }
     }
+    public void ShowMessage(string message, float duration)
+    {
+        MessageTimer = 0;
+        MessageDuration = duration;
+        messageObj.text = message;
+        messageObj.gameObject.SetActive(true);
+    }
+
 }

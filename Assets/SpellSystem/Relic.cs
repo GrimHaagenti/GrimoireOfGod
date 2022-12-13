@@ -19,12 +19,13 @@ public class Relic : ScriptableObject
 
     [SerializeField] public List<ElementalBlock> relicsElement = new List<ElementalBlock>();
 
+    [SerializeField] public ElementalBlock DefaultElement;
 
     public TurnResolution Use(List<Entity> targets, Entity user)
     {
 
         TurnResolution resolution = new TurnResolution();
-        
+        if (relicsElement.Count <= 0 || relicsElement == null) { relicsElement = new List<ElementalBlock>() { DefaultElement }; }
         for (int i  = 0; i < effects.Length; i++)
         {
             switch (relicType)
@@ -50,6 +51,16 @@ public class Relic : ScriptableObject
             }
 
         }
+        relicsElement.ForEach((it) =>
+        {
+            if (user._ElementInventory.Contains(it))
+            {
+                user._ElementInventory.Remove(it);
+            }
+        });
+        
+        
+
         relicsElement.Clear();
         return resolution;
     }

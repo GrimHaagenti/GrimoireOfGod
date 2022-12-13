@@ -22,3 +22,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 51ea865899a48074a875408a92a810bf, type: 2}
   - {fileID: 11400000, guid: f0de4d99d76fae44fa97733a4340f6d6, type: 2}
   relicsElement: []
+  DefaultElement: {fileID: 11400000, guid: da7c57e0bcbd2dd47b8d6663554b99da, type: 2}

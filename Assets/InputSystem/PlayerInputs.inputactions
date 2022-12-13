@@ -225,7 +225,18 @@
                     "name": "",
                     "id": "1a42b1fc-84ad-4fa5-b754-8b2e8736ad03",
                     "path": "<Keyboard>/enter",
-                    "interactions": "",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "PauseButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dd68a399-3128-4329-bcbe-0ab8b63fcef7",
+                    "path": "<Keyboard>/p",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "PauseButton",
@@ -242,6 +253,15 @@
                     "name": "Accept",
                     "type": "Button",
                     "id": "f1dcd715-975b-4f64-af44-0507ac70a180",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PauseButton",
+                    "type": "Button",
+                    "id": "a7380095-7354-413b-a9f5-a83d55cd0e23",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -361,6 +381,28 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "HoldElement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "224ac7c2-7b6e-4733-b669-f9397bd456f9",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "PauseButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d0e24480-898d-455e-8547-833ff532a2c0",
+                    "path": "<Keyboard>/p",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "PauseButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

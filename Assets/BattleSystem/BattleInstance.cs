@@ -57,8 +57,8 @@ public class BattleInstance
         if(battleManager.player == null) { return; }
         if(battleManager.enemy == null) { return; }
 
-        //GameManager._GAME_MANAGER.currentLevelInfo.PlayerHealth.text = battleManager.player.CurrentHP + "/" + battleManager.player.GetEntityStats.MaxHP;
-        //GameManager._GAME_MANAGER.currentLevelInfo.EnemyHealth.text = battleManager.enemy.CurrentHP + "/" + battleManager.enemy.GetEntityStats.MaxHP;
+        GameManager._GAME_MANAGER.currentLevelInfo.PlayerHealth.text = battleManager.player.CurrentHP + "/" + battleManager.player.GetEntityStats.MaxHP;
+        GameManager._GAME_MANAGER.currentLevelInfo.EnemyHealth.text = battleManager.enemy.CurrentHP + "/" + battleManager.enemy.GetEntityStats.MaxHP;
 
        
 
@@ -104,8 +104,8 @@ public class BattleInstance
             battleManager.enemy.GetHit(damageAfterWeakness);
         }
 
-        //GameManager._GAME_MANAGER.currentLevelInfo.PlayerHealth.text = battleManager.player.CurrentHP + "/" + battleManager.player.GetEntityStats.MaxHP;
-        //GameManager._GAME_MANAGER.currentLevelInfo.EnemyHealth.text = battleManager.enemy.CurrentHP + "/" + battleManager.enemy.GetEntityStats.MaxHP;
+        GameManager._GAME_MANAGER.currentLevelInfo.PlayerHealth.text = battleManager.player.CurrentHP + "/" + battleManager.player.GetEntityStats.MaxHP;
+        GameManager._GAME_MANAGER.currentLevelInfo.EnemyHealth.text = battleManager.enemy.CurrentHP + "/" + battleManager.enemy.GetEntityStats.MaxHP;
 
 
         currentState = BattleStates.WIN;
@@ -163,9 +163,9 @@ public class BattleInstance
     public void EnemyResolution()
     {
         TurnResolution res = new TurnResolution();
-        if (battleManager.enemy.EntityRelics.Count > 0)
+        if (battleManager.enemy._RelicInventory.Count > 0)
         {
-            Relic enemyAtk = battleManager.enemy.EntityRelics[Random.Range(0, battleManager.enemy.EntityRelics.Count - 1)];
+            Relic enemyAtk = battleManager.enemy._RelicInventory[Random.Range(0, battleManager.enemy._RelicInventory.Count - 1)];
             enemyAtk.AddToRelicElements(GameManager._GAME_MANAGER._ELEMENT_FACTORY.GameElement[0]);
             res = enemyAtk.Use(new List<Entity>() { battleManager.player }, battleManager.enemy);
         }
@@ -189,10 +189,15 @@ public class BattleInstance
             }
             int damageAfterWeakness = CheckWeaknesses(damageAfterBarrier, battleManager.player.GetEntityStats, res.ElementsUsed[i]);
             battleManager.player.GetHit(damageAfterWeakness);
+
         }
 
-        //GameManager._GAME_MANAGER.currentLevelInfo.PlayerHealth.text = battleManager.player.CurrentHP + "/" + battleManager.player.GetEntityStats.MaxHP;
-        //GameManager._GAME_MANAGER.currentLevelInfo.EnemyHealth.text = battleManager.enemy.CurrentHP + "/" + battleManager.enemy.GetEntityStats.MaxHP;
+        
+        GameManager._GAME_MANAGER.currentLevelInfo.PlayerHealth.text = battleManager.player.CurrentHP + "/" + battleManager.player.GetEntityStats.MaxHP;
+        GameManager._GAME_MANAGER.currentLevelInfo.EnemyHealth.text = battleManager.enemy.CurrentHP + "/" + battleManager.enemy.GetEntityStats.MaxHP;
+
+
+
 
 
         currentState = BattleStates.LOSE;

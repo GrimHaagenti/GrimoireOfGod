@@ -8,6 +8,7 @@ public class ElementFactory
    
     [SerializeField] public List<Sprite> ElementsSprites;
     [SerializeField] public List<ElementalBlock> GameElement;
+    [SerializeField] public List<GameObject> ElementsHitFX;
 
 
 

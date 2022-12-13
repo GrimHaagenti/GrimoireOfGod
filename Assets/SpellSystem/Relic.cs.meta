@@ -3,7 +3,9 @@ guid: cb3812569f0dea54c94dd5357fcd6c9d
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - runeIcon: {instanceID: 0}
+  - DefaultElement: {fileID: 11400000, guid: da7c57e0bcbd2dd47b8d6663554b99da, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

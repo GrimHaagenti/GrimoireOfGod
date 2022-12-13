@@ -18,10 +18,11 @@ public class CameraScript : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    private void SetupCamera()
+    public void SetupCamera()
     {
         running = false;
-        if (GameManager._GAME_MANAGER.currentLevelInfo.CameraObject == null) { player = GameManager._GAME_MANAGER.PlayerPrefab; }
+        if (GameManager._GAME_MANAGER.currentLevelInfo?.CameraObject == null) 
+        { player = GameManager._GAME_MANAGER.PlayerPrefab; }
         else { player = GameManager._GAME_MANAGER.currentLevelInfo.CameraObject; }
         running = true;
     }

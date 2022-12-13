@@ -9,6 +9,8 @@ public class PlayerScript : Entity
 
     Vector3 latePos = Vector3.zero;
 
+    [SerializeField] public Relic MainRelic;
+
 
     private void Awake()
     {
@@ -16,22 +18,9 @@ public class PlayerScript : Entity
     }
     private void Start()
     {
-        enemyLayerMask = (1 << enemyLayer);
 
     }
 
-
-    private void Update()
-    {
-        if(latePos != gameObject.transform.position)
-        {
-            Debug.Log("player: " +GameManager._GAME_MANAGER._SCENE_MANAGER.currentScene.name);
-            Debug.Log("player: " + gameObject.transform.position);
-
-        }
-
-        latePos = gameObject.transform.position;
-    }
     private void OnTriggerEnter(Collider other)
     {
 

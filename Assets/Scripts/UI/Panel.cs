@@ -58,6 +58,8 @@ public class Panel : MonoBehaviour
     }
     public virtual void OnEnterPanel()
     {
+        SetSubmenu();
+
         GameManager._GAME_MANAGER._UI_MANAGER.OnAcceptPressed += OnAcceptButton;
         GameManager._GAME_MANAGER._UI_MANAGER.OnGoBackPressed += GoBackButtonPressed;
         GameManager._GAME_MANAGER._UI_MANAGER.OnHoldElementPressed += OnHoldElementButton;

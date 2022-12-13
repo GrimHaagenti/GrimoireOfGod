@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public enum BattleStates { START_COMBAT, BEGIN_ROUND, PLAYER_ACTION, PLAYER_RESOLUTION,
     WIN, ENEMY_ACTION, ENEMY_RESOLUTION, LOSE, END_ROUND,END_COMBAT};
+
+public enum Anims { IDLE, HIT, ATK}
+
 [System.Serializable]
 public class BattleManager
 {
@@ -16,6 +19,13 @@ public class BattleManager
 
     [SerializeField] public  TextMeshProUGUI playerHP;
     [SerializeField] public TextMeshProUGUI enemyHP;
+
+    [SerializeField] public AnimationClip playerIdleAnim;
+    [SerializeField] public AnimationClip enemyIdleAnim;
+    [SerializeField] public AnimationClip playerAtkAnim;
+    [SerializeField] public AnimationClip enemyAtkAnim;
+    [SerializeField] public AnimationClip playerHitAnim;
+    [SerializeField] public AnimationClip enemyHitAnim;
 
 
     static BattleInstance currentBattle;
@@ -58,6 +68,39 @@ public class BattleManager
         GameManager._GAME_MANAGER.currentLevelInfo.gameObject.SetActive(true);
     }
 
+    
+    public void PlayEnemyBattleAnimations(Anims Anim)
+    {
+        switch (Anim)
+        {
+            default:
+            case Anims.IDLE:
+                enemy.PlayAnimation(enemyIdleAnim);
+                break;
+            case Anims.HIT:
+                enemy.PlayAnimation(enemyHitAnim);
+                break;
+            case Anims.ATK:
+                enemy.PlayAnimation(enemyAtkAnim);
+                break;
+        }
+    }
+    public void PlayPlayerBattleAnimations(Anims Anim)
+    {
+        switch (Anim)
+        {
+            default:
+            case Anims.IDLE:
+                player.PlayAnimation(playerIdleAnim);
+                break;
+            case Anims.HIT:
+                player.PlayAnimation(playerHitAnim);
+                break;
+            case Anims.ATK:
+                player.PlayAnimation(playerAtkAnim);
+                break;
+        }
+    }
     public void ChangeState(BattleStates newState)
     {
 
@@ -74,6 +117,7 @@ public class BattleManager
     public void SetElements(List<ElementalBlock> elements)
     {
         selectedBlocks = elements;
+        selectedRune.relicsElement = selectedBlocks;
     }
 
    
@@ -89,7 +133,7 @@ public class BattleManager
                 currentBattle.StartCombat();
                 break;
             case BattleStates.BEGIN_ROUND:
-                Battle_UI.OnTurnBegin();
+                Battle_UI.EnterPanelTree();
                 currentBattle.BeginRound();
                 break;
             case BattleStates.PLAYER_ACTION:

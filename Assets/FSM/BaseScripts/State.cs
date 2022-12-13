@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "StateMachine/State")]
 public class State : ScriptableObject
 {
+    
 
     [SerializeField] Action[] Actions;
 
