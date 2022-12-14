@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[System.Serializable]
-public class InputManager 
+public class InputManager :MonoBehaviour
 {
     private PlayerInputs playerInputs;
 
@@ -12,16 +11,24 @@ public class InputManager
     /// Exploration Inputs
     /// </summary>
     [SerializeField] public Vector2 moveInput = Vector2.zero;
-    [SerializeField] public bool ActionButtonPressed = false;
     [SerializeField] static public float TimeSinceActionButtonPressed = 0.1f;
 
+    public static InputManager _INPUT_MANAGER= null;
+
+
+    private void Awake()
+    {
+        if (_INPUT_MANAGER == null)
+        {
+            _INPUT_MANAGER = new InputManager();
+        }
+        DontDestroyOnLoad(this);
+    }
     /// <summary>
     /// MenuNavigation
     /// </summary>
-    public bool AcceptButtonPressed = false;
     static public float TimeSinceAcceptButtonPressed = 0.1f;
 
-    public bool GoBackButtonPressed = false;
     static public float TimeSinceGoBackButtonPressed = 0.1f;
 
     
@@ -29,15 +36,12 @@ public class InputManager
     static public float TimeSinceNavigatePressed = 0.1f;
 
 
-    public bool HoldElementButtonPressed = false;
     static public float TimeSinceHoldElementButtonPressed = 0.1f;
     
-    public bool PauseButtonPressed = false;
     public float TimeSincePauseButtonPressed = 0.1f;
-    public bool MenuPauseButtonPressed = false;
     public float MenuTimeSincePauseButtonPressed = 0.1f;
 
-
+    Scenes InputType;
 
     public void Init()
     {
@@ -45,53 +49,19 @@ public class InputManager
         playerInputs.Exploration.Enable();
 
         playerInputs.Exploration.Move.performed += MoveInput;
-        playerInputs.Exploration.Action.performed += ActionInput;
+        playerInputs.Exploration.Action.started += ActionInput;
         playerInputs.Exploration.PauseButton.performed += PauseInput;
 
 
         playerInputs.MenuNavigation.Accept.performed += AcceptButtonInput;
         playerInputs.MenuNavigation.GoBack.performed += GoBackButtonInput;
-        playerInputs.MenuNavigation.Navigate.performed += NavigateAxis;
+        playerInputs.MenuNavigation.Navigate.started     += NavigateAxis;
         playerInputs.MenuNavigation.HoldElement.performed += HoldElementButtonInput;
         playerInputs.MenuNavigation.PauseButton.performed += MenuPauseInput;
 
     }
-    public void Update()
+    private void Update()
     {
-
-        if (TimeSinceActionButtonPressed > 0.001)
-        {
-            ActionButtonPressed = false;
-        }
-        if (TimeSinceAcceptButtonPressed > 0.001)
-        {
-            AcceptButtonPressed = false;
-        }
-        if (TimeSinceGoBackButtonPressed > 0.001)
-        {
-            GoBackButtonPressed = false;
-        }
-        if (TimeSinceHoldElementButtonPressed > 0.001)
-        {
-            HoldElementButtonPressed = false;
-        }
-
-        if (TimeSinceNavigatePressed > 0.001)
-        {
-            NavigateInput = Vector2.zero;
-        }
-
-        if(TimeSincePauseButtonPressed > 0.001)
-        {
-            PauseButtonPressed = false;
-
-        }
-        if(MenuTimeSincePauseButtonPressed > 0.001)
-        {
-            MenuPauseButtonPressed = false;
-
-        }
-
         TimeSinceActionButtonPressed += Time.deltaTime;
         TimeSinceAcceptButtonPressed += Time.deltaTime;
         TimeSinceGoBackButtonPressed += Time.deltaTime;
@@ -99,7 +69,7 @@ public class InputManager
         TimeSinceNavigatePressed += Time.deltaTime;
         TimeSincePauseButtonPressed += Time.deltaTime;
         MenuTimeSincePauseButtonPressed += Time.deltaTime;
-        
+
         InputSystem.Update();
 
     }
@@ -107,7 +77,6 @@ public class InputManager
     private void HoldElementButtonInput(InputAction.CallbackContext context)
     {
         TimeSinceHoldElementButtonPressed = 0f;
-        HoldElementButtonPressed = true;
     }
     private void NavigateAxis(InputAction.CallbackContext context)
     {
@@ -119,28 +88,28 @@ public class InputManager
     private void GoBackButtonInput(InputAction.CallbackContext context)
     {
         TimeSinceGoBackButtonPressed = 0f;
-        GoBackButtonPressed = true;
     }
     private void AcceptButtonInput(InputAction.CallbackContext context)
     {
         TimeSinceAcceptButtonPressed = 0f; 
-        AcceptButtonPressed = true;
     }
     private void PauseInput(InputAction.CallbackContext context)
     {
         TimeSincePauseButtonPressed = 0f;
-        PauseButtonPressed = true;
     }
     private void MenuPauseInput(InputAction.CallbackContext context)
     {
         MenuTimeSincePauseButtonPressed = 0f;
-        MenuPauseButtonPressed = true;
     }
-
+    public Scenes GetInputType()
+    {
+        return InputType;
+    }
     public void ChangeInputType(Scenes type)
     {
         if (type == Scenes.BATTLE)
         {
+            InputType = Scenes.BATTLE;
             moveInput = Vector2.zero;
             playerInputs.Exploration.Disable();
             playerInputs.MenuNavigation.Enable();
@@ -148,9 +117,17 @@ public class InputManager
 
         if(type == Scenes.WORLD)
         {
+            InputType = Scenes.WORLD;
             playerInputs.MenuNavigation.Disable();
             playerInputs.Exploration.Enable();
         }
+        TimeSinceActionButtonPressed =1f;
+        TimeSinceAcceptButtonPressed = 1f;
+        TimeSinceGoBackButtonPressed = 1f;
+        TimeSinceHoldElementButtonPressed = 1f;
+        TimeSinceNavigatePressed = 1f;
+        TimeSincePauseButtonPressed = 1f;
+        MenuTimeSincePauseButtonPressed = 1f;
     }
 
     
@@ -163,8 +140,9 @@ public class InputManager
     private void ActionInput(InputAction.CallbackContext context)
     {
         TimeSinceActionButtonPressed = 0f;
-        ActionButtonPressed = true;
     }
+
+
 
     public bool IsActionButtonPressed()
     {
@@ -173,20 +151,35 @@ public class InputManager
     }
     public bool IsAcceptButtonPressed()
     {
-        Debug.Log("AAA");
         return TimeSinceAcceptButtonPressed == 0f;
     }
     public bool IsGoBackButtonPressed()
     {
-        Debug.Log("AAA");
 
         return TimeSinceGoBackButtonPressed == 0f;
     } 
     public bool IsHoldElementsButtonPressed()
     {
-        Debug.Log("AAA");
 
         return TimeSinceHoldElementButtonPressed == 0f;
       
+    }
+    public Vector2 IsNavigateInput()
+    {
+        if (TimeSinceNavigatePressed == 0f)
+        {
+            Debug.Log("AA");
+            return NavigateInput.normalized;
+        }
+        else { return Vector2.zero; }
+    }
+
+    public bool IsPauseButtonPressed()
+    {
+        return TimeSincePauseButtonPressed == 0f;
+    }
+    public bool IsMenuPauseButtonPressed()
+    {
+        return MenuTimeSincePauseButtonPressed == 0f;
     }
 }

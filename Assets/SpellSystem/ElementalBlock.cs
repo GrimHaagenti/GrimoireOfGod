@@ -9,6 +9,7 @@ public class ElementalBlock: ScriptableObject
 {
     [SerializeField] public Elements BlockElement;
     [SerializeField] public ElementLevel Level;
-    [SerializeField] public int Potency;
+    [Range(1, 9)]
+    [SerializeField] public int Potency = 1;
 
 }

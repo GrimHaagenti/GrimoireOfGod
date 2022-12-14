@@ -16,7 +16,7 @@ public class PickUpRelic : MonoBehaviour
         }
         else
         {
-            GameManager._GAME_MANAGER._INPUT_MANAGER.ChangeInputType(Scenes.BATTLE);
+            InputManager._INPUT_MANAGER.ChangeInputType(Scenes.BATTLE);
             GameManager._GAME_MANAGER._UI_MANAGER.ChangeRelicPrompt(RelicToGivePlayer);
             Destroy(gameObject);
         }

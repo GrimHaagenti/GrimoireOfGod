@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SlashRelic
   m_EditorClassIdentifier: 
   runeIcon: {fileID: -1912446453, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
-  relicName: Raikiri
+  relicName: GreatSword
   Potency: 2
   relicType: 0
   DefaultAttribute: 9

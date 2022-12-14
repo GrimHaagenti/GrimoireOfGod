@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb3812569f0dea54c94dd5357fcd6c9d, type: 3}
+  m_Name: Dulll Sword
+  m_EditorClassIdentifier: 
+  runeIcon: {fileID: 395996731, guid: 8fa255cf7145761419ce51feb57c1039, type: 3}
+  relicName: Dull Sword
+  Potency: 2
+  relicType: 0
+  DefaultAttribute: 9
+  IsCharacterSpecific: 0
+  effects:
+  - {fileID: 11400000, guid: 5007060379ea7ca4ba70109425096ec0, type: 2}
+  relicsElement: []
+  DefaultElement: {fileID: 11400000, guid: da7c57e0bcbd2dd47b8d6663554b99da, type: 2}

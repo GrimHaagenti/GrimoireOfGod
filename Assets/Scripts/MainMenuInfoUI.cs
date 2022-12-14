@@ -39,12 +39,20 @@ public class MainMenuInfoUI : Panel
     public override void OnEnterPanel()
     {
         SetSubmenu();
+
         base.OnEnterPanel();
+        GameManager._GAME_MANAGER._UI_MANAGER.OnMenuPausePressed += ExitTree;
+    }
+
+    private void ExitTree()
+    {
+        GameManager._GAME_MANAGER._UI_MANAGER.ExitPanelTree();
     }
     public override void OnExitPanel()
     {
         base.OnExitPanel();
         panelFinishedLoading = true;
+        GameManager._GAME_MANAGER._UI_MANAGER.OnMenuPausePressed -= ExitTree;
 
     }
 }

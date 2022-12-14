@@ -27,6 +27,8 @@ public class BattleManager
     [SerializeField] public AnimationClip playerHitAnim;
     [SerializeField] public AnimationClip enemyHitAnim;
 
+    [SerializeField] public ElementalBlock DefaultElement;
+
 
     static BattleInstance currentBattle;
 
@@ -44,6 +46,13 @@ public class BattleManager
         enemyObj = enemy;
         this.enemy = enemyObj.GetComponent<EnemyScript>();
     }
+     
+    public void SetPlayerDefaultAtk()
+    {
+        selectedRune = player.MainRelic;
+        selectedBlocks = new List<ElementalBlock> { DefaultElement};
+    }
+
     public void PrepareBattle()
     {
         selectedBlocks = new List<ElementalBlock>();
@@ -116,6 +125,8 @@ public class BattleManager
     }
     public void SetElements(List<ElementalBlock> elements)
     {
+
+
         selectedBlocks = elements;
         selectedRune.relicsElement = selectedBlocks;
     }

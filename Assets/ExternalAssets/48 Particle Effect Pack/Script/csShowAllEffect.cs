@@ -22,17 +22,12 @@ public class csShowAllEffect : MonoBehaviour
 
     void Update()
     {
-        input.Update();
         int aa = i;
         i += (int)input.NavigateInput.x;
         i = Mathf.Clamp(i, aa - 1,aa+1); 
         if( i != aa && current != null)
         {
             Destroy(current.gameObject);
-        }
-        if (input.AcceptButtonPressed)
-        {
-            current = Instantiate(Effect[i], new Vector3(0, 5, 0), Quaternion.identity);
         }
         /*
         if (Input.GetKeyDown(KeyCode.Z))

@@ -10,13 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2197bb9bdff74c0498112f014282094f, type: 3}
-  m_Name: Slime
+  m_Name: IceSlime2
   m_EditorClassIdentifier: 
-  MaxHP: 200
-  Atk: 10
-  Def: 10
+  MaxHP: 100
+  Atk: 5
+  Def: 5
   Spd: 10
-  ElementInventory: []
+  ElementInvetoryLimit: 20
+  RelicMaxLimit: 3
+  ElementInventory:
+  - {fileID: 11400000, guid: c8d6f7ed29134cd41bbaf08aa70eebfd, type: 2}
   RelicInventory:
   - {fileID: 11400000, guid: 6cdf952f0cfd02d41a59200a6cd2f2f0, type: 2}
   Weaknesses:

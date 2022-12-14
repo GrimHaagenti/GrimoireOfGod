@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum Scenes { MAIN, LAUNCHER, WORLD, BATTLE };
+public enum Scenes { MAIN, LAUNCHER, LAUNCHERDEBUG, WORLD, BATTLE, TUTORIAL };
 
 [System.Serializable]
 public class GameSceneManager 

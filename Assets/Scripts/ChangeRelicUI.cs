@@ -66,8 +66,30 @@ public class ChangeRelicUI : Panel
         {
             GameManager._GAME_MANAGER.playerScript._RelicInventory[buttonNavIndex] = newRelic;
         }
-        GameManager._GAME_MANAGER._INPUT_MANAGER.ChangeInputType(Scenes.WORLD);
-        gameObject.SetActive(false);
+        InputManager._INPUT_MANAGER.ChangeInputType(Scenes.WORLD);
+        base.OnAcceptButton();
+    }
+
+
+    public override void GoForward()
+    {
+        for (int i = 0; i < RelicBlockUIList.Count; i++)
+        {
+            if(i < RelicBlockUIList.Count-1)
+            {
+                Destroy(RelicBlockUIList[i]);
+            }
+        }
+        RelicBlockUIList.Clear();
+        RelicButtonUIList.Clear();
+        GameManager._GAME_MANAGER._UI_MANAGER.ExitPanelTree();
+
+    }
+
+
+    public override void OnExitPanel()
+    {
+        buttonNavIndex = 0;
 
     }
 
@@ -75,25 +97,35 @@ public class ChangeRelicUI : Panel
     {
 
         base.OnEnterPanel();
-        SetSubmenu();
         RelicButtonUIList[buttonNavIndex].Select();
 
     }
 
     public override void OnNavigationVertical(int dir)
     {
-        if(buttonNavIndex< RelicButtonUIList.Count - 1)
-        {
-            buttonNavIndex = RelicButtonUIList.Count - 1;
-        }
-        else { buttonNavIndex = 0; }
 
+        if(dir > 0)
+        {
+            if(buttonNavIndex == RelicBlockUIList.Count - 1)
+            {
+                buttonNavIndex = 0;
+            }
+
+        }
+        else if (dir < 0)
+        {
+            if(buttonNavIndex <= RelicBlockUIList.Count - 2)
+            {
+                buttonNavIndex = RelicBlockUIList.Count - 1;
+            }
+        }
         RelicButtonUIList[buttonNavIndex].Select();
     }
 
     public override void OnNavigationHorizontal(int dir)
     {
-        buttonNavIndex += dir;
+        if (buttonNavIndex > 0|| buttonNavIndex <= RelicBlockUIList.Count - 2)
+        { buttonNavIndex += dir; }
         buttonNavIndex = Mathf.Clamp(buttonNavIndex, 0, RelicButtonUIList.Count - 2);
 
         RelicButtonUIList[buttonNavIndex].Select();

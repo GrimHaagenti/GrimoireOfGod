@@ -12,51 +12,42 @@ public class ElementUIManager : Panel
     [SerializeField] GameObject ElementalBlockUI;
     [SerializeField] GameObject listParent;
     [SerializeField] Animator[] ElementVisualizerSlots;
+    [SerializeField] Animator ResultingElementVisualizerSlot;
 
-    int ButtonSizeY = 20;
 
-    List<GameObject> elementalBlockUIList = new List<GameObject>();
+    [SerializeField] Image SelectedRune;
+
     List<ElementalBlock> playerElements;
-    List<ElementalBlock> activeElements = new List<ElementalBlock>();
+    Stack<Elements> activeElements = new Stack<Elements>();
     
     List<Button> ElementButtonUIList = new List<Button>();
 
-    List<ElementalBlockButtonAccesor> buttonAccesors = new List<ElementalBlockButtonAccesor>();
-
-    RectTransform newRectTransform;
-
-
+    ElementalBlockButtonAccesor[] ElementalBlockAccesor;
     int buttonNavIndex = 0;
-    int lastVerticalIndex = 0;
-    List<int> selectedBlocksIndex = new List<int>();
+    List<int> playerElementsQuantities = new List<int>();
     List<string> selectedBlocksAnimationsIndex = new List<string>();
     public override void SetSubmenu()
     {
 
-        newRectTransform = listParent.GetComponent<RectTransform>();
         battleManager = GameManager._GAME_MANAGER._BATTLE_MANAGER;
+        SelectedRune.sprite = battleManager.selectedRune.runeIcon;
         playerElements = battleManager.player._ElementInventory;
+        ElementalBlockAccesor = listParent.GetComponentsInChildren<ElementalBlockButtonAccesor>();
 
-        //CHANGE TO MAX RELIC VARIABLE
-
-
-        playerElements?.ForEach(
-            (it) =>
+        for (int i = 0; i < ElementalBlockAccesor.Length; i++)
+        {
+            playerElementsQuantities.Add(playerElements.FindAll((it) =>
             {
-                GameObject buttonObj = Instantiate(ElementalBlockUI, listParent.transform);
-                ElementalBlockButtonAccesor access = buttonObj.GetComponent<ElementalBlockButtonAccesor>();
-                buttonAccesors.Add(access);
-                access.Icon.sprite = GameManager._GAME_MANAGER._ELEMENT_FACTORY.ElementsSprites[(int)it.BlockElement];
-                access.Name.text = it.BlockElement.ToString();
-
-                Button button = buttonObj.GetComponentInChildren<Button>();
-
-
-                ElementButtonUIList.Add(button);
-                elementalBlockUIList.Add(buttonObj);
-                   
-                
-            });
+                if (it.BlockElement == (Elements)i)
+                {
+                    return true;
+                }
+                else { return false; }
+            }).Count);
+            ElementalBlockAccesor[i].Quantity.text = playerElementsQuantities[i].ToString();
+            Button button = ElementalBlockAccesor[i].gameObject.GetComponent<Button>();
+            ElementButtonUIList.Add(button);
+        }
 
         ElementButtonUIList.Add(AdvanceMenuButton);
         ElementButtonUIList[buttonNavIndex].Select();
@@ -66,9 +57,11 @@ public class ElementUIManager : Panel
     {
         if (activeElements.Count < 3) 
         {
-            activeElements.Add(playerElements[elementIndex]);
+            activeElements.Push((Elements)elementIndex);
+            playerElementsQuantities[elementIndex]--;
+            ElementalBlockAccesor[elementIndex].Quantity.text = playerElementsQuantities[elementIndex].ToString();
             string animName = "";
-            switch (playerElements[elementIndex].BlockElement)
+            switch ((Elements)buttonNavIndex)
             {
                 case Elements.FIRE:
                     animName = "Fire";
@@ -101,28 +94,110 @@ public class ElementUIManager : Panel
             selectedBlocksAnimationsIndex.Add(animName);
             ElementVisualizerSlots[activeElements.Count - 1].gameObject.SetActive(true);
             ElementVisualizerSlots[activeElements.Count - 1].Play(animName);
+            if (activeElements.Count > 1)
+            {
+                Elements elem = GameManager._GAME_MANAGER._ELEMENT_FACTORY.ElementFusion(activeElements);
+                string PreviewAnimName = "";
+                switch (elem)
+                {
+                    case Elements.FIRE:
+                        PreviewAnimName = "Fire";
+                        break;
+                    case Elements.WATER:
+                        PreviewAnimName = "Water";
+                        break;
+                    case Elements.EARTH:
+                        PreviewAnimName = "Earth";
+                        break;
+                    case Elements.WIND:
+                        PreviewAnimName = "Wind";
+                        break;
+                    case Elements.METAL:
+                        PreviewAnimName = "Metal";
+                        break;
+                    case Elements.PLANT:
+                        PreviewAnimName = "Plant";
+                        break;
+                    case Elements.ELECTRICITY:
+                        PreviewAnimName = "Electricity";
+                        break;
+                    case Elements.ICE:
+                        PreviewAnimName = "Ice";
+                        break;
+                    case Elements.ROCK:
+                        PreviewAnimName = "Rock";
+                        break;
+                }
+                ResultingElementVisualizerSlot.gameObject.SetActive(true);
+                ResultingElementVisualizerSlot.Play(PreviewAnimName);
+            }
         }
+        
     }
 
-    public void DeselectActiveElement(int elementIndex)
+    public void DeselectActiveElement()
     {
-        foreach (Animator an in ElementVisualizerSlots)
-        {
-            an.gameObject.SetActive(false);
-        }
-        int ind = activeElements.IndexOf(playerElements[elementIndex]);
-        selectedBlocksAnimationsIndex.RemoveAt(ind);
-        activeElements.RemoveAt(ind);
-        for (int i = 0; i < activeElements.Count; i++)
-        {
-            ElementVisualizerSlots[i].gameObject.SetActive(true);
-            ElementVisualizerSlots[i].Play(selectedBlocksAnimationsIndex[i]);
-        }
 
+        if (activeElements.Count > 0)
+        {
+            ElementVisualizerSlots[activeElements.Count - 1].gameObject.SetActive(false);
+
+            Elements el = activeElements.Pop();
+            playerElementsQuantities[(int)el]++;
+            ElementalBlockAccesor[(int)el].Quantity.text = playerElementsQuantities[(int)el].ToString();
+            
+        }
+        if (activeElements.Count > 1)
+        {
+            Elements elem = GameManager._GAME_MANAGER._ELEMENT_FACTORY.ElementFusion(activeElements);
+            string PreviewAnimName = "";
+            switch (elem)
+            {
+                case Elements.FIRE:
+                    PreviewAnimName = "Fire";
+                    break;
+                case Elements.WATER:
+                    PreviewAnimName = "Water";
+                    break;
+                case Elements.EARTH:
+                    PreviewAnimName = "Earth";
+                    break;
+                case Elements.WIND:
+                    PreviewAnimName = "Wind";
+                    break;
+                case Elements.METAL:
+                    PreviewAnimName = "Metal";
+                    break;
+                case Elements.PLANT:
+                    PreviewAnimName = "Plant";
+                    break;
+                case Elements.ELECTRICITY:
+                    PreviewAnimName = "Electricity";
+                    break;
+                case Elements.ICE:
+                    PreviewAnimName = "Ice";
+                    break;
+                case Elements.ROCK:
+                    PreviewAnimName = "Rock";
+                    break;
+            }
+            ResultingElementVisualizerSlot.gameObject.SetActive(true);
+            ResultingElementVisualizerSlot.Play(PreviewAnimName);
+        }
+        else { 
+            ResultingElementVisualizerSlot.gameObject.SetActive(false);
+        }
     }
 
 
-
+    public override void GoBackButtonPressed()
+    {
+        if (activeElements.Count > 0) { DeselectActiveElement(); }
+        else
+        {
+            base.GoBackButtonPressed();
+        }
+    }
     public override void OnEnterPanel()
     {
         base.OnEnterPanel();
@@ -137,12 +212,8 @@ public class ElementUIManager : Panel
         {
             a.gameObject.SetActive(false);
         }
-        foreach(ElementalBlockButtonAccesor a in buttonAccesors)
-        {
-            a.MainPanel.gameObject.SetActive(true);
-        }
         
-        selectedBlocksIndex.Clear();
+        
         selectedBlocksAnimationsIndex.Clear();
 
         base.OnExitPanel();
@@ -150,16 +221,19 @@ public class ElementUIManager : Panel
 
     public override void GoForward()
     {
-        battleManager.SetElements(activeElements);
-        battleManager.ChangeState(BattleStates.PLAYER_RESOLUTION);
-        elementalBlockUIList.ForEach(a =>
+        List<ElementalBlock> ChosenElements = new List<ElementalBlock>();
+
+        foreach (Elements e in activeElements)
         {
-            Destroy(a);
-        });
-        selectedBlocksIndex.Clear();
-        elementalBlockUIList.Clear();
-        ElementButtonUIList.Clear();
-        buttonAccesors.Clear();
+            ElementalBlock newElem = ScriptableObject.CreateInstance<ElementalBlock>();
+            newElem.BlockElement = e;
+            newElem.Level = ElementLevel.ONE;
+            newElem.Potency = 1;
+            ChosenElements.Add(newElem);
+        }
+        battleManager.SetElements(ChosenElements);
+        battleManager.ChangeState(BattleStates.PLAYER_RESOLUTION);
+        activeElements.Clear();
         selectedBlocksAnimationsIndex.Clear();
         OnExitPanel();
     }
@@ -168,26 +242,26 @@ public class ElementUIManager : Panel
     {
         if (buttonNavIndex <= ElementButtonUIList.Count - 2)
         {
-            if (!selectedBlocksIndex.Contains(buttonNavIndex))
+            if(playerElementsQuantities[buttonNavIndex] > 0)
             {
-                selectedBlocksIndex.Add(buttonNavIndex);
                 SetActiveElement(buttonNavIndex);
-                buttonAccesors[buttonNavIndex].MainPanel.gameObject.SetActive(false);
-                ElementButtonUIList[buttonNavIndex].image = buttonAccesors[buttonNavIndex].BGPanel;
-
+                
             }
-            else
-            {
+            /*
                 selectedBlocksIndex.Remove(buttonNavIndex);
                 
                 DeselectActiveElement(buttonNavIndex);
                 ElementButtonUIList[buttonNavIndex].image = buttonAccesors[buttonNavIndex].MainPanel;
                 buttonAccesors[buttonNavIndex].MainPanel.gameObject.SetActive(true);
-            }
+            }*/
         }
         else if (buttonNavIndex == ElementButtonUIList.Count - 1)
         {
-            base.OnAcceptButton();
+            if(activeElements.Count>0)
+            {
+                base.OnAcceptButton();
+
+            }
         }
     }
 
@@ -198,33 +272,40 @@ public class ElementUIManager : Panel
 
     public override void OnNavigationVertical(int dir)
     {
-        buttonNavIndex -= dir;
-        buttonNavIndex = Mathf.Clamp(buttonNavIndex, 0, ElementButtonUIList.Count - 2);
+        if (dir < 0)
+        {
+            if(buttonNavIndex <= 5)
+            {
+                buttonNavIndex += 3;
+                ElementButtonUIList[buttonNavIndex].Select();
+            }
 
-        ElementButtonUIList[buttonNavIndex].Select();
-        newRectTransform.offsetMax -= new Vector2(0, dir * ButtonSizeY);
+        }
+        if (dir > 0)
+        {
+            if (buttonNavIndex >= 3)
+            {
+                buttonNavIndex -= 3;
+                ElementButtonUIList[buttonNavIndex].Select();
+            }
 
-
-
-
-        //if (buttonNavIndex > 3) { newRectTransform.offsetMax += new Vector2(0, dir * ButtonSizeY); }
-
+        }
     }
 
     public override void OnNavigationHorizontal(int dir)
     {
-        if(dir > 0)
-        {
-            lastVerticalIndex = buttonNavIndex;
-            buttonNavIndex = ElementButtonUIList.Count - 1;
-            ElementButtonUIList[buttonNavIndex].Select();
-        }
-        if(dir < 0)
-        {
-            buttonNavIndex = lastVerticalIndex;
-            ElementButtonUIList[buttonNavIndex].Select();
 
-
+        buttonNavIndex += dir;
+        if (dir > 0)
+        {
+            if (buttonNavIndex == 3 || buttonNavIndex == 6 || buttonNavIndex == 9)
+            {
+                buttonNavIndex = ElementButtonUIList.Count - 1;
+            }
         }
+        buttonNavIndex = Mathf.Clamp(buttonNavIndex, 0, ElementButtonUIList.Count - 1);
+
+        ElementButtonUIList[buttonNavIndex].Select();
+
     }
 }

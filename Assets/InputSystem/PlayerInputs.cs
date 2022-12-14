@@ -42,7 +42,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""id"": ""2512715a-30cc-442a-b002-27655e7206e0"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": true
                 },
                 {
@@ -277,7 +277,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""id"": ""f1dcd715-975b-4f64-af44-0507ac70a180"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -295,7 +295,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""id"": ""fa60354c-6828-459e-8684-cbbc5d1ef05e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -322,7 +322,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""f53453eb-3b53-4928-8a25-3be88484cce4"",
                     ""path"": ""<Keyboard>/z"",
-                    ""interactions"": ""Press"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""Accept"",
@@ -333,7 +333,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""a5b8c256-0b12-4be1-a2f7-7317f607cb87"",
                     ""path"": ""<Keyboard>/x"",
-                    ""interactions"": ""Press"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""GoBack"",

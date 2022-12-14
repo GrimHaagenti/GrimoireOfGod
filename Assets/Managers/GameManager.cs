@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager _GAME_MANAGER = null;
     [SerializeField] public GameSceneManager _SCENE_MANAGER;
-    [SerializeField] public InputManager _INPUT_MANAGER;
     [SerializeField] public BattleManager _BATTLE_MANAGER;
     [SerializeField] public DB_Manager _DB_MANAGER;
     [SerializeField] public ElementFactory _ELEMENT_FACTORY;
@@ -45,11 +44,6 @@ public class GameManager : MonoBehaviour
         {
             _SCENE_MANAGER = new GameSceneManager();
         } 
-
-        if (_INPUT_MANAGER == null)
-        {
-            _INPUT_MANAGER = new InputManager();
-        } 
         
         if (_BATTLE_MANAGER == null)
         {
@@ -82,16 +76,17 @@ public class GameManager : MonoBehaviour
 
     void InitializeManagers()
     {
+
         _SCENE_MANAGER.Init();
-        _INPUT_MANAGER.Init();
         _DB_MANAGER.Init();
         _UI_MANAGER.Init();
+        InputManager._INPUT_MANAGER.Init();
+
     }
 
     private void Update()
     {
         _SCENE_MANAGER.Update();
-        _INPUT_MANAGER.Update();
         _BATTLE_MANAGER.Update();
         _UI_MANAGER.Update();
 
@@ -102,7 +97,7 @@ public class GameManager : MonoBehaviour
     public void LoadScene(Scenes scn, LoadSceneMode mode)
     {
         _SCENE_MANAGER.LoadScene(scn, mode);
-        _INPUT_MANAGER.ChangeInputType(scn);
+        InputManager._INPUT_MANAGER.ChangeInputType(scn);
     }
 
     public void LoadBattleScene(GameObject enemy)
@@ -122,20 +117,30 @@ public class GameManager : MonoBehaviour
     {
 
         _SCENE_MANAGER.UnloadBattleScene();
-        _INPUT_MANAGER.ChangeInputType(Scenes.WORLD);
+        InputManager._INPUT_MANAGER.ChangeInputType(Scenes.WORLD);
 
             
     }
 
     private void OnBattleSceneFinishedUnloading()
     {
+        PanelIndexer ind = null;
+
         foreach (GameObject obj in _SCENE_MANAGER.currentScene.GetRootGameObjects())
         {
-            if (obj.TryGetComponent<Levelnfo>(out Levelnfo info) && obj.activeSelf)
+            if (!obj.activeSelf) { continue; }
+            if (obj.TryGetComponent<Levelnfo>(out Levelnfo info))
             {
                 currentLevelInfo = info;
-                break;
             }
+            if (obj.TryGetComponent<PanelIndexer>(out PanelIndexer inde))
+            {
+                ind = inde;
+            }
+        }
+        if (ind != null)
+        {
+            _UI_MANAGER.SetIndexer(ind);
         }
         playerScript.InitializePosition(tempPlayerValues.LastPlayerPosition);
         if (!PlayerPrefab.activeSelf) { PlayerPrefab.SetActive(true); }
@@ -144,8 +149,9 @@ public class GameManager : MonoBehaviour
     private void OnSceneFinishLoaded()
     {
         //TEMP
-        PanelIndexer ind = new PanelIndexer() ;
+        PanelIndexer ind = null;
         //TEMP
+
         foreach (GameObject obj in _SCENE_MANAGER.currentScene.GetRootGameObjects())
         {
             if (!obj.activeSelf) { continue; }
@@ -163,8 +169,7 @@ public class GameManager : MonoBehaviour
             playerScript.InitializePosition(pos);
             if (!PlayerPrefab.activeSelf) { PlayerPrefab.SetActive(true); }
         }
-        if (ind != null) { _UI_MANAGER.SetIndexer(ind);
-        }
+        if (ind != null) { _UI_MANAGER.SetIndexer(ind);     }
      
 
         if (_SCENE_MANAGER.currentScene == SceneManager.GetSceneByBuildIndex((int)Scenes.BATTLE))
@@ -173,6 +178,7 @@ public class GameManager : MonoBehaviour
 
             _BATTLE_MANAGER.PrepareBattle();
         }
+
     }
 
     public int CalculateBattleDamage(int RelicPower, int UserATK, int ElementPotency, int TargetDEF)

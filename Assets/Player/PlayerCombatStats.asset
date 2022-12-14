@@ -18,14 +18,6 @@ MonoBehaviour:
   Spd: 10
   ElementInvetoryLimit: 20
   RelicMaxLimit: 3
-  ElementInventory:
-  - {fileID: 11400000, guid: c8d6f7ed29134cd41bbaf08aa70eebfd, type: 2}
-  - {fileID: 11400000, guid: c8d6f7ed29134cd41bbaf08aa70eebfd, type: 2}
-  - {fileID: 11400000, guid: c4d4eb5dd367b2744b11d5d378592c35, type: 2}
-  - {fileID: 11400000, guid: c4d4eb5dd367b2744b11d5d378592c35, type: 2}
-  - {fileID: 11400000, guid: 7130993d175b2ed4eb5559b363738bca, type: 2}
-  RelicInventory:
-  - {fileID: 11400000, guid: 6cdf952f0cfd02d41a59200a6cd2f2f0, type: 2}
-  - {fileID: 11400000, guid: 203a31fcb2d765b4ba8a18cf24212361, type: 2}
-  - {fileID: 11400000, guid: 203a31fcb2d765b4ba8a18cf24212361, type: 2}
+  ElementInventory: []
+  RelicInventory: []
   Weaknesses: []

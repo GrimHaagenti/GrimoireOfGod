@@ -31,11 +31,11 @@ public class Panel : MonoBehaviour
 
         if (input.x != 0)
         {
-            OnNavigationHorizontal(Mathf.RoundToInt(input.x));
+            OnNavigationHorizontal(Mathf.FloorToInt(input.x));
         }
         if (input.y != 0)
         {
-            OnNavigationVertical(Mathf.RoundToInt(input.y));
+            OnNavigationVertical(Mathf.FloorToInt(input.y));
         }
 
     }

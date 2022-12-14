@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e560cd7d29e95964596837ffa2fd5154, type: 3}
   m_Name: ES_Physical_1
   m_EditorClassIdentifier: 
-  BlockElement: 0
+  BlockElement: 9
   Level: 0
-  Potency: 0
+  Potency: 3

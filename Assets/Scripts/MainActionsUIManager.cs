@@ -51,9 +51,10 @@ public class MainActionsUIManager : Panel
 
     public override void OnHoldElementButton()
     {
+        GameManager._GAME_MANAGER._BATTLE_MANAGER.SetPlayerDefaultAtk();
+        GameManager._GAME_MANAGER._BATTLE_MANAGER.ChangeState(BattleStates.PLAYER_RESOLUTION);
         currentButton = (int)ButtonOrder.BASEATK;
         ForwardPanel = ForwardPanels[currentButton];
-        GoForward();
         
     }
 

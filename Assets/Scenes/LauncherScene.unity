@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1349092126}
   - component: {fileID: 1349092125}
+  - component: {fileID: 1349092127}
   m_Layer: 0
   m_Name: GameManagers
   m_TagString: Untagged
@@ -153,19 +154,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _SCENE_MANAGER:
-    LaunchScene: 2
+    LaunchScene: 5
     IsLauncherScene: 1
-  _INPUT_MANAGER:
-    moveInput: {x: 0, y: 0}
-    ActionButtonPressed: 0
-    AcceptButtonPressed: 0
-    GoBackButtonPressed: 0
-    NavigateInput: {x: 0, y: 0}
-    HoldElementButtonPressed: 0
-    PauseButtonPressed: 0
-    TimeSincePauseButtonPressed: 0.1
-    MenuPauseButtonPressed: 0
-    MenuTimeSincePauseButtonPressed: 0.1
   _BATTLE_MANAGER:
     player: {fileID: 0}
     enemy: {fileID: 0}
@@ -177,6 +167,7 @@ MonoBehaviour:
     enemyAtkAnim: {fileID: 0}
     playerHitAnim: {fileID: 0}
     enemyHitAnim: {fileID: 0}
+    DefaultElement: {fileID: 11400000, guid: da7c57e0bcbd2dd47b8d6663554b99da, type: 2}
     Battle_UI:
       indexer: {fileID: 0}
       isOnBattle: 0
@@ -226,6 +217,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1349092127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1349092123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3fe90a46a89ef74e8474be08ab8687b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveInput: {x: 0, y: 0}
+  NavigateInput: {x: 0, y: 0}
+  TimeSincePauseButtonPressed: 0.1
+  MenuTimeSincePauseButtonPressed: 0.1
 --- !u!1 &1791480919
 GameObject:
   m_ObjectHideFlags: 0

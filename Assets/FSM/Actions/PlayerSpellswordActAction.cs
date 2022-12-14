@@ -22,7 +22,7 @@ public class PlayerSpellswordActAction : Action
 
         int layerMask = (1 << 6) | (1 << 7);
 
-        if (GameManager._GAME_MANAGER._INPUT_MANAGER.ActionButtonPressed)
+        if (InputManager._INPUT_MANAGER.IsActionButtonPressed())
         { 
             EndPosition = StartPosition + controller.gameObject.transform.forward * controller.worldStats.SlashDistace;
 

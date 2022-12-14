@@ -48,10 +48,7 @@ public class BattleInstance
         battleManager.SetRune(rune);
     }
 
-    public void SetElements(List<ElementalBlock> elements)
-    {
-        battleManager.SetElements(elements);
-    }
+    
     public void StartCombat()
     {
         if(battleManager.player == null) { return; }
