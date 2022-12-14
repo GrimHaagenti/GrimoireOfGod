@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _SCENE_MANAGER:
-    LaunchScene: 5
+    LaunchScene: 4
     IsLauncherScene: 1
   _BATTLE_MANAGER:
     player: {fileID: 0}
