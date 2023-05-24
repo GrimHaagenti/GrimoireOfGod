@@ -1,195 +1,264 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-
+using static UnityEditor.Progress;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager _GAME_MANAGER = null;
-    [SerializeField] public GameSceneManager _SCENE_MANAGER;
-    [SerializeField] public BattleManager _BATTLE_MANAGER;
-    [SerializeField] public DB_Manager _DB_MANAGER;
-    [SerializeField] public ElementFactory _ELEMENT_FACTORY;
-    [SerializeField] public SpellFactory _SPELL_FACTORY;
-    [SerializeField] public UIManager _UI_MANAGER;
+    public GameSceneManager _SCENE_MANAGER = null;
 
-    [SerializeField] public CameraScript m_camera;
 
-    [SerializeField] public GameObject Player;
-    [HideInInspector] public PlayerScript playerScript;
+    [SerializeField] private CameraScript cam;
 
-    private TempPlayerValues tempPlayerValues;
+    [SerializeField] ItemDB items;
+    public GameObject playerPrefab;
+    public GameObject PlayerObj { get; private set; }
+    public GameObject CameraObj { get; private set; }
 
+    public New_Entity_Script player;
+
+    public UnityEvent LevelLoaded;
+    public UnityEvent ReturningToWorld;
+    public UnityEvent CameraIHateU;
+
+    private List<GameObject> EnemiesPrefab;
     public Levelnfo currentLevelInfo;
-    public GameObject PlayerPrefab { get; private set; }
+    private Vector3 lastPlayerPosition;
+    private Quaternion lastPlayerRotation;
 
-
-    //[SerializeField] public PlayerScript player;
 
     private void Awake()
     {
-        if(_GAME_MANAGER !=null && _GAME_MANAGER != this)
+        if (_GAME_MANAGER != null && _GAME_MANAGER != this)
         {
             Destroy(_GAME_MANAGER);
         }
         else { _GAME_MANAGER = this; }
 
-        if (_ELEMENT_FACTORY == null)
-        {
-            _ELEMENT_FACTORY = new ElementFactory();
-        }
-
         if (_SCENE_MANAGER == null)
         {
             _SCENE_MANAGER = new GameSceneManager();
-        } 
-        
-        if (_BATTLE_MANAGER == null)
-        {
-            _BATTLE_MANAGER = new BattleManager();
-        }
-        if (_DB_MANAGER == null)
-        {
-            _DB_MANAGER = new DB_Manager();
         }
 
-        if (_UI_MANAGER == null)
-        {
-            _UI_MANAGER = new UIManager();
-        }
+        DontDestroyOnLoad(this);
 
         InitializeManagers();
 
-        _SCENE_MANAGER.OnSceneLoaded += OnSceneFinishLoaded;
-        _SCENE_MANAGER.OnBattleUnloaded += OnBattleSceneFinishedUnloading;
-
-
-        PlayerPrefab =  GameObject.Instantiate(Player);
-        PlayerPrefab.SetActive(false);
-        playerScript = PlayerPrefab.GetComponent<PlayerScript>();
-        playerScript.InitEntity();
-        tempPlayerValues = ScriptableObject.CreateInstance<TempPlayerValues>();
-        DontDestroyOnLoad(this);
+        _SCENE_MANAGER.OnSceneLoaded.AddListener(OnSceneFinishLoaded);
+        _SCENE_MANAGER.OnBattleSceneUnloaded.AddListener(OnBattleSceneFinishedUnloading);
     }
-        
 
     void InitializeManagers()
     {
 
         _SCENE_MANAGER.Init();
-        _DB_MANAGER.Init();
-        _UI_MANAGER.Init();
-        InputManager._INPUT_MANAGER.Init();
+        ItemManager._ITEM_MANAGER.Init(items);
+        //_DB_MANAGER.Init();
+        //_UI_MANAGER.Init();
 
     }
 
-    private void Update()
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
     {
         _SCENE_MANAGER.Update();
-        _BATTLE_MANAGER.Update();
-        _UI_MANAGER.Update();
-
-
-       
     }
-
     public void LoadScene(Scenes scn, LoadSceneMode mode)
     {
         _SCENE_MANAGER.LoadScene(scn, mode);
-        InputManager._INPUT_MANAGER.ChangeInputType(scn);
     }
 
-    public void LoadBattleScene(GameObject enemy)
+    public void LoadGame()
     {
+        _SCENE_MANAGER.LoadGame();
+    }
+    public void BeginLoadBattleScene(List<GameObject> enemies_b)
+    {
+        InputManager._INPUT_MANAGER.SetInputToMenu();
+        
+        EnemiesPrefab = new List<GameObject>();
+        enemies_b.ForEach(e => { EnemiesPrefab.Add(e); });
+       
+        New_UI_Manager._UI_MANAGER.fadePanel.BeginFadeIn();
+        New_UI_Manager._UI_MANAGER.fadePanel.OnFadeInComplete.AddListener(LoadBattleScene);
 
-        enemy.SetActive(false);
-         tempPlayerValues.LastPlayerPosition =  playerScript.gameObject.transform.position;
+    }
+    private void LoadBattleScene()
+    {
+        New_UI_Manager._UI_MANAGER.fadePanel.OnFadeInComplete.RemoveListener(LoadBattleScene);
         LoadScene(Scenes.BATTLE, LoadSceneMode.Additive);
-
     }
 
-    public void ShowMessage(string message, float duration)
-    {
-        _UI_MANAGER.ShowMessage(message, duration);
-    }
     public void UnloadBattleScene()
     {
-
-        _SCENE_MANAGER.UnloadBattleScene();
-        InputManager._INPUT_MANAGER.ChangeInputType(Scenes.WORLD);
-
-            
+        CameraIHateU?.Invoke();
+        EnemiesPrefab.Clear();
+        New_UI_Manager._UI_MANAGER.fadePanel.BeginFadeIn();
+        New_UI_Manager._UI_MANAGER.fadePanel.OnFadeInComplete.AddListener(_SCENE_MANAGER.UnloadBattleScene);
     }
 
     private void OnBattleSceneFinishedUnloading()
     {
-        PanelIndexer ind = null;
-
-        foreach (GameObject obj in _SCENE_MANAGER.currentScene.GetRootGameObjects())
-        {
-            if (!obj.activeSelf) { continue; }
-            if (obj.TryGetComponent<Levelnfo>(out Levelnfo info))
-            {
-                currentLevelInfo = info;
-            }
-            if (obj.TryGetComponent<PanelIndexer>(out PanelIndexer inde))
-            {
-                ind = inde;
-            }
-        }
-        if (ind != null)
-        {
-            _UI_MANAGER.SetIndexer(ind);
-        }
-        playerScript.InitializePosition(tempPlayerValues.LastPlayerPosition);
-        if (!PlayerPrefab.activeSelf) { PlayerPrefab.SetActive(true); }
+        ReturnToGame();
+        
 
     }
-    private void OnSceneFinishLoaded()
+    private void ReturnToGame()
     {
-        //TEMP
-        PanelIndexer ind = null;
-        //TEMP
-
-        foreach (GameObject obj in _SCENE_MANAGER.currentScene.GetRootGameObjects())
+        
+        bool finishedSearching = false;
+        foreach (GameObject item in SceneManager.GetActiveScene().GetRootGameObjects())
         {
-            if (!obj.activeSelf) { continue; }
-            if (obj.TryGetComponent<Levelnfo>(out Levelnfo info ))
+            if (!finishedSearching)
             {
-                currentLevelInfo = info;
-            }
-            if(obj.TryGetComponent<PanelIndexer>(out PanelIndexer inde))
-            {
-                ind = inde;
+                if (item.TryGetComponent<Canvas>(out Canvas aa))
+                {
+                    UI_FadePanel newPanel = aa.gameObject.GetComponentInChildren<UI_FadePanel>();
+                    UI_DialogueBoxHandler newDial = aa.GetComponentInChildren<UI_DialogueBoxHandler>();
+                    UI_GameMenuParentHandler newGamePar = aa.GetComponentInChildren<UI_GameMenuParentHandler>();
+
+                    New_UI_Manager._UI_MANAGER.fadePanel = newPanel;
+                    New_UI_Manager._UI_MANAGER.UI_DialogueHandler = newDial;
+                    New_UI_Manager._UI_MANAGER.UI_MainMenuParentHandler = newGamePar;
+                    finishedSearching = true;
+                }
             }
         }
-
-        if (currentLevelInfo != null) { Vector3 pos = currentLevelInfo.startPosition.transform.localPosition;
-            playerScript.InitializePosition(pos);
-            if (!PlayerPrefab.activeSelf) { PlayerPrefab.SetActive(true); }
-        }
-        if (ind != null) { _UI_MANAGER.SetIndexer(ind);     }
-     
-
-        if (_SCENE_MANAGER.currentScene == SceneManager.GetSceneByBuildIndex((int)Scenes.BATTLE))
+        CameraObj = PlayerObj;
+        player.ReturnToWorld();
+       
+        New_UI_Manager._UI_MANAGER.InitWorldUI();
+        if (player.gameObject.activeSelf)
         {
-            
-
-            _BATTLE_MANAGER.PrepareBattle();
+            player.gameObject.SetActive(false) ;
         }
 
+        PutPlayerInPosition();
+        New_UI_Manager._UI_MANAGER.fadePanel.BeginFadeOut();
+        InputManager._INPUT_MANAGER.SetInputToWorld();
+        //StartCoroutine(WaitAndPutPlayerInPlaceCuzGodKnowsWTFisGoingOn());
+
+        LevelLoaded?.Invoke();
+        ReturningToWorld?.Invoke();
     }
 
-    public int CalculateBattleDamage(int RelicPower, int UserATK, int ElementPotency, int TargetDEF)
+    private void PutPlayerInPosition()
     {
-        float atkPower = RelicPower * UserATK * (ElementPotency + (ElementPotency * 9));
-        float defPower = TargetDEF * (TargetDEF / 3);
+            player.gameObject.transform.position = lastPlayerPosition;
+            player.gameObject.transform.rotation = lastPlayerRotation;
+            player.gameObject.SetActive(true);
 
-        int DamageDone = Mathf.CeilToInt(atkPower / defPower);
-
-        return DamageDone;
     }
+
+    // Dejo esto aqui por que me hizo gracia
+    IEnumerator WaitAndPutPlayerInPlaceCuzGodKnowsWTFisGoingOn()
+    {
+        float timer = 0f;
+        float timeToDo = 0.2f;
+
+        while(timer< timeToDo)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        PutPlayerInPosition();
+
+        yield return new WaitForFixedUpdate();
+    }
+
+    private void OnLoadFinishGameLoad()
+    {
+        bool finishedSearching = false;
+        foreach (GameObject item in SceneManager.GetActiveScene().GetRootGameObjects())
+        {
+            if (!finishedSearching)
+            {
+                if (item.TryGetComponent<Canvas>(out Canvas aa))
+                {
+                    UI_FadePanel newPanel = aa.gameObject.GetComponentInChildren<UI_FadePanel>();
+                    UI_DialogueBoxHandler newDial = aa.GetComponentInChildren<UI_DialogueBoxHandler>();
+                    UI_GameMenuParentHandler newGamePar = aa.GetComponentInChildren<UI_GameMenuParentHandler>();
+
+                    New_UI_Manager._UI_MANAGER.fadePanel = newPanel;
+                    New_UI_Manager._UI_MANAGER.UI_DialogueHandler = newDial;
+                    New_UI_Manager._UI_MANAGER.UI_MainMenuParentHandler = newGamePar;
+                    
+                }
+                
+            }
+            if (item.name == "PlayerInitPosition") { PlayerObj = Instantiate(playerPrefab, item.transform.position, Quaternion.identity); }
+
+        }
+        
+
+        CameraObj = PlayerObj;
+        player = PlayerObj.GetComponent<New_Entity_Script>();
+        New_UI_Manager._UI_MANAGER.fadePanel.BeginFadeOut();
+        New_UI_Manager._UI_MANAGER.InitWorldUI();
+
+        InputManager._INPUT_MANAGER.SetInputToWorld();
+    }
+
+    private void OnLoadFinishBattleLoad()
+    {
+        bool finishedSearching = false;
+        foreach (GameObject item in _SCENE_MANAGER.currentScene.GetRootGameObjects())
+        {
+            if (!finishedSearching)
+            {
+                if (item.TryGetComponent<Canvas>(out Canvas aa) && item.activeSelf)
+                {
+                    UI_FadePanel newPanel = aa.gameObject.GetComponentInChildren<UI_FadePanel>();
+                    New_UI_Manager._UI_MANAGER.fadePanel = newPanel;
+                    
+                }
+                if(item.TryGetComponent<Levelnfo>(out Levelnfo a))
+                {
+                    currentLevelInfo = a;
+                    CameraObj= a.CameraObject;
+                }
+                
+
+            }
+
+        }
+        currentLevelInfo.LastPlayerPosition = player.transform.position;
+        lastPlayerPosition = player.transform.position;
+        lastPlayerRotation = player.transform.rotation;
+
+
+        New_UI_Manager._UI_MANAGER.fadePanel.BeginFadeOut();
+        New_BattleManager._BATTLE_MANAGER.StartCombat(player, EnemiesPrefab);
+    }
+
+    private void OnSceneFinishLoaded(Scenes currentSceneLoaded)
+    {
+        switch (currentSceneLoaded)
+        {
+            case Scenes.MAINMENU:
+                break;
+            case Scenes.WORLD:
+                OnLoadFinishGameLoad();
+                break;
+            case Scenes.BATTLE:
+                OnLoadFinishBattleLoad();
+                break;
+        }
+       
+        LevelLoaded?.Invoke();
+       
+    }
+
 
 
 }

@@ -16,8 +16,8 @@ public class PlayerMoveAction : Action
 
     private void PlayerMove(StateController controller)
     {
-        Vector2 input = InputManager._INPUT_MANAGER.moveInput;
-      
+        Vector2 input = InputManager._INPUT_MANAGER.Exploration_GetMovementAxis();
+
         if (!controller.worldStats.ActionInterrumptMovement)
         {
             float targetRotation = Mathf.Atan2(input.x, input.y) * Mathf.Rad2Deg;
@@ -33,7 +33,7 @@ public class PlayerMoveAction : Action
                 velocity.z = input.y * accel;
                 lastInput = input;
                 controller.gameObject.transform.rotation = Quaternion.Euler(0, angle, 0f);
-                controller.PlayAnimation(StateAnimation);
+                controller.PlayAnimation(EntityStates.MOVE);
             }
             else
             {
@@ -41,7 +41,7 @@ public class PlayerMoveAction : Action
                 accel = Mathf.Max(0, accel);
                 velocity.x = lastInput.x * accel;
                 velocity.z = lastInput.y * accel;
-                controller.PlayAnimation(IdleAnimation);
+                controller.PlayAnimation(EntityStates.IDLE);
             }
 
 

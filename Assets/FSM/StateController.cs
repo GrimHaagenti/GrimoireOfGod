@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateController : MonoBehaviour
+public class StateController : MonoBehaviour 
 {
 
     public State currentState;
@@ -17,27 +17,27 @@ public class StateController : MonoBehaviour
     private void Awake()
     {
         character = GetComponent<CharacterController>();
-        worldStats.SlashSpeed = worldStats.SlashDistace / worldStats.SlashTime;
-        worldStats.ActionInterrumptMovement = false;
+        //worldStats.SlashSpeed = worldStats.SlashDistace / worldStats.SlashTime;
+        //worldStats.ActionInterrumptMovement = false;
     }
 
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if (!Active) { return; }
         currentState.UpdateState(this);
     }
-    public void PlayAnimation(AnimationClip anim)
+    public void PlayAnimation(EntityStates newState)
     {
-        if(animator?.GetCurrentAnimatorClipInfo(0)[0].clip.name != anim.name)
+        switch (newState)
         {
-            animator.Play(anim.name);
-
+            case EntityStates.IDLE:
+                animator.SetBool("Moving", false);
+                break;
+            case EntityStates.MOVE:
+                animator.SetBool("Moving", true);
+                break;
+            case EntityStates.NONE_STATE:
+                break;
         }
     }
 
@@ -58,5 +58,5 @@ public class StateController : MonoBehaviour
         {
             currentState = nextState;
         }
-    } 
+    }
 }

@@ -14,11 +14,5 @@ public class EntityWorldStats : ScriptableObject
     public float turnSmoothTime = 0.1f;
 
 
-    //Spellsword Stats
-    public float SlashDistace = 10;
-    public float SlashTime = 0.5f;
-    public float SlashSpeed;
-
-
 
 }

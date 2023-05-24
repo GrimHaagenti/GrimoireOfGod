@@ -27,8 +27,8 @@ public class PlayerScript : Entity
         if(other.gameObject.layer == enemyLayer)
         {
               
-            GameManager._GAME_MANAGER.LoadBattleScene(other.gameObject);
-            GameManager._GAME_MANAGER._BATTLE_MANAGER.SetBattleEntities(this, other.gameObject);
+            Old_GameManager._GAME_MANAGER.LoadBattleScene(other.gameObject);
+            Old_GameManager._GAME_MANAGER._BATTLE_MANAGER.SetBattleEntities(this, other.gameObject);
             this.gameObject.SetActive(false);
 
         }

@@ -19,7 +19,7 @@ public class CastBarrierAction : RelicAction
 
         Barrier newBarrier = new Barrier();
 
-        newBarrier.CastBarrier(newBaseHp, newElementalHp, elementalBlock.BlockElement);
+        //newBarrier.CastBarrier(newBaseHp, newElementalHp, elementalBlock.BlockElement);
         PreviousAttackResolution.UserBarrier = newBarrier;
 
         Debug.Log("BARRIER UP");

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,179 +8,216 @@ public class InputManager :MonoBehaviour
 {
     private PlayerInputs playerInputs;
 
-    /// <summary>
-    /// Exploration Inputs
-    /// </summary>
-    [SerializeField] public Vector2 moveInput = Vector2.zero;
-    [SerializeField] static public float TimeSinceActionButtonPressed = 0.1f;
 
+    //Class Vars
+    Scenes InputType;
     public static InputManager _INPUT_MANAGER= null;
+
+
+    /// 
+    /// Exploration Inputs
+    
+    //Arrow Input for Exploration
+    private Vector2 a_exp_navigateInput = Vector2.zero;
+    //timers for input actions
+    private float t_exp_actionButtonPressed = 0.1f;
+    private float t_exp_pauseButtonPressed = 0.1f;
+
+
+    /// 
+    /// Menu Input
+
+    //Arrow Input for Menus
+    private Vector2 a_menu_NavigateInput = Vector2.zero;
+    //timers for input actions
+    private float t_menu_acceptButtonPress = 0.1f;
+    private float t_menu_goBackButtonPress = 0.1f;
+    private float t_menu_navigatePress = 0.1f;
+    private float t_menu_pauseButtonPressed = 0.1f;
 
 
     private void Awake()
     {
-        if (_INPUT_MANAGER == null)
+        if (_INPUT_MANAGER != null && _INPUT_MANAGER != this)
         {
-            _INPUT_MANAGER = new InputManager();
+            Destroy(this);
         }
+        else
+        {
+            _INPUT_MANAGER = this;
+        }
+        Init();
         DontDestroyOnLoad(this);
     }
-    /// <summary>
-    /// MenuNavigation
-    /// </summary>
-    static public float TimeSinceAcceptButtonPressed = 0.1f;
-
-    static public float TimeSinceGoBackButtonPressed = 0.1f;
-
-    
-    public Vector2 NavigateInput = Vector2.zero;
-    static public float TimeSinceNavigatePressed = 0.1f;
-
-
-    static public float TimeSinceHoldElementButtonPressed = 0.1f;
-    
-    public float TimeSincePauseButtonPressed = 0.1f;
-    public float MenuTimeSincePauseButtonPressed = 0.1f;
-
-    Scenes InputType;
 
     public void Init()
     {
         playerInputs = new PlayerInputs();
-        playerInputs.Exploration.Enable();
+        
+        // Map Overworld Inputs
+        playerInputs.Exploration.Move.performed += exp_NavAxis;
+        playerInputs.Exploration.Action.started += exp_ActionButPress;
+        playerInputs.Exploration.PauseButton.performed += exp_PauseButPress;
 
-        playerInputs.Exploration.Move.performed += MoveInput;
-        playerInputs.Exploration.Action.started += ActionInput;
-        playerInputs.Exploration.PauseButton.performed += PauseInput;
-
-
-        playerInputs.MenuNavigation.Accept.performed += AcceptButtonInput;
-        playerInputs.MenuNavigation.GoBack.performed += GoBackButtonInput;
-        playerInputs.MenuNavigation.Navigate.started     += NavigateAxis;
-        playerInputs.MenuNavigation.HoldElement.performed += HoldElementButtonInput;
-        playerInputs.MenuNavigation.PauseButton.performed += MenuPauseInput;
+        // Map Menu Inputs
+        playerInputs.MenuNavigation.Accept.performed += menu_AcceptButPress;
+        playerInputs.MenuNavigation.GoBack.performed += menu_GoBackButPress;
+        playerInputs.MenuNavigation.Navigate.performed  += menu_NavAxis;
+        playerInputs.MenuNavigation.Navigate.canceled += menu_NavAxisZERO;
+        playerInputs.MenuNavigation.PauseButton.performed += menu_PauseButPress;
 
     }
     private void Update()
     {
-        TimeSinceActionButtonPressed += Time.deltaTime;
-        TimeSinceAcceptButtonPressed += Time.deltaTime;
-        TimeSinceGoBackButtonPressed += Time.deltaTime;
-        TimeSinceHoldElementButtonPressed += Time.deltaTime;
-        TimeSinceNavigatePressed += Time.deltaTime;
-        TimeSincePauseButtonPressed += Time.deltaTime;
-        MenuTimeSincePauseButtonPressed += Time.deltaTime;
+        //Exploration Timers
+        t_exp_pauseButtonPressed += Time.deltaTime;
+        t_exp_actionButtonPressed += Time.deltaTime;
 
+        //Menu Timers
+        t_menu_acceptButtonPress += Time.deltaTime;
+        t_menu_goBackButtonPress += Time.deltaTime;
+        t_menu_navigatePress += Time.deltaTime;
+        t_menu_pauseButtonPressed += Time.deltaTime;
+
+        // Update Input System
         InputSystem.Update();
-
     }
 
-    private void HoldElementButtonInput(InputAction.CallbackContext context)
-    {
-        TimeSinceHoldElementButtonPressed = 0f;
-    }
-    private void NavigateAxis(InputAction.CallbackContext context)
-    {
-        TimeSinceNavigatePressed = 0f;
-        NavigateInput = context.ReadValue<Vector2>();
-
-
-    }
-    private void GoBackButtonInput(InputAction.CallbackContext context)
-    {
-        TimeSinceGoBackButtonPressed = 0f;
-    }
-    private void AcceptButtonInput(InputAction.CallbackContext context)
-    {
-        TimeSinceAcceptButtonPressed = 0f; 
-    }
-    private void PauseInput(InputAction.CallbackContext context)
-    {
-        TimeSincePauseButtonPressed = 0f;
-    }
-    private void MenuPauseInput(InputAction.CallbackContext context)
-    {
-        MenuTimeSincePauseButtonPressed = 0f;
-    }
     public Scenes GetInputType()
     {
         return InputType;
     }
-    public void ChangeInputType(Scenes type)
+    public void SetInputToWorld()
     {
-        if (type == Scenes.BATTLE)
+        InputType = Scenes.WORLD;
+        playerInputs.MenuNavigation.Disable();
+        playerInputs.Exploration.Enable();
+
+        t_menu_acceptButtonPress = 1f;
+        t_menu_goBackButtonPress = 1f;
+        t_menu_navigatePress = 1f;
+        t_menu_pauseButtonPressed = 1f;
+
+        t_exp_actionButtonPressed = 1f;
+        t_exp_pauseButtonPressed = 1f;
+    }
+
+    public void SetInputToMenu()
+    {
+        InputType = Scenes.BATTLE;
+        playerInputs.Exploration.Disable();
+        playerInputs.MenuNavigation.Enable();
+
+        t_menu_acceptButtonPress = 1f;
+        t_menu_goBackButtonPress = 1f;
+        t_menu_navigatePress = 1f;
+        t_menu_pauseButtonPressed = 1f;
+        
+        a_exp_navigateInput = Vector2.zero;
+        t_exp_actionButtonPressed = 1f;
+        t_exp_pauseButtonPressed = 1f;
+    }
+
+
+    /// ACCESSORS  /// 
+
+    // Exploration Accessors
+
+    public bool Exploration_GetActionButtonPressed()
+    {
+        return t_exp_actionButtonPressed == 0f;
+
+    }
+    public bool Exploration_GetPauseButtonPressed()
+    {
+        return t_exp_pauseButtonPressed == 0f;
+    }
+    public Vector2 Exploration_GetMovementAxis()
+    {
+        return a_exp_navigateInput;
+    }
+
+    // Menu Accessors
+
+    public bool Menu_GetAcceptButtonPressed()
+    {
+        return t_menu_acceptButtonPress == 0f;
+    }
+    public bool Menu_GetGoBackButtonPressed()
+    {
+
+        return t_menu_goBackButtonPress == 0f;
+    }
+    /// <summary>
+    /// Gets the arrow keys continous input.
+    /// </summary>
+    /// <returns></returns>
+    public Vector2 Menu_GetNavigateInput()
+    {
+        return a_menu_NavigateInput;
+    }
+    /// <summary>
+    /// Gets the arrow when it's pressed
+    /// </summary>
+    /// <returns></returns>
+    public Vector2 Menu_GetNavigatePressed()
+    {
+        if (t_menu_navigatePress == 0f)
         {
-            InputType = Scenes.BATTLE;
-            moveInput = Vector2.zero;
-            playerInputs.Exploration.Disable();
-            playerInputs.MenuNavigation.Enable();
-        }
-
-        if(type == Scenes.WORLD)
-        {
-            InputType = Scenes.WORLD;
-            playerInputs.MenuNavigation.Disable();
-            playerInputs.Exploration.Enable();
-        }
-        TimeSinceActionButtonPressed =1f;
-        TimeSinceAcceptButtonPressed = 1f;
-        TimeSinceGoBackButtonPressed = 1f;
-        TimeSinceHoldElementButtonPressed = 1f;
-        TimeSinceNavigatePressed = 1f;
-        TimeSincePauseButtonPressed = 1f;
-        MenuTimeSincePauseButtonPressed = 1f;
-    }
-
-    
-
-    private void MoveInput(InputAction.CallbackContext context)
-    {
-        moveInput = context.ReadValue<Vector2>();
-    }
-
-    private void ActionInput(InputAction.CallbackContext context)
-    {
-        TimeSinceActionButtonPressed = 0f;
-    }
-
-
-
-    public bool IsActionButtonPressed()
-    {
-        return TimeSinceActionButtonPressed == 0f;
-      
-    }
-    public bool IsAcceptButtonPressed()
-    {
-        return TimeSinceAcceptButtonPressed == 0f;
-    }
-    public bool IsGoBackButtonPressed()
-    {
-
-        return TimeSinceGoBackButtonPressed == 0f;
-    } 
-    public bool IsHoldElementsButtonPressed()
-    {
-
-        return TimeSinceHoldElementButtonPressed == 0f;
-      
-    }
-    public Vector2 IsNavigateInput()
-    {
-        if (TimeSinceNavigatePressed == 0f)
-        {
-            Debug.Log("AA");
-            return NavigateInput.normalized;
+            return a_menu_NavigateInput.normalized;
         }
         else { return Vector2.zero; }
     }
 
-    public bool IsPauseButtonPressed()
+
+    public bool Menu_GetPauseButtonPressed()
     {
-        return TimeSincePauseButtonPressed == 0f;
+        return t_menu_pauseButtonPressed == 0f;
     }
-    public bool IsMenuPauseButtonPressed()
+
+
+
+    /// INPUT MAPPING (ACCESSORS ABOVE) ///
+    //
+    // MENUS
+
+    private void menu_NavAxis(InputAction.CallbackContext context)
     {
-        return MenuTimeSincePauseButtonPressed == 0f;
+        t_menu_navigatePress = 0f;
+        a_menu_NavigateInput = context.ReadValue<Vector2>();
     }
+    private void menu_NavAxisZERO(InputAction.CallbackContext context)
+    {
+        a_menu_NavigateInput = Vector2.zero;
+    }
+    private void menu_AcceptButPress(InputAction.CallbackContext context)
+    {
+        t_menu_acceptButtonPress = 0f; 
+    }
+    private void menu_GoBackButPress(InputAction.CallbackContext context)
+    {
+        t_menu_goBackButtonPress = 0f;
+    }
+    private void menu_PauseButPress(InputAction.CallbackContext context)
+    {
+        t_menu_pauseButtonPressed = 0f;
+    }
+
+    // EXPLORATION
+
+    private void exp_NavAxis(InputAction.CallbackContext context)
+    {
+        a_exp_navigateInput = context.ReadValue<Vector2>();
+    }
+    private void exp_ActionButPress(InputAction.CallbackContext context)
+    {
+        t_exp_actionButtonPressed = 0f;
+    }
+    private void exp_PauseButPress(InputAction.CallbackContext context)
+    {
+        t_exp_pauseButtonPressed = 0f;
+    }
+    //
+
+    
 }

@@ -13,7 +13,7 @@ public class Relic : ScriptableObject
     [SerializeField] [Range(1, 9)] 
     protected int Potency;
     [SerializeField] private RelicType relicType = RelicType.NONE;
-    [SerializeField] protected Elements DefaultAttribute;
+    [SerializeField] protected Elements_Enum DefaultAttribute;
     [SerializeField] private bool IsCharacterSpecific;
     [SerializeField] public RelicAction[] effects;
 
@@ -66,7 +66,7 @@ public class Relic : ScriptableObject
     }
     private ElementalBlock FuseElements(List<ElementalBlock> elem)
     {
-        return  GameManager._GAME_MANAGER._ELEMENT_FACTORY.ElementFusion(elem);
+        return  Old_GameManager._GAME_MANAGER._ELEMENT_FACTORY.ElementFusion(elem);
     }
         public bool AddToRelicElements(ElementalBlock element)
     {

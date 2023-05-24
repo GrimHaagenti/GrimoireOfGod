@@ -21,7 +21,7 @@ public class ElementFactory
         if (element2 == Elements.NO_ELEMENT) { return Elements.NO_ELEMENT; }
         if (element1 == Elements.NO_ELEMENT) { return element2; }
 
-        if (GameManager._GAME_MANAGER._DB_MANAGER.GetElementCombination(element1, element2, out Elements result))
+        if (Old_GameManager._GAME_MANAGER._DB_MANAGER.GetElementCombination(element1, element2, out Elements result))
         {
             return result;
         }

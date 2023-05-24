@@ -27,14 +27,14 @@ public class BattleInstance
 
         battleManager.enemy.InitEntity();
 
-        enemyObj = GameObject.Instantiate(battleManager.enemy.EnemyPrefab, GameManager._GAME_MANAGER.currentLevelInfo.enemyPosition.transform.position, Quaternion.identity, GameManager._GAME_MANAGER.currentLevelInfo.enemyPosition.transform);
+        enemyObj = GameObject.Instantiate(battleManager.enemy.EnemyPrefab, Old_GameManager._GAME_MANAGER.currentLevelInfo.enemyPosition.transform.position, Quaternion.identity, Old_GameManager._GAME_MANAGER.currentLevelInfo.enemyPosition.transform);
 
-        enemyObj.transform.LookAt(GameManager._GAME_MANAGER.currentLevelInfo.CameraObject.transform);
+        enemyObj.transform.LookAt(Old_GameManager._GAME_MANAGER.currentLevelInfo.CameraObject.transform);
 
         enemyObj.SetActive(true);
 
-        GameManager._GAME_MANAGER.PlayerPrefab.SetActive(true);
-        GameManager._GAME_MANAGER.PlayerPrefab.transform.LookAt(GameManager._GAME_MANAGER.currentLevelInfo.CameraObject.transform);
+        Old_GameManager._GAME_MANAGER.PlayerPrefab.SetActive(true);
+        Old_GameManager._GAME_MANAGER.PlayerPrefab.transform.LookAt(Old_GameManager._GAME_MANAGER.currentLevelInfo.CameraObject.transform);
 
 
         //BattleUI_Manager._UI_MANAGER.SetBattle(this.player, this.enemy);
@@ -54,8 +54,8 @@ public class BattleInstance
         if(battleManager.player == null) { return; }
         if(battleManager.enemy == null) { return; }
 
-        GameManager._GAME_MANAGER.currentLevelInfo.PlayerHealth.text = battleManager.player.CurrentHP + "/" + battleManager.player.GetEntityStats.MaxHP;
-        GameManager._GAME_MANAGER.currentLevelInfo.EnemyHealth.text = battleManager.enemy.CurrentHP + "/" + battleManager.enemy.GetEntityStats.MaxHP;
+        Old_GameManager._GAME_MANAGER.currentLevelInfo.PlayerHealth.text = battleManager.player.CurrentHP + "/" + battleManager.player.GetEntityStats.MaxHP;
+        Old_GameManager._GAME_MANAGER.currentLevelInfo.EnemyHealth.text = battleManager.enemy.CurrentHP + "/" + battleManager.enemy.GetEntityStats.MaxHP;
 
        
 
@@ -95,14 +95,14 @@ public class BattleInstance
             int damageAfterBarrier = res.ApplyToTargets[i];
             if(EnemyBarrier!= null)
             {
-                damageAfterBarrier = EnemyBarrier.HitBarrier(damageAfterBarrier, res.ElementsUsed[i]);
+                //damageAfterBarrier = EnemyBarrier.HitBarrier(damageAfterBarrier, res.ElementsUsed[i]);
             }
             int damageAfterWeakness = CheckWeaknesses(damageAfterBarrier, battleManager.enemy.GetEntityStats, res.ElementsUsed[i]);
             battleManager.enemy.GetHit(damageAfterWeakness);
         }
 
-        GameManager._GAME_MANAGER.currentLevelInfo.PlayerHealth.text = battleManager.player.CurrentHP + "/" + battleManager.player.GetEntityStats.MaxHP;
-        GameManager._GAME_MANAGER.currentLevelInfo.EnemyHealth.text = battleManager.enemy.CurrentHP + "/" + battleManager.enemy.GetEntityStats.MaxHP;
+        Old_GameManager._GAME_MANAGER.currentLevelInfo.PlayerHealth.text = battleManager.player.CurrentHP + "/" + battleManager.player.GetEntityStats.MaxHP;
+        Old_GameManager._GAME_MANAGER.currentLevelInfo.EnemyHealth.text = battleManager.enemy.CurrentHP + "/" + battleManager.enemy.GetEntityStats.MaxHP;
 
 
         currentState = BattleStates.WIN;
@@ -163,7 +163,7 @@ public class BattleInstance
         if (battleManager.enemy._RelicInventory.Count > 0)
         {
             Relic enemyAtk = battleManager.enemy._RelicInventory[Random.Range(0, battleManager.enemy._RelicInventory.Count - 1)];
-            enemyAtk.AddToRelicElements(GameManager._GAME_MANAGER._ELEMENT_FACTORY.GameElement[0]);
+            enemyAtk.AddToRelicElements(Old_GameManager._GAME_MANAGER._ELEMENT_FACTORY.GameElement[0]);
             res = enemyAtk.Use(new List<Entity>() { battleManager.player }, battleManager.enemy);
         }
 
@@ -182,7 +182,7 @@ public class BattleInstance
             int damageAfterBarrier = res.ApplyToTargets[i];
             if (PlayerBarrier != null)
             {
-                damageAfterBarrier = PlayerBarrier.HitBarrier(damageAfterBarrier, res.ElementsUsed[i]);
+                //damageAfterBarrier = PlayerBarrier.HitBarrier(damageAfterBarrier, res.ElementsUsed[i]);
             }
             int damageAfterWeakness = CheckWeaknesses(damageAfterBarrier, battleManager.player.GetEntityStats, res.ElementsUsed[i]);
             battleManager.player.GetHit(damageAfterWeakness);
@@ -190,8 +190,8 @@ public class BattleInstance
         }
 
         
-        GameManager._GAME_MANAGER.currentLevelInfo.PlayerHealth.text = battleManager.player.CurrentHP + "/" + battleManager.player.GetEntityStats.MaxHP;
-        GameManager._GAME_MANAGER.currentLevelInfo.EnemyHealth.text = battleManager.enemy.CurrentHP + "/" + battleManager.enemy.GetEntityStats.MaxHP;
+        Old_GameManager._GAME_MANAGER.currentLevelInfo.PlayerHealth.text = battleManager.player.CurrentHP + "/" + battleManager.player.GetEntityStats.MaxHP;
+        Old_GameManager._GAME_MANAGER.currentLevelInfo.EnemyHealth.text = battleManager.enemy.CurrentHP + "/" + battleManager.enemy.GetEntityStats.MaxHP;
 
 
 

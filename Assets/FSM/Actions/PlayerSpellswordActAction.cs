@@ -21,7 +21,8 @@ public class PlayerSpellswordActAction : Action
         Vector3 StartPosition = controller.gameObject.transform.position;
 
         int layerMask = (1 << 6) | (1 << 7);
-
+        
+        /*
         if (InputManager._INPUT_MANAGER.IsActionButtonPressed())
         { 
             EndPosition = StartPosition + controller.gameObject.transform.forward * controller.worldStats.SlashDistace;
@@ -44,6 +45,7 @@ public class PlayerSpellswordActAction : Action
 
 
         }
+        */
         Debug.DrawLine(StartPosition, EndPosition, Color.red);
 
         Physics.Linecast(StartPosition, EndPosition, out hit, layerMask);

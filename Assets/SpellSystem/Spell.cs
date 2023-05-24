@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Spell : ScriptableObject
 {
-    Elements spellElement;
+    Elements_Enum spellElement;
 
     int potency;
 

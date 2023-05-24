@@ -20,7 +20,7 @@ public class SlashAction : RelicAction
         int TargetDefense = Mathf.CeilToInt(targets[0].CurrentDEF - (targets[0].CurrentDEF * percentageCalculation));
 
 
-        int DamageDealt = GameManager._GAME_MANAGER.CalculateBattleDamage(RelicPotency, user.CurrentATK, elementalBlock.Potency, TargetDefense);
+        int DamageDealt = Old_GameManager._GAME_MANAGER.CalculateBattleDamage(RelicPotency, user.CurrentATK, elementalBlock.Potency, TargetDefense);
 
 
         Debug.Log(elementalBlock.BlockElement);

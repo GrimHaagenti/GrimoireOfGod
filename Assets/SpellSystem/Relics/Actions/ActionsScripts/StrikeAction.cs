@@ -13,7 +13,7 @@ public class StrikeAction : RelicAction
     private TurnResolution Hit(List<Entity> targets, ElementalBlock elementalBlock, Entity user, int RelicPotency, TurnResolution PreviousAttackResolution)
     {
 
-        int DamageDealt = GameManager._GAME_MANAGER.CalculateBattleDamage(RelicPotency, user.CurrentATK, elementalBlock.Potency, targets[0].CurrentDEF);
+        int DamageDealt = Old_GameManager._GAME_MANAGER.CalculateBattleDamage(RelicPotency, user.CurrentATK, elementalBlock.Potency, targets[0].CurrentDEF);
 
 
         Debug.Log(elementalBlock.BlockElement);

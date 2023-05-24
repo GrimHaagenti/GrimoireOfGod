@@ -6,19 +6,19 @@ public class WorldInteractionScript : MonoBehaviour
 {
 
     [SerializeField] WorldInteractIE ObjectToTrigger;
-    [SerializeField] float maxCastDistance;
-    [SerializeField] int levelLayer;
-    [SerializeField] int DetectCone = 30;
-    float SphereCastSize = 6f;
+    [SerializeField] int playerLayer = 3;
+    
+    
     private void OnTriggerStay(Collider other)
     {
-        ;
-
-        if (InputManager._INPUT_MANAGER.IsActionButtonPressed())
+        if (other.gameObject.layer == playerLayer)
         {
-            
-            ObjectToTrigger.Interact();
-            
+            if (InputManager._INPUT_MANAGER.Exploration_GetActionButtonPressed())
+            {
+
+                ObjectToTrigger.Interact();
+
+            }
         }
     }
 }

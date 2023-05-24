@@ -85,7 +85,7 @@ public class UIManager
         {
             p.gameObject.SetActive(false);
         }
-        InputManager._INPUT_MANAGER.ChangeInputType(Scenes.WORLD);
+        //InputManager._INPUT_MANAGER.ChangeInputType(Scenes.WORLD);
 
     }
 
@@ -155,30 +155,27 @@ public class UIManager
     {
         if (currentPanel != null && currentPanel.panelFinishedLoading)
         {
-            if (input.IsAcceptButtonPressed())
+            if (input.Menu_GetAcceptButtonPressed())
             {
                 OnAcceptPressed?.Invoke();
             }
-            if (input.IsGoBackButtonPressed())
+            if (input.Menu_GetGoBackButtonPressed())
             {
                 OnGoBackPressed?.Invoke();
             }
-            if (input.IsHoldElementsButtonPressed())
+            
+            if (input.Menu_GetNavigateInput() != Vector2.zero)
             {
-                OnHoldElementPressed?.Invoke();
-            }
-            if (input.IsNavigateInput() != Vector2.zero)
-            {
-                OnNavigateAxis?.Invoke(input.NavigateInput);
+                //OnNavigateAxis?.Invoke(input.MenuNavigateInput);
             }
 
-            if (input.IsPauseButtonPressed())
+            if (input.Exploration_GetPauseButtonPressed())
             {
                 EnterPanelTree();
-                InputManager._INPUT_MANAGER.ChangeInputType(Scenes.BATTLE);
+                //InputManager._INPUT_MANAGER.ChangeInputType(Scenes.BATTLE);
             }
 
-            if (input.IsMenuPauseButtonPressed())
+            if (input.Menu_GetPauseButtonPressed())
             {
                 
                 OnMenuPausePressed?.Invoke();

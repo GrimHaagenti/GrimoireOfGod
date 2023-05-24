@@ -16,14 +16,14 @@ public class csShowAllEffect : MonoBehaviour
         Instantiate(Effect[i], new Vector3(0, 5, 0), Quaternion.identity);
         input = new InputManager();
         input.Init();
-        input.ChangeInputType(Scenes.BATTLE);
+        //input.ChangeInputType(Scenes.BATTLE);
     }
 
 
     void Update()
     {
         int aa = i;
-        i += (int)input.NavigateInput.x;
+        //i += (int)input.MenuNavigateInput.x;
         i = Mathf.Clamp(i, aa - 1,aa+1); 
         if( i != aa && current != null)
         {

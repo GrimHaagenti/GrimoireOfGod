@@ -57,7 +57,7 @@ public class BattleManager
     {
         selectedBlocks = new List<ElementalBlock>();
         selectedRune = null;
-        Battle_UI = GameManager._GAME_MANAGER._UI_MANAGER;
+        Battle_UI = Old_GameManager._GAME_MANAGER._UI_MANAGER;
         /*
         foreach (GameObject obj in GameManager._GAME_MANAGER._SCENE_MANAGER.currentScene.GetRootGameObjects())
         {
@@ -74,7 +74,7 @@ public class BattleManager
 
         //Battle_UI.SetSubMenus(player.EntityRelics, player.GetEntityStats.ElementInventory, this);
 
-        GameManager._GAME_MANAGER.currentLevelInfo.gameObject.SetActive(true);
+        Old_GameManager._GAME_MANAGER.currentLevelInfo.gameObject.SetActive(true);
     }
 
     
@@ -172,7 +172,7 @@ public class BattleManager
                 currentBattle = null;
                 GameObject.Destroy(enemyObj);
                 player.gameObject.SetActive(false);
-                GameManager._GAME_MANAGER.UnloadBattleScene();
+                Old_GameManager._GAME_MANAGER.UnloadBattleScene();
                 break;
         }
     }

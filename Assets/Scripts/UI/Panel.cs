@@ -49,19 +49,19 @@ public class Panel : MonoBehaviour
     }
     public virtual void OnExitPanel()
     {
-        GameManager._GAME_MANAGER._UI_MANAGER.OnAcceptPressed -= OnAcceptButton;
-        GameManager._GAME_MANAGER._UI_MANAGER.OnGoBackPressed -= GoBackButtonPressed;
-        GameManager._GAME_MANAGER._UI_MANAGER.OnHoldElementPressed -= OnHoldElementButton;
-        GameManager._GAME_MANAGER._UI_MANAGER.OnNavigateAxis -= SortInput;
+        Old_GameManager._GAME_MANAGER._UI_MANAGER.OnAcceptPressed -= OnAcceptButton;
+        Old_GameManager._GAME_MANAGER._UI_MANAGER.OnGoBackPressed -= GoBackButtonPressed;
+        Old_GameManager._GAME_MANAGER._UI_MANAGER.OnHoldElementPressed -= OnHoldElementButton;
+        Old_GameManager._GAME_MANAGER._UI_MANAGER.OnNavigateAxis -= SortInput;
         panelFinishedLoading = false;
     }
     public virtual void OnEnterPanel()
     {
 
-        GameManager._GAME_MANAGER._UI_MANAGER.OnAcceptPressed += OnAcceptButton;
-        GameManager._GAME_MANAGER._UI_MANAGER.OnGoBackPressed += GoBackButtonPressed;
-        GameManager._GAME_MANAGER._UI_MANAGER.OnHoldElementPressed += OnHoldElementButton;
-        GameManager._GAME_MANAGER._UI_MANAGER.OnNavigateAxis += SortInput;
+        Old_GameManager._GAME_MANAGER._UI_MANAGER.OnAcceptPressed += OnAcceptButton;
+        Old_GameManager._GAME_MANAGER._UI_MANAGER.OnGoBackPressed += GoBackButtonPressed;
+        Old_GameManager._GAME_MANAGER._UI_MANAGER.OnHoldElementPressed += OnHoldElementButton;
+        Old_GameManager._GAME_MANAGER._UI_MANAGER.OnNavigateAxis += SortInput;
         panelFinishedLoading = true;
     }
     public virtual void OnAcceptButton()
