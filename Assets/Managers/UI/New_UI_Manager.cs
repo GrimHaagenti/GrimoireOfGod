@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,6 +15,7 @@ public class New_UI_Manager : MonoBehaviour
     public static New_UI_Manager _UI_MANAGER = null;
 
     [SerializeField] public UI_FadePanel fadePanel = null;
+    bool receiveInput = true;
 
     //HANDLERS//
     [SerializeField] public UI_DialogueBoxHandler UI_DialogueHandler;
@@ -28,8 +28,17 @@ public class New_UI_Manager : MonoBehaviour
     public UnityEvent_IntPar OnHorizontalAxis;
     public UnityEvent_IntPar OnVerticalAxis;
 
-    //TEMP
     
+    public void PleaseDontCallMenu()
+    {
+        UI_MainMenuParentHandler.DONTCALLENTERNOW();
+        receiveInput = false;
+    }
+    public void CanCallMenuNow()
+    {
+        receiveInput = true;
+        UI_MainMenuParentHandler.CanCallNow();
+    }
 
     private void Awake()
     {
@@ -65,27 +74,32 @@ public class New_UI_Manager : MonoBehaviour
 
     private void Update()
     {
-        if (InputManager._INPUT_MANAGER.Menu_GetAcceptButtonPressed())
+        if (receiveInput)
         {
-            OnActionButtonPressed?.Invoke();
+
+            if (InputManager._INPUT_MANAGER.Menu_GetAcceptButtonPressed())
+            {
+                OnActionButtonPressed?.Invoke();
+
+            }
+            if (InputManager._INPUT_MANAGER.Exploration_GetPauseButtonPressed() || InputManager._INPUT_MANAGER.Menu_GetPauseButtonPressed())
+            {
+                OnMenuButtonPressed?.Invoke();
+            }
+            Vector2 NavAxis = InputManager._INPUT_MANAGER.Menu_GetNavigatePressed();
+
+            if (NavAxis.x != 0)
+            {
+                OnHorizontalAxis?.Invoke(Mathf.CeilToInt(NavAxis.x));
+            }
+            if (NavAxis.y != 0)
+            {
+                OnVerticalAxis?.Invoke(Mathf.CeilToInt(NavAxis.y));
+            }
 
         }
-        if (InputManager._INPUT_MANAGER.Exploration_GetPauseButtonPressed() || InputManager._INPUT_MANAGER.Menu_GetPauseButtonPressed())
-        {
-            OnMenuButtonPressed?.Invoke();
-        }
-        Vector2 NavAxis = InputManager._INPUT_MANAGER.Menu_GetNavigatePressed();
-
-        if (NavAxis.x != 0)
-        {
-            OnHorizontalAxis?.Invoke(Mathf.CeilToInt(NavAxis.x));
-        }
-        if (NavAxis.y != 0)
-        {
-            OnVerticalAxis?.Invoke(Mathf.CeilToInt(NavAxis.y));
-        }
-
     }
+
     public void GoToEquipmentScreen()
     {
         UI_MainMenuParentHandler.ShowEquipmentScreen();

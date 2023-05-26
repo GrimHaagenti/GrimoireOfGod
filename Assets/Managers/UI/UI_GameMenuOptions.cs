@@ -66,6 +66,7 @@ public class UI_GameMenuOptions : UI_ListParent
                 //Go to Items Screen
                 break;
             case 2:
+                Application.Quit();
                 //Exit to Main Menu
                 break;
         }

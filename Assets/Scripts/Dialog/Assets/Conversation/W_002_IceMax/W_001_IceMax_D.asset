@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7af5ee7021466b449bca781faabbb86, type: 3}
+  m_Name: W_001_IceMax_D
+  m_EditorClassIdentifier: 
+  m_CharacterName: Ice Container
+  m_characterPortrait: {fileID: 21300000, guid: 544584f2c53912c46ae7ab0401bf5d11, type: 3}
+  m_dialogue: 'You got a Ice Capacity Expansion.
+
+    [ +5 Ice Elemental Container
+    Capacity ] '
+  m_scrollSpeed: 0.05
+  dialogInteraction: {fileID: 11400000, guid: f1af13e667079ab45a2a89ecdbb6e421, type: 2}

@@ -9,6 +9,6 @@ public class Dialogue_Scr : ScriptableObject
     [SerializeField] public Sprite m_characterPortrait;
     [TextArea(4,4)]
     [SerializeField] public string m_dialogue;
-    [SerializeField] public float m_scrollSpeed = 0.2f;
+    [SerializeField] public float m_scrollSpeed = 0.05f;
     [SerializeField] public DialogueInteractionIE dialogInteraction;
 }

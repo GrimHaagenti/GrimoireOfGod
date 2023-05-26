@@ -53,8 +53,6 @@ public class UI_EquipmentItemsListHandler : UI_ListParent
 
     public override void OnEnter()
     {
-        New_UI_Manager._UI_MANAGER.OnVerticalAxis?.AddListener(HandleVerticalArrowMovement);
-        New_UI_Manager._UI_MANAGER.OnActionButtonPressed?.AddListener(OnActionButtonPress);
         
         WeaponList = new List<UI_WeaponListItem>();
         List<int> playerWeapons = GameManager._GAME_MANAGER.player.Inventory;
@@ -75,11 +73,17 @@ public class UI_EquipmentItemsListHandler : UI_ListParent
            
             if(WeaponList.Count > 0)
             {
+                New_UI_Manager._UI_MANAGER.OnVerticalAxis?.AddListener(HandleVerticalArrowMovement);
+                New_UI_Manager._UI_MANAGER.OnActionButtonPressed?.AddListener(OnActionButtonPress);
                 maxButtonNum = WeaponList.Count;
 
                 WeaponList[currentButtonIndex].UI_ItemButton.Select();
             }
-            
+            else
+            {
+                ReturnToEquipment?.Invoke();
+                
+            }
             
         }
     }

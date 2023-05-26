@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Runtime.InteropServices.WindowsRuntime;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class New_BattleManager : MonoBehaviour
@@ -356,7 +355,7 @@ public class New_BattleManager : MonoBehaviour
     }
     void CombatEnd(bool playerWon) 
     {
-
+        player.TurnOffBarrier();
         if (playerWon)
         {
             enemies.ForEach(e => { Destroy(e.gameObject); });
@@ -366,6 +365,7 @@ public class New_BattleManager : MonoBehaviour
         }
         else
         {
+            
             BattleUIManager._BATTLE_UI_MANAGER.receiveInput = false;
             BattleUIManager._BATTLE_UI_MANAGER.UI_losePanel.gameObject.SetActive(true);
         }

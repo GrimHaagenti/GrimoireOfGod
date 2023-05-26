@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7af5ee7021466b449bca781faabbb86, type: 3}
   m_Name: 003_PermTest
   m_EditorClassIdentifier: 
-  m_CharacterName: Test
+  m_CharacterName: Testy McTester
   m_characterPortrait: {fileID: 2005660015, guid: e681855b6bfd32c4bac1e00043e20e24, type: 3}
-  m_dialogue: See you soon!
+  m_dialogue: "Hey, don't talk to me! \nI'm just a Pokemon!\nFUECOCO!"
   m_scrollSpeed: 0.05
   dialogInteraction: {fileID: 0}

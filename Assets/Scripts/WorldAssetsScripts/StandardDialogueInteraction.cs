@@ -8,7 +8,7 @@ public class StandardDialogueInteraction : WorldInteractIE
     [SerializeField] bool firstTime = true;
     public override void Interact()
     {
-        if (firstTime)
+        if (firstTime && Conversation.m_firstTimeConversation.Count> 0)
         {
             New_UI_Manager._UI_MANAGER.ShowDialog(Conversation.m_firstTimeConversation);
             firstTime = false;

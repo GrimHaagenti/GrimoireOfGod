@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -31,15 +30,18 @@ public class New_Entity_Script : MonoBehaviour
 
     [Header("Animations")]
     [SerializeField] Animator entityAnimator;
-    [SerializeField] AnimationClip hitAnimation;
-    [SerializeField] AnimationClip deathAnimation;
-    [SerializeField] AnimationClip atkAnimation;
+    [Header("Sounds")]
+    [SerializeField] private AudioSource audioS;
+    [SerializeField] private AudioClip attackSound;
+    [SerializeField] private AudioClip HitSound;
+    
 
     public UnityEvent AtkAnimationFinished;
 
     private void Awake()
     {
         InitEntity();
+        
     }
 
     private void InitEntity() 
@@ -69,6 +71,19 @@ public class New_Entity_Script : MonoBehaviour
     public void Heal(int healAmount)
     {
         currentHP = Mathf.Min(currentHP + healAmount, maxHP);
+    }
+
+    public void GetMaxHPUpgrade()
+    {
+        maxHP = Mathf.Min(maxHP + 50, 999);
+        Heal(maxHP);
+    }
+
+
+    public void GetElementalContainerUpgrade(Elements_Enum elem)
+    {
+        m_elementalChargesMaxCapacity[(int)elem] = Mathf.Min(m_elementalChargesMaxCapacity[(int)elem]+5, 99);
+
     }
 
     public void ReceiveWeapon(Weapon_Scr newWeapon)
@@ -105,18 +120,18 @@ public class New_Entity_Script : MonoBehaviour
         switch (weaponSlot)
         {
             case 0: // MELEE
-                equipment.SetWeapon(GetWeaponIndexFromInventoryItem(WeaponInventoryIndex), weaponSlot);
+                equipment.SetWeapon(WeaponInventoryIndex, weaponSlot);
                 break;
             case 1: // SKILL 1
                 if (equipment.Skill2Weapon == WeaponInventoryIndex) { equipment.ClearSlot(2); }
-                equipment.SetWeapon(GetWeaponIndexFromInventoryItem(WeaponInventoryIndex), weaponSlot);
+                equipment.SetWeapon(WeaponInventoryIndex, weaponSlot);
                 break;
             case 2: // SKILL 2
                 if (equipment.Skill1Weapon == WeaponInventoryIndex) { equipment.ClearSlot(1); }
-                equipment.SetWeapon(GetWeaponIndexFromInventoryItem(WeaponInventoryIndex), weaponSlot);
+                equipment.SetWeapon(WeaponInventoryIndex, weaponSlot);
                 break;
             case 3: // SUPPORT
-                equipment.SetWeapon(GetWeaponIndexFromInventoryItem(WeaponInventoryIndex), weaponSlot);
+                equipment.SetWeapon(WeaponInventoryIndex, weaponSlot);
                 break;
         }
 
@@ -158,15 +173,25 @@ public class New_Entity_Script : MonoBehaviour
     public void PlayHitAnimation()
     {
         entityAnimator.Play("Hit");
+        GetComponent<AudioSource>().clip = HitSound;
+        GetComponent<AudioSource>().Play();
+
+
     }
 
     public void PlayAtkAnimation()
     {
         entityAnimator.Play("Attack");
+        
+        GetComponent<AudioSource>().clip = attackSound;
+        GetComponent<AudioSource>().Play();
+
     }
     public void PlayDeathAnimation()
     {
         entityAnimator.Play("Death");
+        GetComponent<AudioSource>().clip = HitSound;
+        GetComponent<AudioSource>().Play();
     }
 
     //Accesors

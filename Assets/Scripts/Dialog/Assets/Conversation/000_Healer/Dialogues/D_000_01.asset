@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7af5ee7021466b449bca781faabbb86, type: 3}
+  m_Name: D_000_01
+  m_EditorClassIdentifier: 
+  m_CharacterName: Field Medic
+  m_characterPortrait: {fileID: 21300000, guid: 917e2f5799f84014bb2e48f0470101d0, type: 3}
+  m_dialogue: 'Come here, I''ll heal you up and replenish
+
+    your Elemental Energy
+    Containers.'
+  m_scrollSpeed: 0.05
+  dialogInteraction: {fileID: 11400000, guid: 84d772301eef8d946a0f0ba4f3d1534d, type: 2}

@@ -26,13 +26,13 @@ public class UI_DialogueBoxHandler : UI_ParentStandard
 
     public void Init()
     {
-        New_UI_Manager._UI_MANAGER.OnActionButtonPressed.AddListener(GoToNextDialogue);
         ShowPanel(false);
     }
     
 
     public void BeginConversation(List<Dialogue_Scr> convo)
     {
+        New_UI_Manager._UI_MANAGER.OnActionButtonPressed.AddListener(GoToNextDialogue);
         m_currentConversation = convo;
         m_currentConversationIndex = 0;
         isDialoguePlaying = true;
@@ -42,10 +42,12 @@ public class UI_DialogueBoxHandler : UI_ParentStandard
 
     private void SetDialogueBox()
     {
-        m_Portrait.sprite = m_currentConversation[m_currentConversationIndex].m_characterPortrait;
-        m_Dialogue.text = m_currentConversation[m_currentConversationIndex].m_dialogue;
-        m_Dialogue.maxVisibleCharacters = 0;
-        isTextScrolling = true;
+            m_CharacterName.text = m_currentConversation[m_currentConversationIndex].m_CharacterName;
+            m_Portrait.sprite = m_currentConversation[m_currentConversationIndex].m_characterPortrait;
+            m_Dialogue.text = m_currentConversation[m_currentConversationIndex].m_dialogue;
+            m_Dialogue.maxVisibleCharacters = 0;
+            isTextScrolling = true;
+        
     }
 
     void Update()
@@ -77,16 +79,27 @@ public class UI_DialogueBoxHandler : UI_ParentStandard
         {
             if (!isButtonPressed)
             {
-                isButtonPressed = true;
-                isTextScrolling = false;
-                m_currentConversation[m_currentConversationIndex].dialogInteraction?.DoSomething();
-                m_currentConversationIndex += 1;
-                if (m_currentConversationIndex >= m_currentConversation.Count)
+                if (m_Dialogue.maxVisibleCharacters < m_Dialogue.text.Length)
                 {
-                    EndConversation();
-                    return;
+                    m_Dialogue.maxVisibleCharacters = m_Dialogue.text.Length;
+                    isTextScrolling = false;
+                    scrollTimer = 0;
+                    isButtonPressed = true;
+
                 }
-                SetDialogueBox();
+                else
+                {
+                    isButtonPressed = true;
+                    isTextScrolling = false;
+                    m_currentConversation[m_currentConversationIndex].dialogInteraction?.DoSomething();
+                    m_currentConversationIndex++;
+                    if (m_currentConversationIndex >= m_currentConversation.Count)
+                    {
+                        EndConversation();
+                        return;
+                    }
+                    SetDialogueBox();
+                }
             }
         }
     }
@@ -94,6 +107,7 @@ public class UI_DialogueBoxHandler : UI_ParentStandard
     private void EndConversation()
     {
         OnEndDialogue?.Invoke();
+        New_UI_Manager._UI_MANAGER.OnActionButtonPressed.RemoveListener(GoToNextDialogue);
         isDialoguePlaying = false;
         ShowPanel(false);
         InputManager._INPUT_MANAGER.SetInputToWorld();

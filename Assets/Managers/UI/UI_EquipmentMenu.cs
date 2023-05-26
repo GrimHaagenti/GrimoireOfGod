@@ -26,8 +26,8 @@ public class UI_EquipmentMenu : MonoBehaviour
 
     public void GoToWeaponSelectionMenu(int slot)
     {
-        m_UI_EquipmentListHandler.SetTypeAndEnter(slot);
         m_UI_equipmentButtonHandler.OnExitToChild();
+        m_UI_EquipmentListHandler.SetTypeAndEnter(slot);
     }
 
     public void ExitEquipmentMenu()

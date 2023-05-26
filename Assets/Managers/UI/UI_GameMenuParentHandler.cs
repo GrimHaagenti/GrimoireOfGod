@@ -28,7 +28,18 @@ public class UI_GameMenuParentHandler : UI_ParentStandard
         ShowPanel(false);
     }
 
+    public void DONTCALLENTERNOW()
+    {
+        m_fadePanel.OnFadeInComplete?.RemoveListener(ShowMainMenuScreen);
 
+    }
+    public void CanCallNow()
+    {
+        //m_fadePanel.OnFadeInComplete?.AddListener(ShowMainMenuScreen);
+
+    }
+
+   
     void HandleShowMenu()
     {
         if (!isMenuAnimPlaying)
@@ -72,6 +83,8 @@ public class UI_GameMenuParentHandler : UI_ParentStandard
         isMenuAnimPlaying = false;
         isMenuShow = false;
         m_MainMenuHandler.CloseEverything();
+        New_UI_Manager._UI_MANAGER.OnActionButtonPressed?.RemoveAllListeners();
+        New_UI_Manager._UI_MANAGER.OnVerticalAxis?.RemoveAllListeners();
         InputManager._INPUT_MANAGER.SetInputToWorld();
 
     }

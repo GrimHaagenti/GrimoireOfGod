@@ -6,13 +6,35 @@ public class World_BattleCollider : MonoBehaviour
 {
     [SerializeField] List<GameObject> PossibleEnemies;
     [SerializeField] int MaxEnemiesInEncounter = 2;
+    [SerializeField] float BattleProbability = 1f;
+    float CoolDownTime = 1f;
 
     bool fightTriggered = false;
     private CharacterController playerRef = null;
 
     private void Start()
     {
-        GameManager._GAME_MANAGER.ReturningToWorld.AddListener(() => { fightTriggered= false; });
+        GameManager._GAME_MANAGER.ReturningToWorld.AddListener(BattleCooldownTimerStart);
+    }
+
+    public void BattleCooldownTimerStart()
+    {
+        StartCoroutine(CooldownTimer());
+    }
+
+    IEnumerator CooldownTimer()
+    {
+        float time = 0;
+        float timer = CoolDownTime;
+
+        while (time < timer)
+        {
+            time += Time.deltaTime;
+            yield return null;
+        }
+        fightTriggered = false;
+        StopCoroutine(CooldownTimer());
+        yield return null;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -49,9 +71,9 @@ public class World_BattleCollider : MonoBehaviour
     private bool CalculateBattleProbability()
     {
         bool doBattle = false;
-        int battleProb = Random.Range(0, 100);
+        float battleProb = Random.Range(0f, 100f);
 
-        if (battleProb < 3f)
+        if (battleProb < BattleProbability)
         {
             doBattle = true;
             fightTriggered = true;

@@ -1,11 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using static UnityEditor.Progress;
 
 public class GameManager : MonoBehaviour
 {
@@ -84,6 +82,7 @@ public class GameManager : MonoBehaviour
     }
     public void BeginLoadBattleScene(List<GameObject> enemies_b)
     {
+        New_UI_Manager._UI_MANAGER.PleaseDontCallMenu();
         InputManager._INPUT_MANAGER.SetInputToMenu();
         
         EnemiesPrefab = new List<GameObject>();
@@ -145,6 +144,7 @@ public class GameManager : MonoBehaviour
 
         PutPlayerInPosition();
         New_UI_Manager._UI_MANAGER.fadePanel.BeginFadeOut();
+        New_UI_Manager._UI_MANAGER.CanCallMenuNow();
         InputManager._INPUT_MANAGER.SetInputToWorld();
         //StartCoroutine(WaitAndPutPlayerInPlaceCuzGodKnowsWTFisGoingOn());
 
