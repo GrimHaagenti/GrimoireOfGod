@@ -220,10 +220,10 @@ public class New_BattleManager : MonoBehaviour
     public void StartCombat(New_Entity_Script player_b, List<GameObject> enemies_b)
     {
         player = player_b;
-        player.gameObject.SetActive(true);
         player.InitPlayerBattle();
 
         player.transform.position = playerPosition.position;
+        player.gameObject.SetActive(true);
 
         enemies = new List<New_Entity_Script>();
 

@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dd0bf59b3f3fb543b1c9cd3156064f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityStats: {fileID: 11400000, guid: 7e7021ea074158f428357ac7d2bdb25c, type: 2}
+  entityStats: {fileID: 11400000, guid: af271be51b6fd1444bd1f66ceec3e61d, type: 2}
   barrierScript: {fileID: 2727301605622291845}
   entityAnimator: {fileID: 3152339455286505906}
   audioS: {fileID: 2497562008385505285}

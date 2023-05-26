@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 004_EnemyStats
   m_EditorClassIdentifier: 
   playerName: Wofrlatoteph
-  maxHP: 50
+  maxHP: 100
   equipment: {fileID: 11400000, guid: 578a26ce10bfb054d89308abb765ce1d, type: 2}
   inventory:
   - {fileID: 11400000, guid: b73ee6374f8d03b4dacdb527c29daf11, type: 2}
